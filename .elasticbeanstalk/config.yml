@@ -1,6 +1,6 @@
 branch-defaults:
   master:
-    environment: null
+    environment: ExpressProject-dev
 global:
   application_name: ExpressProject
   default_ec2_keyname: aws-eb

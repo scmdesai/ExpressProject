@@ -8,10 +8,16 @@ exports.findAllStores = function(req, res) {
 	//console.log("GET STORES") ;
 
 	//AWS.config.loadFromPath('./config.json');
+	console.log("Loading credentials from EC2 environment");
+	AWS.config.credentials = new AWS.EC2MetadataCredentials({
+		  httpOptions: { timeout: 10000 } // 10 second timeout
+	});
 
-	// Create an S3 client
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
 	var simpleDB = new AWS.SimpleDB() ;
-
+	console.log("SDB Client creation successful") ;
 	var	params = {
 		SelectExpression: 'select * from MyCustomers', /* required */
 		ConsistentRead: true
@@ -22,7 +28,7 @@ exports.findAllStores = function(req, res) {
 	console.log("Callback URL is " + cb) ;
 
 	
-	
+	console.log("Now retrieving data set from SDB") ;
 	simpleDB.select(params, function(err, data) {
 		if (err) {
 			console.log("ERROR calling AWS Simple DB!!!") ;
