@@ -41,10 +41,14 @@ function Store(attributes) {
 			this.city = valueAttr ;
 			break ;
 			
+		case "pictureURL":
+			this.picture = valueAttr ;
+			break ;
+			
 		}	
 		
 	}
-	this.picture = "URL" ;
+	//this.picture = "URL" ;
 	this.isFavorite = "true" ;
 
 }
