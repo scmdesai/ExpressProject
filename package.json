@@ -6,9 +6,10 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "aws-sdk": ">= 2.0.9",
+    "console-stamp": "^0.2.0",
     "express": "3.2.6",
     "jade": "*",
-    "aws-sdk": ">= 2.0.9",
     "node-uuid": ">= 1.4.1"
   }
 }
