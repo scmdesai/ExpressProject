@@ -12,6 +12,8 @@ exports.findAllStores = function(req, res) {
 	AWS.config.credentials = new AWS.EC2MetadataCredentials({
 		  httpOptions: { timeout: 10000 } // 10 second timeout
 	});
+	
+	AWS.config.region = "us-west-2" ;
 
 	console.log("Credentials retrieval successful") ;
 	// Create an SDB client
