@@ -1,10 +1,10 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
-var Store = require("./store");
+var Deal = require("./deal");
 
-var storesList = [] ;
+var dealsList = [] ;
 
-exports.findAllStores = function(req, res) {
+exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
 
 	// switch to either use local file or AWS credentials depending on where the program is running
@@ -26,7 +26,7 @@ exports.findAllStores = function(req, res) {
 	var simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyCustomers', /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus="Active"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -34,6 +34,10 @@ exports.findAllStores = function(req, res) {
 	var cb = req.query.callback;	
 	console.log("Callback URL is " + cb) ;
 
+	var customerId = req.query.customerId;	
+	console.log("Customer ID is " + customerId) ;
+
+	//res.send("End of deals") ;
 	
 	console.log("Now retrieving data set from SDB") ;
 	simpleDB.select(params, function(err, data) {
@@ -57,53 +61,22 @@ exports.findAllStores = function(req, res) {
 				var item = items[i] ;	
                 console.log(item) ;				
 				var attributes = item["Attributes"] ;
-				storesList[i] = new Store(attributes) ;
-				
-				/*
-				//console.log(attributes) ;
-				for(var j in attributes) {
-					var attr = attributes[j];
-					//console.log(attr) ;
-					var nameAttr = attr["Name"];
-					var valueAttr = attr["Value"];
-					//console.log(nameAttr + ": " + valueAttr );
-					var storesJsonOutput;
-					storesJsonOutput = (nameAttr + ": " + valueAttr + "\n" );
-					res.write(storesJsonOutput);
-					
-				
-				}
-			
-				res.end() ;*/	
-				/*var store = new Store() ;
-				for(var j=0; j < attributes.length; j++) {
-					var attribute = attributes[j] ;
-					if(attribute["Name"] == "BusinessName") {
-						store.businessName = attribute["Value"] ;
-					}
-				}
-				storesList[i] = store ;*/
-				//console.log(attributes) ;
+				dealsList[i] = new Deal(attributes) ;
+		
 			}
 			
 		}
-		console.log("Stores List is: " + storesList);
-		var storesJsonOutput = JSON.stringify(storesList) ;
+		console.log("Deals List is: " + dealsList);
+		var dealsJsonOutput = JSON.stringify(dealsList) ;
 	    
 		
 		if(cb) {
-			res.send( cb + "(" + storesJsonOutput + ");" );
+			res.send( cb + "(" + dealsJsonOutput + ");" );
 		}
 		else {
-			res.send(storesJsonOutput) ;
+			res.send(dealsJsonOutput) ;
 		}
 	});
 			
 };
 
-exports.findByStoreName = function(req, res) {
-	console.log("GET STORE BY NAME") ;
-	console.log(req.body) ;
-
-    res.send({id:req.params.storeName, businessName: "The Name", description: "description"});
-};

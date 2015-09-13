@@ -8,6 +8,10 @@ function Store(attributes) {
 		var nameAttr = attr["Name"];
 		var valueAttr = attr["Value"];
 		switch (nameAttr) {
+		case "CustomerId":
+			this.customerId = valueAttr ;
+			break ;
+		
 		case "BusinessName":
 			console.log("Business Name is: " + valueAttr) ;
 			this.businessName = valueAttr ;

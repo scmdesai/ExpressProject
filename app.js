@@ -7,6 +7,7 @@ var express = require('express')
   , routes = require('./routes')
   , user = require('./routes/user')
   , stores = require('./routes/stores')
+  , deals = require('./routes/deals')
   , http = require('http')
   , path = require('path');
   
@@ -52,6 +53,7 @@ app.get('/', routes.index);
 app.get('/users', user.list);
 app.get('/stores', stores.findAllStores);
 app.get('/stores/:storeName', stores.findByStoreName);
+app.get('/deals', deals.findAllDeals);
 
 
 http.createServer(app).listen(app.get('port'), function(){
