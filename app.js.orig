@@ -4,7 +4,7 @@
  */
 
 var express = require('express')
-  , routes = require('./routes/index')
+  , routes = require('./routes')
   , user = require('./routes/user')
   , stores = require('./routes/stores')
   , deals = require('./routes/deals')
@@ -13,7 +13,7 @@ var express = require('express')
   , logger = require('morgan')
   , bodyParser = require('body-parser')
   , methodOverride = require('method-override')
-  , errorHandler = require('errorhandler')
+//  , favicon = require('serve-favicon') 
   , multer  = require('multer');
   
   
@@ -51,36 +51,29 @@ app.use(bodyParser.urlencoded({ extended: false })) ;
 app.use(bodyParser.json()) ;
 app.use(methodOverride());
 // app.use(app.router); // No longer required in Express 4.x
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 // to allow references to AWS / localhost
 app.use(allowCrossDomain);
 //app.use(express.logger('[:mydate] :method :url :status :res[content-length] - :remote-addr - :response-time ms'));
 app.use(logger('dev'));
-//app.use(multer({dest:'./uploads/'})) ;
+app.use(multer()) ;
 
 // development only
 if ('development' == app.get('env')) {
-  app.use(errorHandler());
+  app.use(express.errorHandler());
 }
 
-app.get('/', routes);
-app.get('/user', user.list);
+app.get('/', routes.index);
+app.get('/users', user.list);
 app.get('/stores', stores.findAllStores);
 app.get('/stores/:storeName', stores.findByStoreName);
 app.get('/deals', deals.findAllDeals);
 
 // POST method route
 app.post('/deals', deals.createNewDeal) ;
-app.post('/uploadS3', deals.uploadDealImage, deals.createNewDeal) ;
+//app.post('/upload', deals.uploadDealImage) ;
 // accept one file where the name of the form field is named fileUpload
-app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
-    //console.log("Request body is " + req.body) ;// form fields
-    console.log("Request file is " + req.files['fileUpload'][0]) ;// form files
-    res.status(204).end() ;
-})
-;
-
-app.post('/uploadOne', upload.single('fileUpload'), function(req, res){
+app.post('/upload', upload.single('fileUpload'), function(req, res){
     //console.log("Request body is " + req.body) ;// form fields
     console.log("Request file is " + req.file) ;// form files
     res.status(204).end() ;

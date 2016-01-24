@@ -1,8 +1,13 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 var Deal = require("./deal");
+var multer = require( 'multer' );
+var s3 = require( 'multer-storage-s3' );
+
+var upload = multer({ dest: 'uploads/' }) ;
 
 var dealsList = [] ;
+var simpleDB = null ;
 
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
@@ -23,7 +28,11 @@ exports.findAllDeals = function(req, res) {
 	console.log("Credentials retrieval successful") ;
 	// Create an SDB client
 	console.log("Creating SDB Client") ;
-	var simpleDB = new AWS.SimpleDB() ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	
 	console.log("SDB Client creation successful") ;
 	var	params = {
 		SelectExpression: 'select * from MyDeals where DealStatus="Active"', /* required */
@@ -80,3 +89,145 @@ exports.findAllDeals = function(req, res) {
 			
 };
 
+
+exports.createNewDeal = function(req, res) {
+
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	console.log("SDB Client creation successful") ;
+	
+	var uuid1 = uuid.v1();
+	console.log("Generated uuid for itemName " + uuid1) ;
+	
+
+	var params = {
+	  Attributes: [ /* required */
+		{
+		  Name: 'DealStatus', /* required */
+		  Value: req.body.DealStatus, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealStartDate', /* required */
+		  Value: req.body.DealStartDate, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealPictureURL', /* required */
+		  Value: req.file.path, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealName', /* required */
+		  Value: req.body.DealName, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealEndDate', /* required */
+		  Value: req.body.DealEndDate, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'CustID', /* required */
+		  Value: req.body.CustID, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'BusinessName', /* required */
+		  Value: req.body.BusinessName, /* required */
+		  Replace: false
+		}
+	],
+	  DomainName: 'MyDeals', /* required */
+	  ItemName: uuid1, /* required */
+	  Expected: {
+		Exists: false,
+		Name: 'DealName'
+	  }
+	};
+	
+	console.log("Now inserting new row into MyDeals domain") ;
+	simpleDB.putAttributes(params, function(err, data) {
+		if (err) {
+			console.log("Error inserting record") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send("Error inserting record:" + err) ;
+		}
+		else  {
+			console.log("Record inserted successfully") ;
+			console.log(data);           // successful response
+			res.status(200).send("Record inserted successfully") ;
+		}
+	});
+};
+
+exports.deleteDeal = function(req, res) {
+	console.log("Not implemented currently") ;
+} ;
+
+exports.uploadDealImage = function(req, res, next) {
+	
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+	console.log("Now uploading the file...") ;
+	
+	upload.single('fileUpload') ;
+	console.log("Upload complete...") ;
+	
+	
+	var storage_s3 = s3({
+		destination : function( req, file, cb ) {
+			cb( null, '' );
+		},
+		filename    : function( req, file, cb ) {
+			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
+		},
+		bucket      : 'localbuzzapp/deals',
+		region      : 'us-west-2'
+	});
+	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
+	console.log("Uploading file");
+	
+	// calling middleware function directly instead of allowing express to call, so we can do error handling. 
+	uploadMiddleware(req, res, function(err) {
+		if(err) {
+			console.log("Error uploading file") ;
+			next() ;
+			//res.status(500).send("Error uploading file: " + err) ;
+		}
+		else {
+			console.log("File upload successful") ;
+			next() ;
+			//res.status(200).send("File upload successful") ;
+		}
+	});
+	
+};
