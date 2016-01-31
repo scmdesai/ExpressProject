@@ -170,7 +170,7 @@ exports.createNewDeal = function(req, res) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}")) ;
+			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
@@ -222,7 +222,7 @@ exports.uploadDealImage = function(req, res, next) {
 		if(err) {
 			console.log("Error uploading file" + err) ;
 			//next() ;
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}")) ;
+			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
 		}
 		else {
 			console.log("File upload successful") ;
