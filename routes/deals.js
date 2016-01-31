@@ -117,6 +117,7 @@ exports.createNewDeal = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
+	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 
 	var params = {
 	  Attributes: [ /* required */
@@ -132,7 +133,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealPictureURL', /* required */
-		  Value: req.file.path, /* required */
+		  Value: dealURL, /* required */
 		  Replace: false
 		},
 		{
@@ -210,7 +211,7 @@ exports.uploadDealImage = function(req, res, next) {
 		filename    : function( req, file, cb ) {
 			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
 		},
-		bucket      : 'localbuzzapp/deals',
+		bucket      : 'appsonmobile.com/locallink/deals',
 		region      : 'us-west-2'
 	});
 	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
