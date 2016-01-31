@@ -170,12 +170,12 @@ exports.createNewDeal = function(req, res) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send("Error inserting record:" + err) ;
+			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}")) ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
-			res.status(200).send("Record inserted successfully") ;
+			res.status(200).send('{ "success": true, "msg": "Deal added successfully" }') ;
 		}
 	});
 };
@@ -221,8 +221,8 @@ exports.uploadDealImage = function(req, res, next) {
 	uploadMiddleware(req, res, function(err) {
 		if(err) {
 			console.log("Error uploading file" + err) ;
-			next() ;
-			res.status(500).send("Error uploading file: " + err) ;
+			//next() ;
+			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}")) ;
 		}
 		else {
 			console.log("File upload successful") ;
