@@ -181,7 +181,75 @@ exports.createNewDeal = function(req, res) {
 };
 
 exports.deleteDeal = function(req, res) {
-	console.log("Not implemented currently") ;
+	console.log("Deleting a deal with uuid: " + req.params.id) ;
+	
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	console.log("SDB Client creation successful") ;
+	
+	var params = {
+	  /*Attributes: [ 
+		
+		{
+		  Name: 'DealStatus' 
+		},
+		{
+		  Name: 'DealStartDate' 
+		},
+		{
+		  Name: 'DealPictureURL' 
+		},
+		{
+		  Name: 'DealName' 
+		},
+		{
+		  Name: 'DealEndDate' 
+		},
+		{
+		  Name: 'CustID' 
+		},
+		{
+		  Name: 'BusinessName' 
+		}
+		
+	],*/
+	  DomainName: 'MyDeals', /* required */
+	  ItemName: req.params.id /* required */
+	  
+	};
+	
+	console.log("Now deleting a row in MyDeals domain") ;
+	simpleDB.deleteAttributes(params, function(err, data) {
+		if (err) {
+			console.log("Error deleting record") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{ "success": false, "msg": "Error deleting deal: "' + err + "}") ;
+		}
+		else  {
+			console.log("Record deleted successfully") ;
+			console.log(data);           // successful response
+			res.status(200).send('{ "success": true, "msg": "Deal deleted successfully" }') ;
+		}
+	});
+
 } ;
 
 exports.uploadDealImage = function(req, res, next) {

@@ -36,6 +36,7 @@ function Deal(attributes) {
 		case "DealPictureURL":
 			this.dealPictureURL = valueAttr ;
 			break ;
+			
 		}	
 	}
 }
