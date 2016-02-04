@@ -243,13 +243,13 @@ exports.deleteDeal = function(req, res) {
 			console.log("Error deleting record") ;
 			console.log(err, err.stack); // an error occurred
 			//res.status(500).send('{ "success": false, "msg": "Error deleting deal: "' + err + "}") ;
-			res.status(500).send('setTimeout(<script type=\"text/javascript\"> alert( "Error deleting deal:" + err );  </script>,1000)');
+			res.status(500).send('<script type=\"text/javascript\"> setTimeOut(alert( "Error deleting deal:" + err ),1000);  </script>');
 		}
 		else  {
 			console.log("Record deleted successfully") ;
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal deleted successfully" }') ;
-			res.status(200).send('setTimeout(<script type=\"text/javascript\"> alert("Deal deleted successfully" ,1000 );  </script>,1000)');
+			res.status(200).send('<script type=\"text/javascript\"> setTimeOut(alert("Deal deleted successfully"),1000);  </script>');
 		}
 	});
 
