@@ -238,6 +238,7 @@ exports.deleteDeal = function(req, res) {
 	
 	console.log("Now deleting a row in MyDeals domain") ;
 	simpleDB.deleteAttributes(params, function(err, data) {
+	    res.setContentType("text/html");  
 		if (err) {
 			console.log("Error deleting record") ;
 			console.log(err, err.stack); // an error occurred
