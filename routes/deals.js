@@ -248,7 +248,7 @@ exports.deleteDeal = function(req, res) {
 			console.log("Record deleted successfully") ;
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal deleted successfully" }') ;
-			res.send(window.alert('Deal deleted successfully' ));
+			res.send(<script> window.alert('Deal deleted successfully' ) </script>);
 		}
 	});
 
