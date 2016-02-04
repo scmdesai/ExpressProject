@@ -249,7 +249,7 @@ exports.deleteDeal = function(req, res) {
 			console.log("Record deleted successfully") ;
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal deleted successfully" }') ;
-			res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully"); window.location = \'DealsPanel.js\'</script>');
+			res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully"); window.location = \'\'</script>');
 		}
 	});
 
