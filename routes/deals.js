@@ -238,18 +238,18 @@ exports.deleteDeal = function(req, res) {
 	
 	console.log("Now deleting a row in MyDeals domain") ;
 	simpleDB.deleteAttributes(params, function(err, data) {
-	    res.setContentType("text/html");  
+	    res.setContentType("text/javascript");  
 		if (err) {
 			console.log("Error deleting record") ;
 			console.log(err, err.stack); // an error occurred
 			//res.status(500).send('{ "success": false, "msg": "Error deleting deal: "' + err + "}") ;
-			res.status(500).send('<script type=\"text/javascript\"> function success(false) {window.alert( "Error deleting deal:" + err );} </script>');
+			res.status(500).send('<script type=\"text/javascript\"> function success(false) {alert( "Error deleting deal:" + err );} </script>');
 		}
 		else  {
 			console.log("Record deleted successfully") ;
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal deleted successfully" }') ;
-			res.status(200).send('<script type=\"text/javascript\"> function success(true) {window.alert("Deal deleted successfully" );} </script>');
+			res.status(200).send('<script type=\"text/javascript\"> function success(true) {alert("Deal deleted successfully" );} </script>');
 		}
 	});
 
