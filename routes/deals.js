@@ -117,7 +117,7 @@ exports.findDealsById = function(req, res) {
 	
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyDeals where CustID="customerId"', /* required */
+		SelectExpression: 'select * from MyDeals where CustID="04"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -125,8 +125,8 @@ exports.findDealsById = function(req, res) {
 	var cb = req.query.callback;	
 	console.log("Callback URL is " + cb) ;
 
-	var customerId = req.query.customerId;	
-	console.log("Customer ID is " + customerId) ;
+	//var customerId = req.query.customerId;	
+	//console.log("Customer ID is " + customerId) ;
 
 	//res.send("End of deals") ;
 	
