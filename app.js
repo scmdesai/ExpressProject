@@ -68,6 +68,7 @@ app.get('/user', user.list);
 app.get('/stores', stores.findAllStores);
 app.get('/stores/:storeName', stores.findByStoreName);
 app.get('/deals', deals.findAllDeals);
+app.get('/deals/:id', deals.findDealsById) ;
 
 // POST method route
 app.post('/deals', deals.createNewDeal) ;
