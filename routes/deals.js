@@ -331,7 +331,7 @@ exports.deleteDeal = function(req, res) {
 			console.log("Record deleted successfully") ;
 			console.log(data);           // successful response
 			//res.status(200).send('"success": true, "msg": "Deal deleted successfully"') ;
-			res.status(200).send('<script> window.location.assign = \'DealsPanel.js\' ;</script>' ) ;
+			res.status(200).send('<script> window.location.href = \'\' ;</script>' ) ;
 			/*res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully"); window.location = \'http://services.appsonmobile.com/deals/04\';</script>');*/
 		}
 	});
