@@ -36,7 +36,7 @@ exports.findAllDeals = function(req, res) {
 	
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus="*"', /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus="Active"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
