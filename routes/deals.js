@@ -13,6 +13,7 @@ exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
 
 	// switch to either use local file or AWS credentials depending on where the program is running
+	var customerId = req.params.id;
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
 		AWS.config.loadFromPath('./config.json');
@@ -43,8 +44,8 @@ exports.findAllDeals = function(req, res) {
 	var cb = req.query.callback;	
 	console.log("Callback URL is " + cb) ;
 
-	var customerId = req.query.customerId;	
-	console.log("Customer ID is " + customerId) ;
+	//var customerId = req.query.customerId;	
+	//console.log("Customer ID is " + customerId) ;
 
 	//res.send("End of deals") ;
 	
