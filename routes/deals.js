@@ -11,6 +11,7 @@ var simpleDB = null ;
 
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
+	dealsList=[];
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	var customerId = req.params.id;
