@@ -119,7 +119,7 @@ exports.findDealsById = function(req, res) {
 	
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyDeals where CustID = \" + customerId + \"', /* required */
+		SelectExpression: 'select * from MyDeals where CustID = "\"" + customerId + "\""', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
