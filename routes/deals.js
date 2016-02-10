@@ -96,7 +96,7 @@ exports.findDealsById = function(req, res) {
 	//console.log("GET STORES") ;
 
 	// switch to either use local file or AWS credentials depending on where the program is running
-	var customerId = id;
+	var customerId = req.query.id;
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
 		AWS.config.loadFromPath('./config.json');
