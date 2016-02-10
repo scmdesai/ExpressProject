@@ -96,7 +96,7 @@ exports.findDealsById = function(req, res) {
 	//console.log("GET STORES") ;
 
 	// switch to either use local file or AWS credentials depending on where the program is running
-	var customerId = req.params.id;
+	var customerId = id;
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
 		AWS.config.loadFromPath('./config.json');
@@ -119,7 +119,7 @@ exports.findDealsById = function(req, res) {
 	
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyDeals where CustID =customerId', /* required */
+		SelectExpression: 'select * from MyDeals where CustID = customerId', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
