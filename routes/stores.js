@@ -199,3 +199,105 @@ exports.findByStoreName = function(req, res) {
 			
    
 };
+
+exports.updateBusinessInfo = function(req, res) {
+
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	console.log("SDB Client creation successful") ;
+	
+	
+
+	var params = {
+	  Attributes: [ /* required */
+	   {
+		  Name: 'CustomerId', /* required */
+		  Value: req.body.CustomerId, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'BusinessName', /* required */
+		  Value: req.body.BusinessName, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'Category', /* required */
+		  Value: req.body.Category, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'phoneNumber', /* required */
+		  Value: phoneNumber, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'address', /* required */
+		  Value: req.body.address, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'email', /* required */
+		  Value: req.body.emailAddress, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'zipcode', /* required */
+		  Value: req.body.zipcode, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'state', /* required */
+		  Value: req.body.state, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'city', /* required */
+		  Value: req.body.city, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'pictureURL', /* required */
+		  Value: req.body.pictureURL, /* required */
+		  Replace: false
+		}
+	],
+	  DomainName: 'MyCustomers', /* required */
+	  ItemName: req.params.id, /* required */
+	  Expected: {
+		Exists: false,
+		Name: 'BusinessName'
+	  }
+	};
+	
+	console.log("Now updating Business Info in MyCustomers domain") ;
+	simpleDB.putAttributes(params, function(err, data) {
+		if (err) {
+			console.log("Error updating record") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
+		}
+		else  {
+			console.log("Record updated successfully") ;
+			console.log(data);           // successful response
+			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+		}
+	});
+};
