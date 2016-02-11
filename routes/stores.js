@@ -126,7 +126,7 @@ exports.findByStoreName = function(req, res) {
 	var businessName = req.query.storeName;
 	
 	var	params = {
-		SelectExpression: 'select * from MyCustomers where BusinessName= businessName', /* required */
+		SelectExpression: 'select * from MyCustomers where BusinessName= "Studio Nafisa"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
