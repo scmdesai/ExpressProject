@@ -105,14 +105,6 @@ exports.findByStoreName = function(req, res) {
 	console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
 
-   //res.send({id:req.params.storeName, businessName: "The Name", description: "description"});
-   storesList.findOne({ _id: req.params.storeName }, function(err, stores) {
-    if (err) {
-      return res.send(err);
-    }
-
-    for (prop in req.body) {
-      stores[prop] = req.body[prop];
-    }
- 	});	
+   res.send({id:req.params.storeName, businessName: "The Name", description: req.body});
+  
 };
