@@ -245,7 +245,7 @@ exports.updateBusinessInfo = function(req, res) {
 		},
 		{
 		  Name: 'phoneNumber', /* required */
-		  Value: phoneNumber, /* required */
+		  Value: req.body.phoneNumber, /* required */
 		  Replace: false
 		},
 		{
