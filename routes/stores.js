@@ -106,7 +106,7 @@ exports.findByStoreName = function(req, res) {
 	console.log(req.body) ;
 
    //res.send({id:req.params.storeName, businessName: "The Name", description: "description"});
-   stores.findOne({ _id: req.params.storeName }, function(err, stores) {
+   storesList.findOne({ _id: req.params.storeName }, function(err, stores) {
     if (err) {
       return res.send(err);
     }
