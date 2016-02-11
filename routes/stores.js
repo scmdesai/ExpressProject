@@ -106,6 +106,11 @@ exports.findByStoreName = function(req, res) {
 	console.log(req.body) ;
 
    //res.send({id:req.params.storeName, businessName: "The Name", description: "description"});
-   res.send(req.params.storeName,req.body.storeName);
+    Store.find(function(err, stores) {
+    if (err) {
+      return res.send(err);
+    }
+
+    res.json(stores);
  		
 };
