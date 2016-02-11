@@ -1,7 +1,7 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 var Store = require("./store");
-
+var simpleDB = null ;
 var storesList = [] ;
 
 exports.findAllStores = function(req, res) {
@@ -23,7 +23,7 @@ exports.findAllStores = function(req, res) {
 	console.log("Credentials retrieval successful") ;
 	// Create an SDB client
 	console.log("Creating SDB Client") ;
-	var simpleDB = new AWS.SimpleDB() ;
+	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
 		SelectExpression: 'select * from MyCustomers', /* required */

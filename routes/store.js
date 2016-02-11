@@ -1,5 +1,7 @@
 // Constructor of the store object
 // It will take the "attributes" array that we get from the Amazon SimpleDB service
+
+
 function Store(attributes) {
 	console.log("Now constructing Store object") ;
 	for(var j in attributes) {
