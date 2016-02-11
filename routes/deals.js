@@ -93,7 +93,6 @@ exports.findAllDeals = function(req, res) {
 
 
 
-
 exports.createNewDeal = function(req, res) {
 
 	// switch to either use local file or AWS credentials depending on where the program is running
@@ -252,9 +251,11 @@ exports.deleteDeal = function(req, res) {
 		else  {
 			console.log("Record deleted successfully") ;
 			console.log(data);           // successful response
-			//res.status(200).send('"success": true, "msg": "Deal deleted successfully"') ;
+			res.setContentType("text/html");
+			res.send('"success": true, "msg": "Deal deleted successfully"') ;
 			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
-			res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully"); res.redirect(\'/\')</script>');
+			
+			
 		}
 	});
 
