@@ -124,7 +124,7 @@ exports.findByStoreName = function(req, res) {
 	var simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyCustomers where BusinessName = $[req.params.storeName]' /* required */
+		SelectExpression: 'select * from MyCustomers where BusinessName = $',[req.params.storeName]  /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
