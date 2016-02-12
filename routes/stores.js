@@ -236,7 +236,7 @@ exports.updateBusinessInfo = function(req, res) {
 		{
 		  Name: 'BusinessName', /* required */
 		  Value: req.body.BusinessName, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'Category', /* required */
@@ -246,12 +246,12 @@ exports.updateBusinessInfo = function(req, res) {
 		{
 		  Name: 'phoneNumber', /* required */
 		  Value: req.body.phoneNumber, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'address', /* required */
 		  Value: req.body.address, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'email', /* required */
@@ -281,6 +281,10 @@ exports.updateBusinessInfo = function(req, res) {
 	],
 	  DomainName: 'MyCustomers', /* required */
 	  ItemName: req.params.id /* required */
+	  Expected: {
+		Exists: true,
+		Name: 'CustomerId'
+	  }
 	 
 	};
 	
