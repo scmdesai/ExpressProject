@@ -275,7 +275,7 @@ exports.updateBusinessInfo = function(req, res) {
 		},
 		{
 		  Name: 'pictureURL', /* required */
-		  Value: req.body.picture, /* required */
+		  Value: req.body.pictureURL, /* required */
 		  Replace: false
 		}
 	],
