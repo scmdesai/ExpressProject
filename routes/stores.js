@@ -230,17 +230,17 @@ exports.updateBusinessInfo = function(req, res) {
 	  Attributes: [ /* required */
 	   {
 		  Name: 'CustomerId', /* required */
-		  Value: req.body.customerId, /* required */
+		  Value: req.body.CustomerId, /* required */
 		  Replace: false
 		},
 		{
 		  Name: 'BusinessName', /* required */
-		  Value: req.body.businessName, /* required */
+		  Value: req.body.BusinessName, /* required */
 		  Replace: true
 		},
 		{
 		  Name: 'Category', /* required */
-		  Value: req.body.category, /* required */
+		  Value: req.body.Category, /* required */
 		  Replace: false
 		},
 		{
@@ -255,7 +255,7 @@ exports.updateBusinessInfo = function(req, res) {
 		},
 		{
 		  Name: 'email', /* required */
-		  Value: req.body.emailAddress, /* required */
+		  Value: req.body.email, /* required */
 		  Replace: false
 		},
 		{
