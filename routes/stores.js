@@ -231,52 +231,52 @@ exports.updateBusinessInfo = function(req, res) {
 	   {
 		  Name: 'CustomerId', /* required */
 		  Value: req.body.CustomerId, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'BusinessName', /* required */
 		  Value: req.body.BusinessName, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'Category', /* required */
 		  Value: req.body.Category, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'phoneNumber', /* required */
 		  Value: req.body.phoneNumber, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'address', /* required */
 		  Value: req.body.address, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'email', /* required */
 		  Value: req.body.email, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'zipcode', /* required */
 		  Value: req.body.zipcode, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'state', /* required */
 		  Value: req.body.state, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'city', /* required */
 		  Value: req.body.city, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'pictureURL', /* required */
 		  Value: req.body.pictureURL, /* required */
-		  Replace: true
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyCustomers', /* required */
