@@ -283,8 +283,8 @@ exports.updateBusinessInfo = function(req, res) {
 	  ItemName: req.params.id,/* required */
 	  Expected: {
 		Exists: true,
-		Name: 'BusinessName',
-		Value: req.body.BusinessName
+		Name: 'CustomerId',
+		Value: req.params.id
 	  }
 	  
 	 
