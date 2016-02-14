@@ -1,12 +1,15 @@
 // Constructor of the store object
 // It will take the "attributes" array that we get from the Amazon SimpleDB service
-function Deal(attributes) {
+function Deal(itemName,attributes) {
 	console.log("Now constructing Deal object") ;
+	this.itemName = itemName ;
 	for(var j in attributes) {
 		var attr = attributes[j];
 		//console.log(attr) ;
 		var nameAttr = attr["Name"];
+		console.log("Name Attribute is: " + nameAttr) ;
 		var valueAttr = attr["Value"];
+		console.log("Value is: " + valueAttr) ;
 		switch (nameAttr) {
 		case "CustID":
 			this.customerId = valueAttr ;

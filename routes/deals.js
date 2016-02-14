@@ -70,9 +70,11 @@ exports.findAllDeals = function(req, res) {
 			
 			for(var i=0; i < items.length; i++) {
 				var item = items[i] ;	
-                console.log(item) ;				
+                console.log(item) ;
+				var itemName = item["Name"] ;
+				console.log("ItemName is " + itemName) ;
 				var attributes = item["Attributes"] ;
-				dealsList[i] = new Deal(attributes) ;
+				dealsList[i] = new Deal(itemName, attributes) ;
 		
 			}
 			
