@@ -180,7 +180,7 @@ exports.createNewDeal = function(req, res) {
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
 			//res.setHeader('Content-Type', 'application/json');
-			res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
+			res.status(200).send('{ "success":true, "msg": "Deal Added successfully" }') ;
 		}
 	});
 };
