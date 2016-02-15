@@ -182,7 +182,7 @@ exports.createNewDeal = function(req, res) {
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
 			res.setHeader('Content-Type', 'text/html');
-			res.status(200).send('&lt;pre&gt;{ "success":true, "msg": "Deal Added successfully" }&lt;/pre&gt;') ;
+			res.status(200).send('{&quot;success&quot;:true,&quot;msg&quot;:&quot;Deal Added successfully&quot;}') ;
 		}
 	});
 };
