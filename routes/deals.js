@@ -181,7 +181,7 @@ exports.createNewDeal = function(req, res) {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
-			res.setHeader('Content-Type', 'text/html');
+			res.setHeader('Content-Type', 'text/plain');
 			res.status(200).send('{ "success":true, "msg": "Deal Added successfully" }') ;
 		}
 	});
