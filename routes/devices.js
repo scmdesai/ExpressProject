@@ -1,4 +1,5 @@
 var AWS = require('aws-sdk');
+var snsClient = null ;
 
 exports.registerNewDevice = function(req, res) {
 
@@ -13,7 +14,49 @@ exports.registerNewDevice = function(req, res) {
 	console.log("Device type is:" + json.deviceType) ;
 	console.log("Registration ID is:" + json.registrationID) ;
 	
-	res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
+	// Invoke AWS SNS call to create platform endpoint
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SNS client
+	console.log("Creating SNS Client") ;
+	if(snsClient == null) {
+		console.log("SNS is null, creating new connection") ;
+		snsClient = new AWS.SNS() ;
+	}
+	console.log("SNS Client creation successful") ;
+
+	
+	var params = {
+		PlatformApplicationArn: 'arn:aws:sns:us-west-2:861942316283:app/APNS_SANDBOX/LocalLink-iOS-Dev', /* required */
+		Token: json.registrationID , /* required */
+		CustomUserData: 'Smita Device'
+	};
+	snsClient.createPlatformEndpoint(params, function(err, data) {
+		if (err) {
+			console.log("Error registering device") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{"success":false,"msg":"Device Registration Failed"}') ;
+		} else {
+			console.log("Device registered successfully") ;
+			console.log(data);           // successful response
+			res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
+		}
+	});
+	
+	
+	
 	
 };	
 
