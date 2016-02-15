@@ -190,9 +190,16 @@ exports.createNewDeal = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
+			var message = {
+				"default": "New deal from "+ req.body.BusinessName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.BusinessName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.BusinessName + "\"} }"
+			};
+			
 			var params = {
-				Message: 'New Deal from ' +  req.body.BusinessName  , /* required */
+				Message: JSON.stringify(message),
 				Subject: 'New Deal from ' +  req.body.BusinessName,
+				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
 				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
 			};
