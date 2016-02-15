@@ -182,7 +182,10 @@ exports.createNewDeal = function(req, res) {
 			console.log(data);           // successful response
 			//res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
 			res.setHeader('Content-Type', 'text/html');
-			res.status(200).send('{&quote;success&quote;:true}') ;
+			res.write('<html><head><script type="text/javascript">document.domain="*";</script></head><body>') ;
+			res.write(JSON.stringify({success:true,msg:'File Upload Successful'}));
+			res.end('</body></html>');
+			//res.status(200).send('{&quote;success&quote;:true}') ;
 		}
 	});
 };
