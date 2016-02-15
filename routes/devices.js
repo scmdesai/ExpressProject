@@ -6,9 +6,9 @@ exports.registerNewDevice = function(req, res) {
 	
 	console.log("Incoming request is") ;
 	
-	console.log(request.body);
+	console.log(req.body);
 	
-	var json = JSON.parse(request.body);
+	var json = req.body;
 	
 	console.log("Device type is:" + json.deviceType) ;
 	console.log("Registration ID is:" + json.registrationID) ;
