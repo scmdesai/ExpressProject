@@ -92,6 +92,8 @@ app.post('/uploadOne', upload.single('fileUpload'), function(req, res){
 //app.delete('/deals/:id', deals.deleteDeal) ;
 app.post('/deals/:id', deals.deleteDeal) ;
 
+app.post('/devices', devices.registerNewDevice) ;
+
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
