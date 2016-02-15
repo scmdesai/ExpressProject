@@ -37,11 +37,17 @@ exports.registerNewDevice = function(req, res) {
 	}
 	console.log("SNS Client creation successful") ;
 
-	
+	var platformAppARN = "" ;
+	if(json.deviceType=="iOS") {
+		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS_SANDBOX/LocalLink-iOS-Dev' ;
+	}
+	else if(json.deviceType=="Android") {
+		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/GCM/LocalLink_GCM' ;
+	}
 	var params = {
-		PlatformApplicationArn: 'arn:aws:sns:us-west-2:861942316283:app/APNS_SANDBOX/LocalLink-iOS-Dev', /* required */
+		PlatformApplicationArn: platformAppARN, /* required */
 		Token: json.registrationID , /* required */
-		CustomUserData: 'Smita Device'
+		CustomUserData: ''
 	};
 	snsClient.createPlatformEndpoint(params, function(err, data) {
 		if (err) {
