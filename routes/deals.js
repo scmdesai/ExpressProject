@@ -8,6 +8,7 @@ var upload = multer({ dest: 'uploads/' }) ;
 
 var dealsList = [] ;
 var simpleDB = null ;
+var snsClient = null ;
 
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
@@ -180,6 +181,32 @@ exports.createNewDeal = function(req, res) {
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
+
+			// Create an SNS client
+			console.log("Creating SNS Client to notify customers about the new deal") ;
+			if(snsClient == null) {
+				console.log("SNS is null, creating new connection") ;
+				snsClient = new AWS.SNS() ;
+			}
+			console.log("SNS Client creation successful") ;
+			
+			var params = {
+				Message: 'New Deal from ' +  req.body.BusinessName  , /* required */
+				Subject: 'New Deal from ' +  req.body.BusinessName,
+				//TargetArn: 'TopicArn',
+				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+			};
+			snsClient.publish(params, function(err, data) {
+				if (err) {
+					console.log("Error sending notification on deal") ;
+					console.log(err, err.stack); // an error occurred
+				}				
+				else {
+					console.log("Notification sent to topic subscribers") ;
+					console.log(data);           // successful response
+				}
+			});
+			
 			//res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
 			res.setHeader('Content-Type', 'text/html');
 			res.write('<html><head><script type="text/javascript">document.domain="*";</script></head><body>') ;
