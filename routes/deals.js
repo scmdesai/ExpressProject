@@ -214,12 +214,12 @@ exports.createNewDeal = function(req, res) {
 				}
 			});
 			
-			//res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
+			res.status(200).send('{"data": "{\"success\": true}"}') ;
 			res.setHeader('Content-Type', 'text/html');
 			//res.write('<script type="text/javascript">document.domain="*";</script></head><body>') ;
-			res.write('JSON.stringify({"success":true,"msg":"Deal Added Successfully"})');
+			//res.write({"success":true,"msg":"Deal Added Successfully"}));
 			//res.end('</body>');
-			res.end();
+			//res.end();
 			//res.status(200).send('{&quote;success&quote;:true}') ;
 		}
 	});
