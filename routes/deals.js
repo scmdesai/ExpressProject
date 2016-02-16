@@ -216,7 +216,7 @@ exports.createNewDeal = function(req, res) {
 			
 			//res.setHeader('Content-Type', 'text/html');
 			//res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
-			res.status(200).send('<script type=\"text/javascript\"> <dialog open>Deal Added successfully</dialog></script>' ) ;
+			res.status(200).send('<script type=\"text/html\"> <dialog open>Deal Added successfully</dialog></script>' ) ;
 			//res.write('<script type="text/javascript">document.domain="*";</script></head><body>') ;
 			//res.write({"success":true,"msg":"Deal Added Successfully"}));
 			//res.end('</body>');
