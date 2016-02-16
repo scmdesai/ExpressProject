@@ -216,9 +216,10 @@ exports.createNewDeal = function(req, res) {
 			
 			//res.status(200).send('{ "success": true, "msg": "Deal Added successfully" }') ;
 			res.setHeader('Content-Type', 'text/html');
-			res.write('<html><head></head><body>') ;
-			res.write('<textarea>' + JSON.stringify({success:true,msg:'Deal Added Successfully'}) + '</textarea>');
-			res.end('</body><script type="text/javascript">document.domain="*";</script></html>');
+			//res.write('<script type="text/javascript">document.domain="*";</script></head><body>') ;
+			res.write('<body><textarea>' + JSON.stringify({success:true,msg:'Deal Added Successfully'}) + '</textarea></body>');
+			//res.end('</body>');
+			res.end();
 			//res.status(200).send('{&quote;success&quote;:true}') ;
 		}
 	});
