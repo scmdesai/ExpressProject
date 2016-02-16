@@ -216,7 +216,9 @@ exports.createNewDeal = function(req, res) {
 			
 			//res.setHeader('Content-Type', 'text/html');
 			//res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
-			res.status(200).send('<iframe>"success":true</iframe>');
+			res.writeHead(200,{"Content-Type": "application/json","Access-Control-Allow-Origin": '*'});
+			res.write('{"success":true,"msg":"Deal Added Successfully"}');
+			res.end();
 			
 			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal Added successfully") ;</script>' ) ;
 			//res.status(200).send('<script type=\"text/javascript\"> window.alert = function (message){("Success");}</script>');
