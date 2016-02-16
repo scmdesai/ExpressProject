@@ -178,7 +178,7 @@ exports.createNewDeal = function(req, res) {
 			console.log(err, err.stack); // an error occurred
 			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
 		}
-		else  {
+		//else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 
@@ -215,9 +215,9 @@ exports.createNewDeal = function(req, res) {
 			});
 			
 			//res.setHeader('Content-Type', 'text/html');
-			//res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
+			res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
 			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal Added successfully") ;</script>' ) ;
-			res.status(200).send('<script type=\"text/javascript\" src=\"jquery.jalert.js\"> jAlert("Success","Deal Added successfully");</script>');
+			//res.status(200).send('<script type=\"text/javascript\"> window.alert = function (message){("Success");}</script>');
 			//res.write('<script type="text/javascript">document.domain="*";</script></head><body>') ;
 			//res.write({"success":true,"msg":"Deal Added Successfully"}));
 			//res.end('</body>');
@@ -225,7 +225,7 @@ exports.createNewDeal = function(req, res) {
 			//res.status(200).send('{&quote;success&quote;:true}') ;
 			
 			
-		}
+		//}
 	});
 };
 
