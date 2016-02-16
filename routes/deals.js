@@ -216,19 +216,14 @@ exports.createNewDeal = function(req, res) {
 			
 			//res.setHeader('Content-Type', 'text/html');
 			//res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
-			
+			res.status(200).send('<script type=\"text/javascript\"> alert("Deal Added successfully") ;</script>' ) ;
 			//res.write('<script type="text/javascript">document.domain="*";</script></head><body>') ;
 			//res.write({"success":true,"msg":"Deal Added Successfully"}));
 			//res.end('</body>');
 			//res.end();
 			//res.status(200).send('{&quote;success&quote;:true}') ;
 			
-			res.writeHead(200, {"Content-Type": "application/json"});
-			var json = JSON.stringify({ 
-				"success" : true,
-				"msg" : "Deal Added Successfully"
-			});
-           res.end(json);
+			
 		}
 	});
 };
