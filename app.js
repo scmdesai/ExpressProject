@@ -47,7 +47,7 @@ app.set('view engine', 'jade');
 //app.use(express.favicon());
 //app.use(express.logger('dev'));
 //app.use(express.bodyParser());
-
+app.use(express.limit('50mb'));
 app.use(bodyParser.urlencoded({ extended: false })) ;
 // parse application/json 
 app.use(bodyParser.json()) ;
@@ -78,7 +78,7 @@ app.get('/deals', deals.findAllDeals);
 // POST method route
 app.post('/stores/:id',stores.updateBusinessInfo);
 app.post('/deals', deals.createNewDeal) ;
-app.post('/uploadS3', deals.uploadDealImage([{name:'fileUpload',limit: '5mb'}]), deals.createNewDeal) ;
+app.post('/uploadS3', deals.uploadDealImage, deals.createNewDeal) ;
 // accept one file where the name of the form field is named fileUpload
 app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
     //console.log("Request body is " + req.body) ;// form fields
