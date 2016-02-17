@@ -78,7 +78,7 @@ app.get('/deals', deals.findAllDeals);
 // POST method route
 app.post('/stores/:id',stores.updateBusinessInfo);
 app.post('/deals', deals.createNewDeal) ;
-app.post('/uploadS3', deals.uploadDealImage([{express.bodyParser({limit: '5mb'})}]), deals.createNewDeal) ;
+app.post('/uploadS3', deals.uploadDealImage(express.bodyParser({limit: '5mb'})), deals.createNewDeal) ;
 // accept one file where the name of the form field is named fileUpload
 app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
     //console.log("Request body is " + req.body) ;// form fields
