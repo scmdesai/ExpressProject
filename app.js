@@ -100,6 +100,6 @@ app.post('/devices', devices.registerNewDevice) ;
 
 http.createServer(app).listen(app.get('port'), function(){
 
-  client_max_body_size 20m;
+  
   console.log('Express server listening on port ' + app.get('port'));
 });
