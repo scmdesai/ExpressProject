@@ -47,11 +47,12 @@ app.set('view engine', 'jade');
 //app.use(express.favicon());
 //app.use(express.logger('dev'));
 //app.use(express.bodyParser());
-app.use(bodyParser.urlencoded({ extended: false })) ;
+//setting file size limit to 50MB.By Default,it is 1 MB
+app.use(bodyParser.urlencoded({ extended: false ,limit: '50mb'})) ;
 // parse application/json 
 app.use(bodyParser.json()) ;
-//setting file size limit to 50MB.By Default,it is 1 MB
-app.use(express.bodyParser({limit: '50mb'}));
+
+
 app.use(methodOverride());
 // app.use(app.router); // No longer required in Express 4.x
 app.use(express.static(path.join(__dirname, 'public')));
