@@ -296,7 +296,7 @@ exports.updateBusinessInfo = function(req, res) {
 	 
 	};
 	
-	console.log("Now uploading the file...") ;
+	console.log("Now uploading the file for..." + req.body.BusinessName) ;
 	
 	upload.single(req.body.BusinessName) ;
 	console.log("Upload complete...") ;
