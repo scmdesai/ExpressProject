@@ -41,7 +41,7 @@ exports.findAllDeals = function(req, res) {
 	console.log("SDB Client creation successful") ;
 	console.log('Today\'s date is ' + datetime);
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus="Active" and DealEndDate < ' + '"' + datetime + '"' , /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus="Active"' , /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
