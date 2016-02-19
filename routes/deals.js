@@ -12,6 +12,7 @@ var snsClient = null ;
 
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
+	var datetime = new Date();
 	dealsList=[];
 
 	// switch to either use local file or AWS credentials depending on where the program is running
@@ -38,7 +39,7 @@ exports.findAllDeals = function(req, res) {
 	
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus="Active"', /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus="Active" and DateEndDate < datetime', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
