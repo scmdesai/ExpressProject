@@ -1,6 +1,11 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 var Store = require("./store");
+var multer = require( 'multer' );
+var s3 = require( 'multer-storage-s3' );
+
+var upload = multer({ dest: 'uploads/' }) ;
+
 var simpleDB = null ;
 var storesList = [] ;
 
