@@ -298,7 +298,7 @@ exports.updateBusinessInfo = function(req, res) {
 	
 	console.log("Now uploading the file for..." + req.body.BusinessName) ;
 	
-	upload.single(req.body.BusinessName) ;
+	upload.single('fileUpload') ;
 	console.log("Upload complete...") ;
 	
 	var storage_s3 = s3({
@@ -311,7 +311,7 @@ exports.updateBusinessInfo = function(req, res) {
 		bucket      : 'appsonmobile.com/locallink/stores',
 		region      : 'us-west-2'
 	});
-	var uploadMiddleware = multer({ storage: storage_s3 }).single(req.body.BusinessName);
+	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
 	console.log("Uploading file");
 	
 	// calling middleware function directly instead of allowing express to call, so we can do error handling. 
