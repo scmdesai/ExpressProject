@@ -306,7 +306,7 @@ exports.updateBusinessInfo = function(req, res) {
 		else  {
 			console.log("Record updated successfully") ;
 			console.log(data);           // successful response
-			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+			//res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
 		}
 	});
 	
@@ -339,6 +339,7 @@ exports.updateBusinessInfo = function(req, res) {
 			console.log("File upload successful") ;
 			//next() ;
 			//res.status(200).send("File upload successful") ;
+			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
 		}
 	});
 };
