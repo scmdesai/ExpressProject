@@ -295,6 +295,20 @@ exports.updateBusinessInfo = function(req, res) {
 	  
 	 
 	};
+
+	console.log("Now updating Business Info in MyCustomers domain") ;
+	simpleDB.putAttributes(params, function(err, data) {
+		if (err) {
+			console.log("Error updating record") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
+		}
+		else  {
+			console.log("Record updated successfully") ;
+			console.log(data);           // successful response
+			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+		}
+	});
 	
 	console.log("Now uploading the file for..." + req.body.BusinessName) ;
 	
@@ -325,21 +339,6 @@ exports.updateBusinessInfo = function(req, res) {
 			console.log("File upload successful") ;
 			//next() ;
 			//res.status(200).send("File upload successful") ;
-		}
-	});
-	
-	
-	console.log("Now updating Business Info in MyCustomers domain") ;
-	simpleDB.putAttributes(params, function(err, data) {
-		if (err) {
-			console.log("Error updating record") ;
-			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
-		}
-		else  {
-			console.log("Record updated successfully") ;
-			console.log(data);           // successful response
-			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
 		}
 	});
 };
