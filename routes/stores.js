@@ -291,6 +291,39 @@ exports.updateBusinessInfo = function(req, res) {
 	 
 	};
 	
+	console.log("Now uploading the file...") ;
+	
+	upload.single(req.body.BusinessName) ;
+	console.log("Upload complete...") ;
+	
+	var storage_s3 = s3({
+		destination : function( req, file, cb ) {
+			cb( null, '' );
+		},
+		filename    : function( req, file, cb ) {
+			cb( null, file.fieldname + ".jpg" );
+		},
+		bucket      : 'appsonmobile.com/locallink/stores',
+		region      : 'us-west-2'
+	});
+	var uploadMiddleware = multer({ storage: storage_s3 }).single(req.body.BusinessName);
+	console.log("Uploading file");
+	
+	// calling middleware function directly instead of allowing express to call, so we can do error handling. 
+	uploadMiddleware(req, res, function(err) {
+		if(err) {
+			console.log("Error uploading file" + err) ;
+			//next() ;
+			res.status(500).send('{ "success": false, "msg": "Error : "' + err + "}") ;
+		}
+		else {
+			console.log("File upload successful") ;
+			//next() ;
+			//res.status(200).send("File upload successful") ;
+		}
+	});
+	
+	
 	console.log("Now updating Business Info in MyCustomers domain") ;
 	simpleDB.putAttributes(params, function(err, data) {
 		if (err) {
