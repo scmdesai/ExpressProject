@@ -296,7 +296,7 @@ exports.updateBusinessInfo = function(req, res) {
 	 
 	};
 	
-	/*console.log("Now uploading the file for..." + req.body.BusinessName) ;
+	console.log("Now uploading the file for..." + req.body.BusinessName) ;
 	
 	upload.single('fileUpload') ;
 	console.log("Upload complete...") ;
@@ -326,7 +326,7 @@ exports.updateBusinessInfo = function(req, res) {
 			//next() ;
 			//res.status(200).send("File upload successful") ;
 		}
-	});*/
+	});
 	
 	
 	console.log("Now updating Business Info in MyCustomers domain") ;
