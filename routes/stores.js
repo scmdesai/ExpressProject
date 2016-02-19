@@ -282,6 +282,11 @@ exports.updateBusinessInfo = function(req, res) {
 		  Name: 'pictureURL', /* required */
 		  Value: req.body.pictureURL, /* required */
 		  Replace: true
+		},
+		{
+		  Name: 'picture', /* required */
+		  Value: req.body.picture, /* required */
+		  Replace: true
 		}
 	],
 	  DomainName: 'MyCustomers', /* required */
@@ -301,7 +306,7 @@ exports.updateBusinessInfo = function(req, res) {
 		if (err) {
 			console.log("Error updating record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
+			//res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record updated successfully") ;
@@ -320,7 +325,7 @@ exports.updateBusinessInfo = function(req, res) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
-			cb( null, file.fieldname + ".jpg" );
+			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
 		},
 		bucket      : 'appsonmobile.com/locallink/stores',
 		region      : 'us-west-2'
