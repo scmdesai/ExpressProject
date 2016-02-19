@@ -229,7 +229,7 @@ exports.updateBusinessInfo = function(req, res) {
 	}
 	console.log("SDB Client creation successful") ;
 	
-	
+	var pictureURL = "http://appsonmobile.com/locallink/stores/" + req.file.path ;
 
 	var params = {
 	  Attributes: [ /* required */
@@ -280,14 +280,9 @@ exports.updateBusinessInfo = function(req, res) {
 		},
 		{
 		  Name: 'pictureURL', /* required */
-		  Value: req.body.pictureURL, /* required */
+		  Value: pictureURL,//req.body.pictureURL, /* required */
 		  Replace: true
 		},
-		{
-		  Name: 'picture', /* required */
-		  Value: req.body.picture, /* required */
-		  Replace: true
-		}
 	],
 	  DomainName: 'MyCustomers', /* required */
 	  ItemName: req.params.id,/* required */
@@ -306,15 +301,31 @@ exports.updateBusinessInfo = function(req, res) {
 		if (err) {
 			console.log("Error updating record") ;
 			console.log(err, err.stack); // an error occurred
-			//res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record updated successfully") ;
 			console.log(data);           // successful response
-			//res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
 		}
 	});
 	
+	
+};
+exports.updateProfilePicture = function(req, res, next) {
+	
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
 	console.log("Now uploading the file for..." + req.body.BusinessName) ;
 	
 	upload.single('fileUpload') ;
@@ -325,7 +336,7 @@ exports.updateBusinessInfo = function(req, res) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
-			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
+			cb( null, req.body.BusinessName+ ".jpg" );
 		},
 		bucket      : 'appsonmobile.com/locallink/stores',
 		region      : 'us-west-2'
@@ -342,9 +353,9 @@ exports.updateBusinessInfo = function(req, res) {
 		}
 		else {
 			console.log("File upload successful") ;
-			//next() ;
+		    next() ;
 			//res.status(200).send("File upload successful") ;
-			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+			//res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
 		}
 	});
-};
+	};
