@@ -296,38 +296,7 @@ exports.updateBusinessInfo = function(req, res) {
 	 
 	};
 	
-	
-	
-	console.log("Now updating Business Info in MyCustomers domain") ;
-	simpleDB.putAttributes(params, function(err, data) {
-		if (err) {
-			console.log("Error updating record") ;
-			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
-		}
-		else  {
-			console.log("Record updated successfully") ;
-			console.log(data);           // successful response
-			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
-		}
-	});
-};
-
-exports.updateProfilePicture = function(req, res, next) {
-	
-	// switch to either use local file or AWS credentials depending on where the program is running
-	if(process.env.RUN_LOCAL=="TRUE") {
-		console.log("Loading local config credentials for accessing AWS");
-		AWS.config.loadFromPath('./config.json');
-	}
-	else {
-		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
-		AWS.config.credentials = new AWS.EC2MetadataCredentials({
-			  httpOptions: { timeout: 10000 } // 10 second timeout
-		}); 
-		AWS.config.region = "us-west-2" ;
-	}
-	console.log("Now uploading the file..." ) ;
+	/*console.log("Now uploading the file for..." + req.body.BusinessName) ;
 	
 	upload.single('fileUpload') ;
 	console.log("Upload complete...") ;
@@ -354,9 +323,23 @@ exports.updateProfilePicture = function(req, res, next) {
 		}
 		else {
 			console.log("File upload successful") ;
-			next() ;
+			//next() ;
 			//res.status(200).send("File upload successful") ;
 		}
-	});
+	});*/
 	
+	
+	console.log("Now updating Business Info in MyCustomers domain") ;
+	simpleDB.putAttributes(params, function(err, data) {
+		if (err) {
+			console.log("Error updating record") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{ "success": false, "msg": "Error updating record: "' + err + "}") ;
+		}
+		else  {
+			console.log("Record updated successfully") ;
+			console.log(data);           // successful response
+			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+		}
+	});
 };
