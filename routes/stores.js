@@ -323,7 +323,7 @@ exports.updateBusinessInfo = function(req, res) {
 		}
 		else {
 			console.log("File upload successful") ;
-			//next() ;
+			next() ;
 			//res.status(200).send("File upload successful") ;
 		}
 	});
