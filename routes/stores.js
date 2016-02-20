@@ -347,14 +347,14 @@ exports.updateProfilePicture = function(req, res) {
 		});
 		var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
 		
-		console.log("Uploading file");
+		
 		
 		
 		
 		// calling middleware function directly instead of allowing express to call, so we can do error handling. 
 		uploadMiddleware(req, res, function(err) {
 		
-		    
+		     console.log("Uploading file" + req.file.path);
 				if(err) {
 					console.log("Error uploading file" + err) ;
 					//next() ;
