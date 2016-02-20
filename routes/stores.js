@@ -345,7 +345,7 @@ exports.updateProfilePicture = function(req, res) {
 			bucket      : 'appsonmobile.com/locallink/stores',
 			region      : 'us-west-2'
 		});
-		var uploadMiddleware = multer({ storage: storage_s3 });
+		var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
 		
 		console.log("Uploading file");
 		
