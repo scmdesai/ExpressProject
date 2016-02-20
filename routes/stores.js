@@ -1,8 +1,8 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 var Store = require("./store");
-//var multer = require( 'multer' );
-//var s3 = require( 'multer-storage-s3' );
+var multer = require( 'multer' );
+var s3 = require( 'multer-storage-s3' );
 
 
 var simpleDB = null ;
@@ -314,7 +314,7 @@ exports.updateBusinessInfo = function(req, res) {
 	
 	
 };
-/*exports.updateProfilePicture = function(req, res, next) {
+exports.updateProfilePicture = function(req, res) {
 	
 	
 		// switch to either use local file or AWS credentials depending on where the program is running
@@ -340,7 +340,7 @@ exports.updateBusinessInfo = function(req, res) {
 				cb( null, '' );
 			},
 			filename    : function( req, file, cb ) {
-				cb( null, req.body.BusinessName+ ".jpg" );
+				cb( null, "Studio Nafisa Arts.jpg" );
 			},
 			bucket      : 'appsonmobile.com/locallink/stores',
 			region      : 'us-west-2'
@@ -362,10 +362,10 @@ exports.updateBusinessInfo = function(req, res) {
 				}
 				else {
 					console.log("File upload successful") ;
-					next() ;
+					//next() ;
 					//res.status(200).send("File upload successful") ;
-					//res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+					res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
 				}
 			});
 	
-};*/
+};

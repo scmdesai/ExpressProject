@@ -78,6 +78,7 @@ app.get('/deals', deals.findAllDeals);
 // POST method route
 //app.post('/stores/:id',stores.updateProfilePicture,stores.updateBusinessInfo);
 app.post('/stores/:id',stores.updateBusinessInfo);
+app.post('/stores',stores.updateProfilePicture);
 app.post('/deals', deals.createNewDeal) ;
 app.post('/uploadS3', deals.uploadDealImage, deals.createNewDeal) ;
 // accept one file where the name of the form field is named fileUpload
