@@ -1,10 +1,9 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
 var Store = require("./store");
-var multer = require( 'multer' );
-var s3 = require( 'multer-storage-s3' );
+//var multer = require( 'multer' );
+//var s3 = require( 'multer-storage-s3' );
 
-var upload = multer({ dest: 'uploads/' }) ;
 
 var simpleDB = null ;
 var storesList = [] ;
@@ -229,14 +228,9 @@ exports.updateBusinessInfo = function(req, res) {
 	}
 	console.log("SDB Client creation successful") ;
 	
-	var pictureURL = "";
 	
-	if(req.file.path) {
-	    pictureURL = "http://appsonmobile.com/locallink/stores/" + req.file.path ;
-	}
-	else {
-		pictureURL = "http://appsonmobile.com/locallink/stores/" + req.body.pictureURL;
-	}
+		
+	
 		
 
 	var params = {
@@ -288,7 +282,7 @@ exports.updateBusinessInfo = function(req, res) {
 		},
 		{
 		  Name: 'pictureURL', /* required */
-		  Value: pictureURL,//req.body.pictureURL, /* required */
+		  Value: req.body.pictureURL, /* required */
 		  Replace: true
 		},
 	],
@@ -320,50 +314,58 @@ exports.updateBusinessInfo = function(req, res) {
 	
 	
 };
-exports.updateProfilePicture = function(req, res, next) {
+/*exports.updateProfilePicture = function(req, res, next) {
 	
-	// switch to either use local file or AWS credentials depending on where the program is running
-	if(process.env.RUN_LOCAL=="TRUE") {
-		console.log("Loading local config credentials for accessing AWS");
-		AWS.config.loadFromPath('./config.json');
-	}
-	else {
-		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
-		AWS.config.credentials = new AWS.EC2MetadataCredentials({
-			  httpOptions: { timeout: 10000 } // 10 second timeout
-		}); 
-		AWS.config.region = "us-west-2" ;
-	}
-	console.log("Now uploading the file for..." + req.body.BusinessName) ;
 	
-	upload.single('fileUpload') ;
-	console.log("Upload complete...") ;
-	
-	var storage_s3 = s3({
-		destination : function( req, file, cb ) {
-			cb( null, '' );
-		},
-		filename    : function( req, file, cb ) {
-			cb( null, req.body.BusinessName+ ".jpg" );
-		},
-		bucket      : 'appsonmobile.com/locallink/stores',
-		region      : 'us-west-2'
-	});
-	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
-	console.log("Uploading file");
-	
-	// calling middleware function directly instead of allowing express to call, so we can do error handling. 
-	uploadMiddleware(req, res, function(err) {
-		if(err) {
-			console.log("Error uploading file" + err) ;
-			//next() ;
-			res.status(500).send('{ "success": false, "msg": "Error : "' + err + "}") ;
+		// switch to either use local file or AWS credentials depending on where the program is running
+		if(process.env.RUN_LOCAL=="TRUE") {
+			console.log("Loading local config credentials for accessing AWS");
+			AWS.config.loadFromPath('./config.json');
 		}
 		else {
-			console.log("File upload successful") ;
-		    next() ;
-			//res.status(200).send("File upload successful") ;
-			//res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+			console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+			AWS.config.credentials = new AWS.EC2MetadataCredentials({
+				  httpOptions: { timeout: 10000 } // 10 second timeout
+			}); 
+			AWS.config.region = "us-west-2" ;
 		}
-	});
-	};
+		console.log("Now uploading the file for..." + req.body.BusinessName) ;
+		
+		
+		//upload.single('fileUpload') ;
+		//console.log("Upload complete...") ;
+		
+		var storage_s3 = s3({
+			destination : function( req, file, cb ) {
+				cb( null, '' );
+			},
+			filename    : function( req, file, cb ) {
+				cb( null, req.body.BusinessName+ ".jpg" );
+			},
+			bucket      : 'appsonmobile.com/locallink/stores',
+			region      : 'us-west-2'
+		});
+		var uploadMiddleware = multer({ storage: storage_s3 });
+		
+		console.log("Uploading file");
+		
+		
+		
+		// calling middleware function directly instead of allowing express to call, so we can do error handling. 
+		uploadMiddleware(req, res, function(err) {
+		
+		    
+				if(err) {
+					console.log("Error uploading file" + err) ;
+					//next() ;
+					res.status(500).send('{ "success": false, "msg": "Error : "' + err + "}") ;
+				}
+				else {
+					console.log("File upload successful") ;
+					next() ;
+					//res.status(200).send("File upload successful") ;
+					//res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+				}
+			});
+	
+};*/
