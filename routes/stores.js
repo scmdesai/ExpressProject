@@ -3,7 +3,7 @@ var uuid = require('node-uuid');
 var Store = require("./store");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
-
+var upload = multer({ dest: 'uploads/' }) ;
 
 var simpleDB = null ;
 var storesList = [] ;
@@ -314,58 +314,53 @@ exports.updateBusinessInfo = function(req, res) {
 	
 	
 };
-exports.updateProfilePicture = function(req, res) {
+exports.updateProfilePicture = function(req, res,next) {
 	
 	
 		// switch to either use local file or AWS credentials depending on where the program is running
-		if(process.env.RUN_LOCAL=="TRUE") {
-			console.log("Loading local config credentials for accessing AWS");
-			AWS.config.loadFromPath('./config.json');
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+	console.log("Now uploading the file...") ;
+	
+	upload.single('fileUpload') ;
+	console.log("Upload complete...") ;
+	
+	
+	var storage_s3 = s3({
+		destination : function( req, file, cb ) {
+			cb( null, '' );
+		},
+		filename    : function( req, file, cb ) {
+			cb( null, "Studio Nafisa Arts.jpg" );
+		},
+		bucket      : 'appsonmobile.com/locallink/stores',
+		region      : 'us-west-2'
+	});
+	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
+	console.log("Uploading file");
+	
+	// calling middleware function directly instead of allowing express to call, so we can do error handling. 
+	uploadMiddleware(req, res, function(err) {
+		if(err) {
+			console.log("Error uploading file" + err) ;
+			//next() ;
+			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
 		}
 		else {
-			console.log("Running on AWS platform. Using EC2 Metadata credentials.");
-			AWS.config.credentials = new AWS.EC2MetadataCredentials({
-				  httpOptions: { timeout: 10000 } // 10 second timeout
-			}); 
-			AWS.config.region = "us-west-2" ;
+			console.log("File upload successful") ;
+			next();
+			//res.status(200).send("File upload successful") ;
 		}
-		console.log("Now uploading the file for..." + req.body.BusinessName) ;
-		
-		
-		//upload.single('fileUpload') ;
-		//console.log("Upload complete...") ;
-		
-		var storage_s3 = s3({
-			destination : function( req, file, cb ) {
-				cb( null, '' );
-			},
-			filename    : function( req, file, cb ) {
-				cb( null, "Studio Nafisa Arts.jpg" );
-			},
-			bucket      : 'appsonmobile.com/locallink/stores',
-			region      : 'us-west-2'
-		});
-		var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
-		
-		
-		
-		
-		
-		// calling middleware function directly instead of allowing express to call, so we can do error handling. 
-		uploadMiddleware(req, res, function(err) {
-		
-		     console.log("Uploading file" + req.file.path);
-				if(err) {
-					console.log("Error uploading file" + err) ;
-					//next() ;
-					res.status(500).send('{ "success": false, "msg": "Error : "' + err + "}") ;
-				}
-				else {
-					console.log("File upload successful") ;
-					//next() ;
-					//res.status(200).send("File upload successful") ;
-					res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
-				}
-			});
+	});
+	
 	
 };
