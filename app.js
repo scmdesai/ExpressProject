@@ -81,6 +81,8 @@ app.get('/deals', deals.findAllDeals);
 //app.post('/stores/:id',stores.updateBusinessInfo);
 
 app.post('/stores/:id',stores.updateProfilePicture,stores.updateBusinessInfo);
+//app.post('/stores/:storeName',stores.updateOnlyBusinessInfo);
+app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 
 
 app.post('/deals', deals.createNewDeal) ;
