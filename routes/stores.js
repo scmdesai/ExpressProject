@@ -397,11 +397,11 @@ exports.updateBusinessInfo = function(req, res) {
 		},
 	],
 	  DomainName: 'MyCustomers', /* required */
-	  ItemName: req.body.CustomerId,/* required */
+	  ItemName: req.params.id,/* required */
 	  Expected: {
 		Exists: true,
 		Name: 'CustomerId',
-		Value: req.body.CustomerId
+		Value: req.params.id
 		
 	  }
 	  
