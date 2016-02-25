@@ -60,7 +60,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(allowCrossDomain);
 //app.use(express.logger('[:mydate] :method :url :status :res[content-length] - :remote-addr - :response-time ms'));
 app.use(logger('dev'));
-//app.use(multer({dest:'./uploads/'})) ;
+app.use(multer({dest:'./uploads/'})) ;
 
 // development only
 if ('development' == app.get('env')) {
