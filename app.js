@@ -51,7 +51,7 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ limit: '50MB',extended: false })) ;
 // parse application/json 
 app.use(bodyParser.json()) ;
-app.use(upload) ;
+//app.use(upload) ;
 
 app.use(methodOverride());
 // app.use(app.router); // No longer required in Express 4.x
