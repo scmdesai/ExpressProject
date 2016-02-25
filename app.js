@@ -50,6 +50,7 @@ app.set('view engine', 'jade');
 //app.use(express.limit('50mb'));
 app.use(bodyParser.json()) ;
 app.use(bodyParser.urlencoded({ limit: '50MB',extended: false })) ;
+app.use(multer());
 // parse application/json 
 
 //app.use(upload) ;
