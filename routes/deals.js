@@ -218,7 +218,7 @@ exports.createNewDeal = function(req, res) {
 			});
 			
 			
-			res.status(200).send('{"success":true,"file":"+req.file+"\"","msg":"Deal Added Successfully"}') ;
+			res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
 			//res.send('{"success":true,"msg":"Deal Added Successfully"}');
 			//res.set('Content-Type', 'text/plain');
 			
@@ -351,7 +351,7 @@ exports.uploadDealImage = function(req, res, next) {
 		if(err) {
 			console.log("Error uploading file" + err) ;
 			//next() ;
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error uploading file: "' + err + "}") ;
 		}
 		else {
 			console.log("File upload successful") ;
