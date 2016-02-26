@@ -18,7 +18,7 @@ var express = require('express')
   , multer  = require('multer');
   
   
-var upload = multer({ dest: './uploads/' }).single('fileUpload') ;
+var upload = multer({ dest: './uploads/' }) ;
   
 //add timestamps in front of log messages
 require('console-stamp')(console, '[HH:MM:ss.l]');  
