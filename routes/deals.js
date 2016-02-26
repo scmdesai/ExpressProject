@@ -355,6 +355,7 @@ exports.uploadDealImage = function(req, res, next) {
 		}
 		else {
 			console.log("File upload successful") ;
+			res.set('Content-Type', 'text/html');
 			next() ;
 			//res.status(200).send("File upload successful") ;
 		}
