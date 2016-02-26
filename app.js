@@ -18,8 +18,7 @@ var express = require('express')
   , multer  = require('multer');
   
   
-var upload = multer({ dest: './uploads/' }) ;
-  
+
 //add timestamps in front of log messages
 require('console-stamp')(console, '[HH:MM:ss.l]');  
 
@@ -69,6 +68,8 @@ if ('development' == app.get('env')) {
   app.use(errorHandler());
 }
 
+var upload = multer({ dest: './uploads/' }).single('fileUpload') ;
+  
 app.get('/', routes);
 app.get('/user', user.list);
 app.get('/stores', stores.findAllStores);
