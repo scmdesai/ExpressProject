@@ -18,7 +18,8 @@ var express = require('express')
   , multer  = require('multer');
   
   
-
+var upload = multer({ dest: './uploads/' }).single('fileUpload') ;
+  
 //add timestamps in front of log messages
 require('console-stamp')(console, '[HH:MM:ss.l]');  
 
@@ -47,12 +48,10 @@ app.set('view engine', 'jade');
 //app.use(express.logger('dev'));
 //app.use(express.bodyParser());
 //app.use(express.limit('50mb'));
-app.use(bodyParser.json()) ;
-app.use(bodyParser.urlencoded({extended: true })) ;
-//app.use(multer());
+app.use(bodyParser.urlencoded({ limit: '50MB',extended: false })) ;
 // parse application/json 
+app.use(bodyParser.json()) ;
 
-//app.use(upload) ;
 
 app.use(methodOverride());
 // app.use(app.router); // No longer required in Express 4.x
@@ -61,15 +60,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(allowCrossDomain);
 //app.use(express.logger('[:mydate] :method :url :status :res[content-length] - :remote-addr - :response-time ms'));
 app.use(logger('dev'));
-
+//app.use(multer({dest:'./uploads/'})) ;
 
 // development only
 if ('development' == app.get('env')) {
   app.use(errorHandler());
 }
 
-var upload = multer({ dest: './uploads/' }).single('fileUpload') ;
-  
 app.get('/', routes);
 app.get('/user', user.list);
 app.get('/stores', stores.findAllStores);
