@@ -217,8 +217,8 @@ exports.createNewDeal = function(req, res) {
 				}
 			});
 			
-			res.set('Content-Type', 'text/html');
-			res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
+			res.set('Content-Type', 'text/plain');
+			res.status(200).send('success:true,msg:"Deal Added Successfully"') ;
 			//res.send('{"success:true,msg:"Deal Added Successfully"}');
 			//res.set('Content-Type', 'text/plain');
 			
