@@ -18,7 +18,7 @@ var express = require('express')
   , multer  = require('multer');
   
   
-//var upload = multer({ dest: './uploads/' }).single('fileUpload') ;
+var upload = multer({ dest: './uploads/' }) ;
   
 //add timestamps in front of log messages
 require('console-stamp')(console, '[HH:MM:ss.l]');  
@@ -51,7 +51,6 @@ app.set('view engine', 'jade');
 app.use(bodyParser.urlencoded({ limit: '50MB',extended: false })) ;
 // parse application/json 
 app.use(bodyParser.json()) ;
-app.use(multer());
 
 
 app.use(methodOverride());
@@ -89,7 +88,6 @@ app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 app.post('/deals', deals.createNewDeal) ;
 app.post('/uploadS3',deals.uploadDealImage, deals.createNewDeal) ;
 // accept one file where the name of the form field is named fileUpload
-/*
 app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
     //console.log("Request body is " + req.body) ;// form fields
     console.log("Request file is " + req.files['fileUpload'][0]) ;// form files
@@ -102,7 +100,7 @@ app.post('/uploadOne', upload.single('fileUpload'), function(req, res){
     console.log("Request file is " + req.file) ;// form files
     res.status(204).end() ;
 })
-;*/
+;
 //app.delete('/deals/:id', deals.deleteDeal) ;
 app.post('/deals/:id', deals.deleteDeal) ;
 
