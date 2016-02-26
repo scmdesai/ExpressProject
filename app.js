@@ -49,7 +49,7 @@ app.set('view engine', 'jade');
 //app.use(express.limit('50mb'));
 app.use(bodyParser.json()) ;
 app.use(bodyParser.urlencoded({extended: true })) ;
-app.use(multer());
+//app.use(multer());
 // parse application/json 
 
 //app.use(upload) ;
