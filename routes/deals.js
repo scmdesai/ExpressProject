@@ -219,7 +219,7 @@ exports.createNewDeal = function(req, res) {
 			
 			
 			res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
-			//res.send('{"success":true,"msg":"Deal Added Successfully"}');
+			//res.send('{success:true,msg:"Deal Added Successfully"}');
 			//res.set('Content-Type', 'text/plain');
 			
 			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal Added successfully") ;</script>' ) ;
