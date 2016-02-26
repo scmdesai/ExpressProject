@@ -68,7 +68,7 @@ if ('development' == app.get('env')) {
   app.use(errorHandler());
 }
 
-var upload = multer({ dest: './uploads/' }).single('fileUpload') ;
+//var upload = multer({ dest: './uploads/' }).single('fileUpload') ;
   
 app.get('/', routes);
 app.get('/user', user.list);
