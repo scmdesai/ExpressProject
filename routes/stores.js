@@ -279,7 +279,7 @@ exports.updateOnlyBusinessInfo = function(req, res) {
 		{
 		  Name: 'pictureURL', /* required */
 		  Value: req.body.pictureURL, /* required */
-		  Replace: true
+		  Replace: false
 		},
 	],
 	  DomainName: 'MyCustomers', /* required */
