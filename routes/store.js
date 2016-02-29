@@ -49,7 +49,7 @@ function Store(attributes) {
 			
 		case "pictureURL":
 			console.log("Picture URL is: " + valueAttr) ;
-			this.picture = valueAttr ;
+			this.pictureURL = valueAttr ;
 			break ;
 			
 		}	
