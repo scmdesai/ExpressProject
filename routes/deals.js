@@ -156,13 +156,13 @@ exports.createNewDeal = function(req, res) {
 		  Replace: false
 		},
 		{
-		  Name: 'CustID', /* required */
-		  Value: req.body.CustID, /* required */
+		  Name: 'customerId', /* required */
+		  Value: req.body.customerId, /* required */
 		  Replace: false
 		},
 		{
-		  Name: 'BusinessName', /* required */
-		  Value: req.body.BusinessName, /* required */
+		  Name: 'businessName', /* required */
+		  Value: req.body.businessName, /* required */
 		  Replace: false
 		}
 	],

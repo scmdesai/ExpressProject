@@ -11,11 +11,11 @@ function Deal(itemName,attributes) {
 		var valueAttr = attr["Value"];
 		console.log("Value is: " + valueAttr) ;
 		switch (nameAttr) {
-		case "CustID":
+		case "customerId":
 			this.customerId = valueAttr ;
 			break ;
 		
-		case "BusinessName":
+		case "businessName":
 			console.log("Business Name is: " + valueAttr) ;
 			this.businessName = valueAttr ;
 			break ;
