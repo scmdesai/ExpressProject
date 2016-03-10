@@ -157,12 +157,12 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'CustID', /* required */
-		  Value: req.body.CustID, /* required */
+		  Value: req.body.customerId, /* required */
 		  Replace: false
 		},
 		{
 		  Name: 'BusinessName', /* required */
-		  Value: req.body.BusinessName, /* required */
+		  Value: req.body.businessName, /* required */
 		  Replace: false
 		}
 	],
