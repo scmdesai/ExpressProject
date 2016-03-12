@@ -4,6 +4,7 @@ var Deal = require("./deal");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
 
+var maxSize = 50 * 1000 * 1000;
 var upload = multer({ dest: 'uploads/' }) ;
 
 var dealsList = [] ;
@@ -334,7 +335,8 @@ exports.uploadDealImage = function(req, res, next) {
 		bucket      : 'appsonmobile.com/locallink/deals',
 		region      : 'us-west-2'
 	});
-	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
+	var maxSize = 50 * 1000 * 1000;
+	var uploadMiddleware = multer({ storage: storage_s3,limits:{ fileSize: maxSize }}).single('fileUpload');
 	console.log("Uploading file");
 	
 	// calling middleware function directly instead of allowing express to call, so we can do error handling. 

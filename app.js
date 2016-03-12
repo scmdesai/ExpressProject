@@ -17,8 +17,8 @@ var express = require('express')
   , errorHandler = require('errorhandler')
   , multer  = require('multer');
   
-  var maxSize = 50 * 1000 * 1000;
-var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
+  
+//var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
   
 //add timestamps in front of log messages
 require('console-stamp')(console, '[HH:MM:ss.l]');  
