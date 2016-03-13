@@ -57,6 +57,8 @@ exports.findAllDeals = function(req, res) {
 	
 	console.log("Now retrieving data set from SDB") ;
 	simpleDB.select(params, function(err, data) {
+	
+	
 		if (err) {
 			console.log("ERROR calling AWS Simple DB!!!") ;
 			console.log(err, err.stack); // an error occurred
@@ -72,17 +74,17 @@ exports.findAllDeals = function(req, res) {
 			var items = data["Items"] ;
 			//console.log(items) ;
 			
+			if(items){
+				for(var i=0; i < items.length; i++) {
+					var item = items[i] ;	
+					console.log(item) ;
+					var itemName = item["Name"] ;
+					console.log("ItemName is " + itemName) ;
+					var attributes = item["Attributes"] ;
+					dealsList[i] = new Deal(itemName, attributes) ;
 			
-			for(var i=0; i < items.length; i++) {
-				var item = items[i] ;	
-                console.log(item) ;
-				var itemName = item["Name"] ;
-				console.log("ItemName is " + itemName) ;
-				var attributes = item["Attributes"] ;
-				dealsList[i] = new Deal(itemName, attributes) ;
-		
+				}
 			}
-			
 		}
 		console.log("Deals List is: " + dealsList);
 		var dealsJsonOutput = JSON.stringify(dealsList) ;
