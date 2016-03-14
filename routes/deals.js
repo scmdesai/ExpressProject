@@ -344,9 +344,9 @@ exports.uploadDealImage = function(req, res, next) {
 	// calling middleware function directly instead of allowing express to call, so we can do error handling. 
 	uploadMiddleware(req, res, function(err) {
 	
-		if(req.file){
 		
-			console.log('File Size is:' + req.file.size);
+		
+			//console.log('File Size is:' + req.file.size);
 				if(err) {
 					console.log("Error uploading file" + err) ;
 					//next() ;
@@ -358,7 +358,7 @@ exports.uploadDealImage = function(req, res, next) {
 					next() ;
 					//res.status(200).send("File upload successful") ;
 				}
-		}
+		
 	});
 	
 	
