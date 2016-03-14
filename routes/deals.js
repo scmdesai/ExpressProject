@@ -346,7 +346,8 @@ exports.uploadDealImage = function(req, res, next) {
 	
 		
 		
-			//console.log('File Size is:' + req.file.size);
+			console.log('File Size is:' + req.file);
+			if(req.file) {
 				if(err) {
 					console.log("Error uploading file" + err) ;
 					//next() ;
@@ -358,6 +359,11 @@ exports.uploadDealImage = function(req, res, next) {
 					next() ;
 					//res.status(200).send("File upload successful") ;
 				}
+			}
+			else {
+			
+				res.status(500).send('{"success": false, "msg": "No Image to upload"}') ;
+			}
 		
 	});
 	
