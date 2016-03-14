@@ -326,7 +326,7 @@ exports.uploadDealImage = function(req, res, next) {
 	upload.single('fileUpload') ;
 	console.log("Upload complete...") ;
 	
-	if(req.file) {
+	//if(req.file) {
 	
 		console.log("Now uploading the file...") ;
 		var storage_s3 = s3({
@@ -368,11 +368,11 @@ exports.uploadDealImage = function(req, res, next) {
 			}
 		
 	});
-	}
+	/*}
 	else{
 	    console.log("Now uploading the file...checked no file") ;
 		res.status(500).send('{"success": false, "msg": "No Image to upload"}') ;
-	}
+	}*/
 	
 	
 	
