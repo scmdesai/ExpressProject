@@ -221,7 +221,7 @@ exports.createNewDeal = function(req, res) {
 			});
 			
 			
-			res.status(200).send('{"success":true,"msg":"Deal Added Successfully"}') ;
+			res.status(200).send('{"success":true,"msg":"Buzz Created!"}') ;
 			
 			
 			
@@ -289,16 +289,16 @@ exports.deleteDeal = function(req, res) {
 	simpleDB.deleteAttributes(params, function(err, data) {
 	     
 		if (err) {
-			console.log("Error deleting record") ;
+			console.log("Error deleting Buzz") ;
 			console.log(err, err.stack); // an error occurred
 			res.status(500).send('"success": false, "msg": "Error deleting deal: " + err') ;
 			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting deal:" + err );</script>');*/
 		}
 		else  {
-			console.log("Record deleted successfully") ;
+			console.log("Deal deleted successfully") ;
 			console.log(data);           // successful response
 			//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
-			res.status(200).send('{ "success": true, "msg": "Deal deleted successfully" }') ;
+			res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
 			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
 			
 			
