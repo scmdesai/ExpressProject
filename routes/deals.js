@@ -364,7 +364,7 @@ exports.uploadDealImage = function(req, res, next) {
 			}
 			else {
 			
-				res.status(500).send('{"success": false, "msg": "No Image to upload"}') ;
+				res.status(500).send('{ "success": false, "msg": "No Image to upload" }') ;
 			}
 		
 	});
