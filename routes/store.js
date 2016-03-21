@@ -55,6 +55,10 @@ function Store(attributes) {
 		case "website":
 			this.website = valueAttr ;
 			break ;
+		
+		case "websiteDisplayName":
+			this.websiteDisplayName = valueAttr ;
+			break ;
 			
 		}	
 		

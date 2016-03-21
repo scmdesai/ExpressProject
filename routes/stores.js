@@ -284,8 +284,15 @@ exports.updateOnlyBusinessInfo = function(req, res) {
 		{
 		  Name: 'website', /* required */
 		  Value: req.body.website, /* required */
-		  Replace: true
+		  Replace: false
 		},
+		,
+		{
+		  Name: 'websiteDisplayName', /* required */
+		  Value: req.body.websiteDisplayName, /* required */
+		  Replace: false
+		},
+		
 	],
 	  DomainName: 'MyCustomers', /* required */
 	  ItemName: req.params.id,/* required */
@@ -403,7 +410,12 @@ exports.updateBusinessInfo = function(req, res) {
 		{
 		  Name: 'website', /* required */
 		  Value: req.body.website, /* required */
-		  Replace: true
+		  Replace: false
+		},
+		{
+		  Name: 'websiteDisplayName', /* required */
+		  Value: req.body.websiteDisplayName, /* required */
+		  Replace: false
 		},
 	],
 	  DomainName: 'MyCustomers', /* required */
