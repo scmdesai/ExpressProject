@@ -52,10 +52,6 @@ function Store(attributes) {
 			this.pictureURL = valueAttr ;
 			break ;
 			
-		case "website":
-			this.website = valueAttr ;
-			break ;
-			
 		}	
 		
 	}
