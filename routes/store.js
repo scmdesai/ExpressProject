@@ -51,6 +51,12 @@ function Store(attributes) {
 			console.log("Picture URL is: " + valueAttr) ;
 			this.pictureURL = valueAttr ;
 			break ;
+		case "website":
+			this.website = valueAttr ;
+			break ;
+		case "websiteDisplayName":
+			this.websiteDisplayName = valueAttr ;
+			break ;
 			
 		}	
 		
