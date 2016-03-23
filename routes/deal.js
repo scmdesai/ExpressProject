@@ -29,8 +29,11 @@ function Deal(itemName,attributes) {
 			break ;
 			
 		case "DealStartDate":
+		
+		    
 			this.dealStartDate = valueAttr ;
-			console.log("Start Date is: " + valueAttr) ;
+			
+			
 			break ;
 			
 		case "DealEndDate":
