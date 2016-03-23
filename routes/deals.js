@@ -13,7 +13,15 @@ var snsClient = null ;
 
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
-	var datetime = new Date('YYYY');
+	var datetime = new Date();
+	var date = datetime.getDate();
+	var month = datetime.getMonth()+ 1;
+	var year = datetime.getFullYear();
+	var dateFormat = "'" + month + "/" + date + "/" + year + "'";
+	
+	
+	
+	
 	
 	dealsList=[];
 
@@ -40,9 +48,9 @@ exports.findAllDeals = function(req, res) {
 	}
 	
 	console.log("SDB Client creation successful") ;
-	console.log('Today\'s date is ' + datetime);
+	console.log('Today\'s date is ' + dateFormat);
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealEndDate> "'+  datetime + "\"", /* required */
+		SelectExpression: 'select * from MyDeals where DealEndDate> "'+  dateFormat + "\"", /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
