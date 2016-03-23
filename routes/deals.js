@@ -13,7 +13,7 @@ var snsClient = null ;
 
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
-	var datetime = new Date();
+	var datetime = new Date('YYYY');
 	
 	dealsList=[];
 
@@ -42,7 +42,7 @@ exports.findAllDeals = function(req, res) {
 	console.log("SDB Client creation successful") ;
 	console.log('Today\'s date is ' + datetime);
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus="Active" and DealEndDate >= "'+ datetime + "\"", /* required */
+		SelectExpression: 'select * from MyDeals where DealEndDate> "'+  datetime + "\"", /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
