@@ -14,6 +14,7 @@ var snsClient = null ;
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
 	var datetime = new Date();
+	var dateString = datetime.toString();
 	var date = datetime.getDate();
 	var month = datetime.getMonth()+ 1;
 	var year = datetime.getFullYear();
@@ -49,8 +50,9 @@ exports.findAllDeals = function(req, res) {
 	
 	console.log("SDB Client creation successful") ;
 	
+	
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate is not null order by DealEndDate',//+  datetime + "\"", /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate >= "'+ dateString +'" order by DealEndDate',//+  datetime + "\"", /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
