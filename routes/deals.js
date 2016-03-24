@@ -52,7 +52,7 @@ exports.findAllDeals = function(req, res) {
 	
 	
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate >= "'+ datetime +'" order by DealEndDate',//+  datetime + "\"", /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate is not null order by DealEndDate',//+  datetime + "\"", /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
