@@ -140,6 +140,13 @@ exports.createNewDeal = function(req, res) {
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
 	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
+	
+	var dealStartDate = req.body.DealStartDate;
+	var startDate = (dealStartDate.getMonth()+1) + "/" + dealStartDate.getDate() + "/" dealStartDate.getFullYear();
+	
+	var dealEndDate = req.body.DealEndDate;
+	var endDate = (dealEndDate.getMonth()+1) + "/" + dealEndDate.getDate() + "/" dealEndDate.getFullYear();
+	
 
 	var params = {
 	  Attributes: [ /* required */
@@ -150,7 +157,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealStartDate', /* required */
-		  Value: req.body.DealStartDate, /* required */
+		  Value: startDate,//req.body.DealStartDate, /* required */
 		  Replace: false
 		},
 		{
@@ -165,7 +172,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealEndDate', /* required */
-		  Value: req.body.DealEndDate, /* required */
+		  Value: endDate,//req.body.DealEndDate, /* required */
 		  Replace: false
 		},
 		{
