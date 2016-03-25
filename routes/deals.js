@@ -142,10 +142,10 @@ exports.createNewDeal = function(req, res) {
 	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	var dealStartDate = req.body.DealStartDate;
-	var startDate = (dealStartDate.getMonth()+1) + "/" + dealStartDate.getDate() + "/" dealStartDate.getFullYear();
+	var startDate = (dealStartDate.getMonth()+1) + "/" + dealStartDate.getDate() + "/" + dealStartDate.getFullYear();
 	
 	var dealEndDate = req.body.DealEndDate;
-	var endDate = (dealEndDate.getMonth()+1) + "/" + dealEndDate.getDate() + "/" dealEndDate.getFullYear();
+	var endDate = (dealEndDate.getMonth()+1) + "/" + dealEndDate.getDate() + "/" + dealEndDate.getFullYear();
 	
 
 	var params = {
