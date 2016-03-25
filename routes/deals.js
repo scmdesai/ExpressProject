@@ -14,7 +14,7 @@ var snsClient = null ;
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
 	var datetime = new Date();
-	var dateString = datetime.toLocaleString();
+	var dateString = datetime.toString();
 	var date = datetime.getDate();
 	var month = datetime.getMonth()+ 1;
 	var year = datetime.getFullYear();
@@ -52,7 +52,7 @@ exports.findAllDeals = function(req, res) {
 	
 	
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate >= "'+  new Date() + "\"", /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate <= "'+  dateString + "\"", /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
