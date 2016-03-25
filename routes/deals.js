@@ -52,7 +52,7 @@ exports.findAllDeals = function(req, res) {
 	
 	
 	var	params = {
-		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate>"' + dateString +'" order by DealEndDate',//+  datetime + "\"", /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate < "'+  new Date() + "\"", /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -142,8 +142,7 @@ exports.createNewDeal = function(req, res) {
 	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
-	var startDate = (req.body.DealStartDate).toLocaleString();
-	var endDate = (req.body.DealEndDate).toLocaleString();
+	
 
 	var params = {
 	  Attributes: [ /* required */
@@ -154,7 +153,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealStartDate', /* required */
-		  Value: startDate, /* required */
+		  Value: req.body.DealStartDate, /* required */
 		  Replace: false
 		},
 		{
@@ -169,7 +168,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealEndDate', /* required */
-		  Value: endDate, /* required */
+		  Value: req.body.DealEndDate, /* required */
 		  Replace: false
 		},
 		{
