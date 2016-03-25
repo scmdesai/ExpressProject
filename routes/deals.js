@@ -141,12 +141,9 @@ exports.createNewDeal = function(req, res) {
 	
 	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
-	var dealStartDate = req.body.DealStartDate;
-	var startDate = (dealStartDate.getMonth()+1) + "/" + dealStartDate.getDate() + "/" + dealStartDate.getFullYear();
 	
-	var dealEndDate = req.body.DealEndDate;
-	var endDate = (dealEndDate.getMonth()+1) + "/" + dealEndDate.getDate() + "/" + dealEndDate.getFullYear();
-	
+	var startDate = (req.body.DealStartDate).toLocaleString();
+	var endDate = (req.body.DealEndDate).toLocaleString();
 
 	var params = {
 	  Attributes: [ /* required */
@@ -157,7 +154,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealStartDate', /* required */
-		  Value: startDate,//req.body.DealStartDate, /* required */
+		  Value: startDate, /* required */
 		  Replace: false
 		},
 		{
@@ -172,7 +169,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealEndDate', /* required */
-		  Value: endDate,//req.body.DealEndDate, /* required */
+		  Value: endDate, /* required */
 		  Replace: false
 		},
 		{
