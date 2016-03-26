@@ -217,7 +217,7 @@ exports.createNewDeal = function(req, res) {
 			
 			var params = {
 				Message: JSON.stringify(message),
-				Subject: 'New Deal from ' +  req.body.BusinessName,
+				Subject: 'New Deal from ' +  req.body.businessName,
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
 				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
