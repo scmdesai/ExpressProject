@@ -210,9 +210,9 @@ exports.createNewDeal = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			var message = {
-				"default": "New deal from "+ req.body.businessName,
-				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.businessName + "\"}}", 
-				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.businessName + "\"} }"
+				"default": "New deal from "+ req.body.businessName +" : " + req.body.dealName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.businessName + " : " + req.body.dealName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.businessName + " : " + req.body.dealName + "\"} }"
 			};
 			
 			var params = {
