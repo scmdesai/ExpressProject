@@ -42,7 +42,8 @@ var allowCrossDomain = function(req, res, next) {
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+//app.set('view engine', 'jade');
+app.set('view engine', 'ejs');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 //app.use(express.favicon());
 //app.use(express.logger('dev'));
@@ -69,10 +70,20 @@ if ('development' == app.get('env')) {
 
 app.get('/', routes);
 app.get('/user', user.list);
+
+app.get('/analytics/:storeId', function(req, res) {
+	var storeId = req.params.storeId ;
+    res.render('pages/analytics', { storeId: storeId });
+});
+
 app.get('/stores', stores.findAllStores);
 app.get('/stores/:storeName', stores.findByStoreName);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
+
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + 'Analytics.html');
+});
 
 
 // POST method route

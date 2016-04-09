@@ -11,6 +11,8 @@ var dealsList = [] ;
 var simpleDB = null ;
 var snsClient = null ;
 
+
+
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
 	/*var datetime = new Date();
