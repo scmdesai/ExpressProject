@@ -9,6 +9,7 @@ var express = require('express')
   , stores = require('./routes/stores')
   , deals = require('./routes/deals')
   , devices = require('./routes/devices')
+  , analytics = require('./routes/analytics')
   , http = require('http')
   , path = require('path')
   , logger = require('morgan')
@@ -75,6 +76,9 @@ app.get('/analytics/:storeId', function(req, res) {
 	var storeId = req.params.storeId ;
     res.render('pages/analytics', { storeId: storeId });
 });
+
+
+app.get('/analytics/v3/:storeId', analytics.getData);
 
 app.get('/stores', stores.findAllStores);
 app.get('/stores/:storeName', stores.findByStoreName);

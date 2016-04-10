@@ -1,107 +1,68 @@
 
-/*
- * GET users listing.
- */
+var google = require('googleapis');
 
-exports.render = function(req, res){
-  storeId = req.params.storeId ;
-  res.send(
-  "<!DOCTYPE html>
-<html>
-<head>
-  <title>Embed API Demo</title>
-</head>
-<body>
 
-<!-- Step 1: Create the containing elements. -->
 
-<section id="auth-button"></section>
-<section id="view-selector"></section>
-<section id="timeline"></section>
 
-<!-- Step 2: Load the library. -->
 
-<script>
-(function(w,d,s,g,js,fjs){
-  g=w.gapi||(w.gapi={});g.analytics={q:[],ready:function(cb){this.q.push(cb)}};
-  js=d.createElement(s);fjs=d.getElementsByTagName(s)[0];
-  js.src='https://apis.google.com/js/platform.js';
-  fjs.parentNode.insertBefore(js,fjs);js.onload=function(){g.load('analytics')};
-}(window,document,'script'));
-</script>
-
-<script>
-gapi.analytics.ready(function() {
-
-  // Step 3: Authorize the user.
-
-  var CLIENT_ID = '226322216862-o6b8qenieed8v0ml37oo42rfnhqv3sfo.apps.googleusercontent.com';
-
-  gapi.analytics.auth.authorize({
-    container: 'auth-button',
-    clientid: CLIENT_ID,
-  });
-
-  // Step 4: Create the view selector.
-
-  var viewSelector = new gapi.analytics.ViewSelector({
-    container: 'view-selector'
-  });
-
-  // Step 5: Create the timeline chart.
-
-  var timeline = new gapi.analytics.googleCharts.DataChart({
-    /*reportType: 'ga',
-    query: {
-      'dimensions': 'ga:date',
-      'metrics': 'ga:sessions',
-      'start-date': '30daysAgo',
-      'end-date': 'today',
-    },
-    chart: {
-      type: 'LINE',
-      container: 'timeline'
-    }*/
+exports.getData = function(req, res){
+	var storeId = req.params.storeId ;
+	console.log("Store ID is: " + storeId) ;
+	var accessToken;
 	
+	// Authenticating with JSON Web Token
+	console.log("Initializing Service Account Private Key") ;
 	
-	reportType: 'ga',
-	 query: {
-      metrics: 'ga:sessions',
-      dimensions: 'ga:EventCategory',
-      'start-date': '30daysAgo',
-      'end-date': 'today',
-	   filters:'ga:EventLabel==q',
-      'max-results': 6,
-      sort: '-ga:sessions'
-    },
-    chart: {
-      container: 'timeline',
-      type: 'PIE',
-      options: {
-        width: '100%',
-        pieHole: 4/9
-      }
-    }
-  });
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading private key from local drive");
+		var key = require('H:/Credentials/LocalBuzz-ServiceAccountKey.json');
+	}
+	else {
+		console.log("Running on AWS platform. Loading private key file from AWS Server.");
+		var key = require('~/.LocalBuzz-ServiceAccountKey.json');
+	}
 
-  // Step 6: Hook up the components to work together.
-
-  gapi.analytics.auth.on('success', function(response) {
-    viewSelector.execute();
-  });
-
-  viewSelector.on('change', function(ids) {
-    var newIds = {
-      query: {
-        ids: ids
-      }
-    }
-    timeline.set(newIds).execute();
-  });
-});
-</script>
-</body>
-</html>"
-  
-  );
+	
+	var jwtClient = new google.auth.JWT(key.client_email, null, key.private_key, [ 'https://www.googleapis.com/auth/analytics.readonly' ], null);
+	
+	jwtClient.authorize(function(err, tokens) {
+		if (err) {
+			console.log(err);
+			return;
+		}
+		else{
+			accessToken = tokens.access_token;
+		}
+		
+		console.log("Authorization successful, now calling Analytics API") ;
+		console.log("Access Token is: " + accessToken) ;
+		
+		
+		var params = {
+			metrics: 'ga:sessions',
+			dimensions: 'ga:EventCategory,ga:EventAction',
+			'start-date': '30daysAgo',
+			'end-date': 'today',
+			ids: 'ga:114481127',
+			filters:'ga:EventLabel==' + storeId,
+			auth: jwtClient 
+		};
+		
+		var analytics = google.analytics('v3');
+		
+		analytics.data.ga.get(params, function(err, resp) {
+			if (err) {
+				console.log(err);
+				return;
+			}
+			
+			//console.log(JSON.stringify(resp)) ;
+			//return;
+			res.setHeader('Content-Type', 'application/json');
+			res.status(200).send(JSON.stringify(resp, null, 3));
+		});
+		
+		
+	});
 };

@@ -9,17 +9,17 @@
     "aws-sdk": ">= 2.0.9",
     "body-parser": "^1.14.2",
     "console-stamp": "^0.2.0",
+    "ejs": "~2.4.1",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "googleapis": "^4.0.0",
     "jade": "^1.11.0",
     "method-override": "^2.3.5",
     "morgan": "^1.6.1",
     "multer": "^1.1.0",
-	"multer-storage-s3": "1.1.1",
+    "multer-storage-s3": "1.1.1",
     "node-uuid": ">= 1.4.1",
-    "serve-favicon": "^2.3.0",
-	"ejs": "~2.4.1"
-	
+    "serve-favicon": "^2.3.0"
   }
 }
