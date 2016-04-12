@@ -42,8 +42,8 @@ exports.getData = function(req, res){
 		var params = {
 			metrics: 'ga:sessions',
 			dimensions: 'ga:EventCategory,ga:EventAction',
-			'start-date': '70daysAgo',
-			'end-date': '65daysAgo',
+			'start-date': '30daysAgo',
+			'end-date': 'today',
 			ids: 'ga:114481127',
 			filters:'ga:EventLabel==' + storeId,
 			auth: jwtClient 
