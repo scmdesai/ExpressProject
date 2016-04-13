@@ -61,7 +61,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // to allow references to AWS / localhost
 app.use(allowCrossDomain);
 //app.use(express.logger('[:mydate] :method :url :status :res[content-length] - :remote-addr - :response-time ms'));
-app.use(logger('dev'));
+app.use(logger('combined'));
 //app.use(multer({dest:'./uploads/'})) ;
 
 // development only

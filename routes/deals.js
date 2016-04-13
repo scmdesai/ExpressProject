@@ -88,16 +88,39 @@ exports.findAllDeals = function(req, res) {
 			
 			
 			if(items){
-				for(var i=0,j=i; i < items.length; i++) {
+				var j=0 ;
+				for(var i=0; i < items.length; i++) {
 					var item = items[i] ;	
 					//console.log(item) ;
 					var itemName = item["Name"] ;
 					//console.log("ItemName is " + itemName) ;
 					var attributes = item["Attributes"] ;
 					
-					dealsList[i] = new Deal(itemName, attributes) ;
-					
-			
+					var tempDeal = new Deal(itemName, attributes) ;
+					if(tempDeal.dealStatus == "Expired") {
+						console.log("Expired deal found:" + tempDeal.dealName) ;
+						console.log("Updating its status in AWS SDB so that it does not show up next time") ;
+						
+						var deleteParams = {
+							DomainName: 'MyDeals', /* required */
+							ItemName: tempDeal.itemName, /* required */
+						};
+						simpleDB.deleteAttributes(deleteParams, function(err, data) {
+							if (err) {
+								console.log("Error deleting expired deal") ;
+								console.log(err, err.stack); // an error occurred
+							} else {
+								console.log("Deal deleted successfully") ;
+								console.log(data); // successful response
+							}								
+						});
+						
+						continue ;
+					}
+					else { // active deal found. Add it to he return value
+ 						dealsList[j] = tempDeal ;
+						j++ ;
+					}
 				}
 			}
 			
