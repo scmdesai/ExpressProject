@@ -3,20 +3,28 @@
 function Deal(itemName,attributes) {
 	console.log("Now constructing Deal object") ;
 	this.itemName = itemName ;
+	var today = new Date();
 	for(var j in attributes) {
 		var attr = attributes[j];
 		//console.log(attr) ;
 		var nameAttr = attr["Name"];
-		console.log("Name Attribute is: " + nameAttr) ;
 		var valueAttr = attr["Value"];
-		console.log("Value is: " + valueAttr) ;
+		//console.log("Name Attribute is: " + nameAttr) ;
+	if(nameAttr=='DealEndDate') {
+       if(new Date(valueAttr) < new Date(today)){
+			this.dealStatus = "Expired";
+			
+	   }
+	  } 
+		
+		//console.log("Value is: " + valueAttr) ;
 		switch (nameAttr) {
 		case "customerId":
 			this.customerId = valueAttr ;
 			break ;
 		
 		case "businessName":
-			console.log("Business Name is: " + valueAttr) ;
+			//console.log("Business Name is: " + valueAttr) ;
 			this.businessName = valueAttr ;
 			break ;
 			
@@ -30,14 +38,14 @@ function Deal(itemName,attributes) {
 			
 		case "DealStartDate":
 		
-		    console.log(valueAttr);
+		    //console.log(valueAttr);
 			this.dealStartDate = valueAttr ;
 			
 			
 			break ;
 			
 		case "DealEndDate":
-		    console.log(valueAttr);
+		    
 			this.dealEndDate = valueAttr ;
 			break ;
 			

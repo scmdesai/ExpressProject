@@ -15,8 +15,8 @@ var snsClient = null ;
 
 exports.findAllDeals = function(req, res) {
 	//console.log("GET STORES") ;
-	/*var datetime = new Date();
-	var dateString = datetime.toString();
+	var today = new Date();
+	/*var dateString = datetime.toString();
 	var date = datetime.getDate();
 	var month = datetime.getMonth()+ 1;
 	var year = datetime.getFullYear();
@@ -77,7 +77,7 @@ exports.findAllDeals = function(req, res) {
 		}
 		else     {
 			console.log("SUCCESS from AWS!") ;
-			console.log(JSON.stringify(data));           // successful response
+			//console.log(JSON.stringify(data));           // successful response
 			console.log("Objects in the AWS data element:" ) ;
 			for(var name in data) {
 				console.log(name) ;
@@ -86,18 +86,23 @@ exports.findAllDeals = function(req, res) {
 			var items = data["Items"] ;
 			//console.log(items) ;
 			
+			
 			if(items){
-				for(var i=0; i < items.length; i++) {
+				for(var i=0,j=i; i < items.length; i++) {
 					var item = items[i] ;	
-					console.log(item) ;
+					//console.log(item) ;
 					var itemName = item["Name"] ;
-					console.log("ItemName is " + itemName) ;
+					//console.log("ItemName is " + itemName) ;
 					var attributes = item["Attributes"] ;
+					
 					dealsList[i] = new Deal(itemName, attributes) ;
+					
 			
 				}
 			}
+			
 		}
+		
 		console.log("Deals List is: " + dealsList);
 		var dealsJsonOutput = JSON.stringify(dealsList) ;
 	    
@@ -109,6 +114,7 @@ exports.findAllDeals = function(req, res) {
 			res.send(dealsJsonOutput) ;
 		}
 	});
+	
 			
 };
 
