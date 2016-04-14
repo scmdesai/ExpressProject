@@ -471,7 +471,7 @@ exports.updateProfilePicture = function(req, res,next) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
-			cb( null, "Studio Nafisa Arts.jpg" );
+			cb( null, req.body.businessName + ".jpg" );
 		},
 		bucket      : 'appsonmobile.com/locallink/stores',
 		region      : 'us-west-2'
