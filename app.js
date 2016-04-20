@@ -9,7 +9,8 @@ var express = require('express')
   , stores = require('./routes/stores')
   , deals = require('./routes/deals')
   , devices = require('./routes/devices')
-  , analytics = require('./routes/analytics')
+  , analytics_buzz_popularity = require('./routes/analytics_buzz_popularity')
+  , analytics_user_location = require('./routes/analytics_user_location')
   , http = require('http')
   , path = require('path')
   , logger = require('morgan')
@@ -78,7 +79,8 @@ app.get('/analytics/:storeId', function(req, res) {
 });
 
 
-app.get('/analytics/v3/:storeId', analytics.getData);
+app.get('/analytics_buzz_popularity/v3/:storeId', analytics_buzz_popularity.getData);
+app.get('/analytics_user_location/v3/:storeId', analytics_user_location.getData);
 
 app.get('/stores', stores.findAllStores);
 app.get('/stores/:storeName', stores.findByStoreName);

@@ -40,8 +40,9 @@ exports.getData = function(req, res){
 		
 		
 		var params = {
-			metrics: 'ga:sessions',
-			dimensions: 'ga:EventCategory,ga:EventAction',
+			metrics: "ga:sessions",
+            
+			dimensions:'ga:EventCategory',
 			'start-date': '30daysAgo',
 			'end-date': 'today',
 			ids: 'ga:114481127',
