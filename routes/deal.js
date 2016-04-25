@@ -53,7 +53,7 @@ function Deal(itemName,attributes) {
 			this.dealPictureURL = valueAttr ;
 			break ;
 			
-		}
+		
         case "DealDescription":
 			this.dealPictureURL = valueAttr ;
 			break ;
