@@ -211,6 +211,11 @@ exports.createNewDeal = function(req, res) {
 		  Name: 'businessName', /* required */
 		  Value: req.body.businessName, /* required */
 		  Replace: false
+		},
+		{
+		  Name: 'DealDescription', /* required */
+		  Value: req.body.DealDescription, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
