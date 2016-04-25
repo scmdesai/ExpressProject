@@ -55,7 +55,7 @@ function Deal(itemName,attributes) {
 			
 		
         case "DealDescription":
-			this.dealPictureURL = valueAttr ;
+			this.dealDescription = valueAttr ;
 			break ;
 			
 		}		
