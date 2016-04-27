@@ -20,7 +20,7 @@ exports.getData = function(req, res){
 	}
 	else {
 		console.log("Running on AWS platform. Loading private key file from AWS Server.");
-		var key = require('.ssh/.LocalBuzz-ServiceAccountKey.json');
+		var key = require('/tmp/.LocalBuzz-ServiceAccountKey.json');
 	}
 
 	
