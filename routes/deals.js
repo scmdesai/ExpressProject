@@ -333,7 +333,7 @@ exports.editDeal = function(req, res) {
 		{
 		  Name: 'DealPictureURL', /* required */
 		  Value: req.body.DealPictureURL, /* required */
-		  Replace: true
+		  Replace: false
 		},
 		{
 		  Name: 'customerId', /* required */
