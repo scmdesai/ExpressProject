@@ -331,11 +331,6 @@ exports.editDeal = function(req, res) {
 		  Replace: true
 		},
 		{
-		  Name: 'DealPictureURL', /* required */
-		  Value: req.body.DealPictureURL, /* required */
-		  Replace: false
-		},
-		{
 		  Name: 'customerId', /* required */
 		  Value: req.body.customerId, /* required */
 		  Replace: false
