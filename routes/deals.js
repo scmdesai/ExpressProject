@@ -278,6 +278,102 @@ exports.createNewDeal = function(req, res) {
 	});
 };
 
+exports.editDeal = function(req, res) {
+
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	console.log("SDB Client creation successful") ;
+
+	var params = {
+	  Attributes: [ /* required */
+	   {
+		  Name: 'DealStatus', /* required */
+		  Value: req.body.DealStatus, /* required */
+		  Replace: true
+		},
+		{
+		  Name: 'DealStartDate', /* required */
+		  Value: req.body.DealStartDate, /* required */
+		  Replace: true
+		},
+		{
+		  Name: 'DealPictureURL', /* required */
+		  Value: req.body.DealPictureURL, /* required */
+		  Replace: true
+		},
+		{
+		  Name: 'DealName', /* required */
+		  Value: req.body.DealName, /* required */
+		  Replace: true
+		},
+		{
+		  Name: 'DealEndDate', /* required */
+		  Value: req.body.DealEndDate, /* required */
+		  Replace: true
+		},
+		{
+		  Name: 'customerId', /* required */
+		  Value: req.body.customerId, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'businessName', /* required */
+		  Value: req.body.businessName, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealDescription', /* required */
+		  Value: req.body.DealDescription, /* required */
+		  Replace: true
+		}
+	],
+	  DomainName: 'MyDeals', /* required */
+	  ItemName: req.params.id, /* required */
+	  Expected: {
+		Exists: true,
+		Name: 'DealName',
+		Value: req.body.DealName
+		
+	  }
+	  
+	 
+	};
+
+	console.log("Now updating Business Info in MyCustomers domain") ;
+	simpleDB.putAttributes(params, function(err, data) {
+		if (err) {
+			console.log("Error updating record") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{ "success": false, "msg": "Error updating Buzz: "' + err + "}") ;
+		}
+		else  {
+			console.log("Record updated successfully") ;
+			console.log(data);           // successful response
+			res.status(200).send('{ "success": true, "msg": "Buzz updated successfully" }') ;
+		}
+	});
+	
+	
+};
+
 exports.deleteDeal = function(req, res) {
 	console.log("Deleting a deal with uuid: " + req.params.id) ;
 	

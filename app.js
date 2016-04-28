@@ -104,6 +104,7 @@ app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 
 app.post('/deals', deals.createNewDeal) ;
 app.post('/uploadS3',deals.uploadDealImage, deals.createNewDeal) ;
+app.post('/deals/editDeal/:id', deals.editDeal);
 // accept one file where the name of the form field is named fileUpload
 /*app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
     //console.log("Request body is " + req.body) ;// form fields
