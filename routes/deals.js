@@ -304,9 +304,20 @@ exports.editDeal = function(req, res) {
 
 	var params = {
 	  Attributes: [ /* required */
+	    {
+		  Name: 'DealName', /* required */
+		  Value: req.body.DealName, /* required */
+		  Replace: true
+		},
 	   {
 		  Name: 'DealStatus', /* required */
 		  Value: req.body.DealStatus, /* required */
+		  Replace: true
+		},
+		
+		{
+		  Name: 'DealDescription', /* required */
+		  Value: req.body.DealDescription, /* required */
 		  Replace: true
 		},
 		{
@@ -315,18 +326,13 @@ exports.editDeal = function(req, res) {
 		  Replace: true
 		},
 		{
-		  Name: 'DealPictureURL', /* required */
-		  Value: req.body.DealPictureURL, /* required */
-		  Replace: true
-		},
-		{
-		  Name: 'DealName', /* required */
-		  Value: req.body.DealName, /* required */
-		  Replace: true
-		},
-		{
 		  Name: 'DealEndDate', /* required */
 		  Value: req.body.DealEndDate, /* required */
+		  Replace: true
+		},
+		{
+		  Name: 'DealPictureURL', /* required */
+		  Value: req.body.DealPictureURL, /* required */
 		  Replace: true
 		},
 		{
@@ -338,11 +344,6 @@ exports.editDeal = function(req, res) {
 		  Name: 'businessName', /* required */
 		  Value: req.body.businessName, /* required */
 		  Replace: false
-		},
-		{
-		  Name: 'DealDescription', /* required */
-		  Value: req.body.DealDescription, /* required */
-		  Replace: true
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
