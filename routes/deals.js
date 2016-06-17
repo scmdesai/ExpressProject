@@ -170,7 +170,7 @@ exports.createNewDeal = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
+	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
 	
@@ -189,7 +189,7 @@ exports.createNewDeal = function(req, res) {
 		},
 		{
 		  Name: 'DealPictureURL', /* required */
-		  Value: dealURL, /* required */
+		  Value: req.body.DealPictureURL, /* required */
 		  Replace: false
 		},
 		{

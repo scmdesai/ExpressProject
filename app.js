@@ -102,7 +102,7 @@ app.post('/stores/:id',stores.updateProfilePicture,stores.updateBusinessInfo);
 app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 
 
-app.post('/deals', deals.createNewDeal) ;
+app.post('/createNewDeal', deals.createNewDeal) ;
 app.post('/uploadS3',deals.uploadDealImage, deals.createNewDeal) ;
 app.post('/deals/editDeal/:id', deals.editDeal);
 // accept one file where the name of the form field is named fileUpload
