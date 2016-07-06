@@ -11,6 +11,7 @@ var dealsList = [] ;
 var simpleDB = null ;
 var snsClient = null ;
 
+var dealURL = null;
 
 
 exports.findAllDeals = function(req, res) {
@@ -558,7 +559,7 @@ exports.dealImageURLUpdate = function(req, res) {
 	
 	
 	
-	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
+	dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
 	

@@ -103,7 +103,7 @@ app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 
 
 app.post('/createNewDeal', deals.createNewDeal) ;
-app.post('/uploadS3/:id',deals.uploadDealImage, deals.dealImageURLUpdate) ;
+app.post('/uploadS3/:id',deals.uploadDealImage) ;
 app.post('/deals/editDeal/:id', deals.editDeal);
 // accept one file where the name of the form field is named fileUpload
 /*app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
