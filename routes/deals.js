@@ -511,8 +511,9 @@ exports.uploadDealImage = function(req, res, next) {
 				else {
 					
 					//res.set('Content-Type', 'text/html');
-					next() ;
-					//res.status(200).send("File upload successful") ;
+					//next() ;
+					dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.name ;
+					res.status(200).send("File upload successful") ;
 				}
 			}
 			else {
