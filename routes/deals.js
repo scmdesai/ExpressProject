@@ -512,7 +512,7 @@ exports.uploadDealImage = function(req, res, next) {
 					
 					//res.set('Content-Type', 'text/html');
 					//next() ;
-					dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.name ;
+					dealURL = "http://appsonmobile.com/locallink/deals/" + req.file ;
 					res.status(200).send("File upload successful") ;
 				}
 			}
