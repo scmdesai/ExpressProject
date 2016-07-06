@@ -485,8 +485,8 @@ exports.uploadDealImage = function(req, res, next) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
-			//cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
-			cb( null, req.params.id + '-' + Date.now() + ".jpg" );
+			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
+			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
 		},
 		bucket      : 'appsonmobile.com/locallink/deals',
 		region      : 'us-west-2'
