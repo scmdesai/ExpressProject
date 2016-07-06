@@ -566,58 +566,14 @@ exports.dealImageURLUpdate = function(req, res) {
 	var params = {
 	  Attributes: [ /* required */
 		{
-		  Name: 'DealStatus', /* required */
-		  Value: req.body.DealStatus, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealStartDate', /* required */
-		  Value: req.body.DealStartDate, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealPictureURL', /* required */
-		  Value: req.body.DealPictureURL, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealName', /* required */
-		  Value: req.body.DealName, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealEndDate', /* required */
-		  Value: req.body.DealEndDate, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'customerId', /* required */
-		  Value: req.body.customerId, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'businessName', /* required */
-		  Value: req.body.businessName, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealDescription', /* required */
-		  Value: req.body.DealDescription, /* required */
-		  Replace: false
-		},
-		
-		{
 		  Name: 'DealImageURL', /* required */
 		  Value: dealURL, /* required */
-		  Replace: false
+		  Replace: true
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
-	  ItemName: req.body.DealName, /* required */
-	 Expected: {
-		Exists: false,
-		Name: 'DealName'
-	  }
+	  ItemName: req.params.id /* required */
+	 
 	};
 	
 	console.log("Now inserting new row into MyDeals domain") ;
