@@ -511,9 +511,9 @@ exports.uploadDealImage = function(req, res, next) {
 				else {
 					
 					//res.set('Content-Type', 'text/html');
-					//next() ;
-					dealURL = "http://appsonmobile.com/locallink/deals/	fileUpload-1467781697704.jpg" ;
-					res.status(200).send("File upload successful") ;
+					next() ;
+					
+					//res.status(200).send('{ "success": true, "msg": "http://appsonmobile.com/locallink/deals/fileUpload-1467781697704.jpg" }') ;
 				}
 			}
 			else {
@@ -568,14 +568,60 @@ exports.dealImageURLUpdate = function(req, res) {
 	var params = {
 	  Attributes: [ /* required */
 		{
+		  Name: 'DealStatus', /* required */
+		  Value: req.body.DealStatus, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealStartDate', /* required */
+		  Value: req.body.DealStartDate, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealPictureURL', /* required */
+		  Value: req.body.DealPictureURL, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealName', /* required */
+		  Value: req.body.DealName, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealEndDate', /* required */
+		  Value: req.body.DealEndDate, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'customerId', /* required */
+		  Value: req.body.customerId, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'businessName', /* required */
+		  Value: req.body.businessName, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealDescription', /* required */
+		  Value: req.body.DealDescription, /* required */
+		  Replace: false
+		},
+		
+		{
 		  Name: 'DealImageURL', /* required */
 		  Value: dealURL, /* required */
-		  Replace: true
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
-	  ItemName: req.params.id /* required */
-	 
+	  ItemName: req.params.id, /* required */
+	  Expected: {
+		Exists: true,
+		Name: 'DealName',
+		Value: req.body.DealName
+		
+	  }
 	};
 	
 	console.log("Now inserting new row into MyDeals domain") ;
