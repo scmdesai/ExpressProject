@@ -619,7 +619,7 @@ exports.dealImageURLUpdate = function(req, res) {
 	  Expected: {
 		Exists: true,
 		Name: 'DealName',
-		Value: req.body.DealName
+		Value: req.body.dealName
 		
 	  }
 	};
