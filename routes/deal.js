@@ -57,7 +57,10 @@ function Deal(itemName,attributes) {
         case "DealDescription":
 			this.dealDescription = valueAttr ;
 			break ;
-			
+		
+        case "DealImageURL":
+			this.dealImageURL = valueAttr ;
+			break ;		
 		}		
 	}
 }
