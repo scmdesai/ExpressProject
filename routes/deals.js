@@ -615,13 +615,8 @@ exports.dealImageURLUpdate = function(req, res) {
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
-	  ItemName: req.params.id, /* required */
-	  Expected: {
-		Exists: true,
-		Name: 'DealName',
-		Value: req.body.dealName
-		
-	  }
+	  ItemName: req.params.id /* required */
+	 
 	};
 	
 	console.log("Now inserting new row into MyDeals domain") ;
