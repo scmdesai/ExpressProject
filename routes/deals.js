@@ -615,7 +615,7 @@ exports.dealImageURLUpdate = function(req, res) {
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
-	  ItemName: req.params.id, /* required */
+	  ItemName: req.body.dealName, /* required */
 	  Expected: {
 		Exists: true,
 		Name: 'DealName',
