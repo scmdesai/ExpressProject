@@ -276,7 +276,7 @@ exports.createNewDeal = function(req, res) {
 			});
 			
 			
-			res.status(200).send('{"success":true,"msg": uuid1}') ;
+			res.status(200).send('{"success":true,"msg":"Buzz Created!"}') ;
 			
 			
 			
