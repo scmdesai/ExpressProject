@@ -561,7 +561,7 @@ exports.dealImageURLUpdate = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
+	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
 	
@@ -610,8 +610,8 @@ exports.dealImageURLUpdate = function(req, res) {
 		},
 		{
 		  Name: 'DealImageURL', /* required */
-		  Value: req.body.DealImageURL, /* required */
-		  Replace: true
+		  Value: dealURL, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
