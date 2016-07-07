@@ -629,6 +629,7 @@ exports.dealImageURLUpdate = function(req, res) {
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
+			res.status(200).send('{ "success": true, "msg": "Deal Image Added!"}') ;
 
 			
 			
