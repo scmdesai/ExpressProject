@@ -570,32 +570,32 @@ exports.dealImageURLUpdate = function(req, res) {
 		{
 		  Name: 'DealStatus', /* required */
 		  Value: req.body.dealStatus, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealStartDate', /* required */
 		  Value: req.body.dealStartDate, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealPictureURL', /* required */
 		  Value: req.body.dealPictureURL, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealName', /* required */
 		  Value: req.body.dealName, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealEndDate', /* required */
 		  Value: req.body.dealEndDate, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'customerId', /* required */
 		  Value: req.body.customerId, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'businessName', /* required */
@@ -605,7 +605,7 @@ exports.dealImageURLUpdate = function(req, res) {
 		{
 		  Name: 'DealDescription', /* required */
 		  Value: req.body.dealDescription, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		
 		{
