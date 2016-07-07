@@ -558,9 +558,10 @@ exports.dealImageURLUpdate = function(req, res) {
 	}
 	console.log("SDB Client creation successful") ;
 	
+	var uuid1 = uuid.v1();
+	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	
-	dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
+	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
 	
@@ -569,27 +570,27 @@ exports.dealImageURLUpdate = function(req, res) {
 	  Attributes: [ /* required */
 		{
 		  Name: 'DealStatus', /* required */
-		  Value: req.body.dealStatus, /* required */
+		  Value: req.body.DealStatus, /* required */
 		  Replace: false
 		},
 		{
 		  Name: 'DealStartDate', /* required */
-		  Value: req.body.dealStartDate, /* required */
+		  Value: req.body.DealStartDate, /* required */
 		  Replace: false
 		},
 		{
 		  Name: 'DealPictureURL', /* required */
-		  Value: req.body.dealPictureURL, /* required */
+		  Value: req.body.DealPictureURL, /* required */
 		  Replace: false
 		},
 		{
 		  Name: 'DealName', /* required */
-		  Value: req.body.dealName, /* required */
+		  Value: req.body.DealName, /* required */
 		  Replace: false
 		},
 		{
 		  Name: 'DealEndDate', /* required */
-		  Value: req.body.dealEndDate, /* required */
+		  Value: req.body.DealEndDate, /* required */
 		  Replace: false
 		},
 		{
@@ -604,19 +605,21 @@ exports.dealImageURLUpdate = function(req, res) {
 		},
 		{
 		  Name: 'DealDescription', /* required */
-		  Value: req.body.dealDescription, /* required */
+		  Value: req.body.DealDescription, /* required */
 		  Replace: false
 		},
-		
 		{
 		  Name: 'DealImageURL', /* required */
-		  Value: dealURL, /* required */
-		  Replace: true
+		  Value: req.body.DealImageURL, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
-	  ItemName: req.params.id /* required */
-	 
+	  ItemName: uuid1, /* required */
+	  Expected: {
+		Exists: false,
+		Name: 'DealName'
+	  }
 	};
 	
 	console.log("Now inserting new row into MyDeals domain") ;
@@ -624,13 +627,47 @@ exports.dealImageURLUpdate = function(req, res) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding Deal Image: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
-			res.status(200).send('{ "success": true, "msg": "Deal Image Added!"}') ;
 
+			// Create an SNS client
+			console.log("Creating SNS Client to notify customers about the new deal") ;
+			if(snsClient == null) {
+				console.log("SNS is null, creating new connection") ;
+				snsClient = new AWS.SNS() ;
+			}
+			console.log("SNS Client creation successful") ;
+			
+			var message = {
+				"default": "New deal from "+ req.body.businessName +" : " + req.body.DealName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+			};
+			
+			var params = {
+				Message: JSON.stringify(message),
+				Subject: 'New Deal from ' +  req.body.businessName,
+				MessageStructure: 'json',
+				//TargetArn: 'TopicArn',
+				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+			};
+			snsClient.publish(params, function(err, data) {
+				if (err) {
+					console.log("Error sending notification on deal") ;
+					console.log(err, err.stack); // an error occurred
+				}				
+				else {
+					console.log("Notification sent to topic subscribers") ;
+					console.log(data);           // successful response
+				}
+			});
+			
+			
+			res.status(200).send('{"success":true,"msg":"Buzz Created!"}') ;
+			
 			
 			
 		}
