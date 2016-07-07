@@ -611,7 +611,7 @@ exports.dealImageURLUpdate = function(req, res) {
 		{
 		  Name: 'DealImageURL', /* required */
 		  Value: req.body.DealImageURL, /* required */
-		  Replace: false
+		  Replace: true
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
