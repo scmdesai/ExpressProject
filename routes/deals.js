@@ -349,7 +349,7 @@ exports.editDeal = function(req, res) {
 		{
 		  Name: 'DealImageURL', /* required */
 		  Value: req.body.DealImageURL, /* required */
-		  Replace: true
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
