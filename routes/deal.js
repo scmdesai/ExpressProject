@@ -5,7 +5,7 @@ function Deal(itemName,attributes) {
 	this.itemName = itemName ;
 	var today = new Date();
 	var d = new Date(); // Today!
-	d.setDate(d.getDate() - 1); // Yesterday!
+	d.setDate(d.getDate() + 1); // Tomorrow!
 	for(var j in attributes) {
 		var attr = attributes[j];
 		//console.log(attr) ;
