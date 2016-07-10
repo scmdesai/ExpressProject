@@ -4,6 +4,8 @@ function Deal(itemName,attributes) {
 	console.log("Now constructing Deal object") ;
 	this.itemName = itemName ;
 	var today = new Date();
+	var d = new Date(); // Today!
+	d.setDate(d.getDate() - 1); // Yesterday!
 	for(var j in attributes) {
 		var attr = attributes[j];
 		//console.log(attr) ;
@@ -11,7 +13,7 @@ function Deal(itemName,attributes) {
 		var valueAttr = attr["Value"];
 		//console.log("Name Attribute is: " + nameAttr) ;
 	if(nameAttr=='DealEndDate') {
-       if(new Date(valueAttr) < new Date(today)){
+       if(new Date(valueAttr) < new Date(d)){
 			this.dealStatus = "Expired";
 			
 	   }
