@@ -8,6 +8,10 @@ var express = require('express')
   , user = require('./routes/user')
   , stores = require('./routes/stores')
   , deals = require('./routes/deals')
+  // *** demo end-points ***
+  , demoStores = require('./routes/demoStores')
+  , demoDeals = require('./routes/demoDeals')
+  // *** demo end-points ***
   , devices = require('./routes/devices')
   , analytics_buzz_popularity = require('./routes/analytics_buzz_popularity')
   , analytics_user_location = require('./routes/analytics_user_location')
@@ -123,6 +127,22 @@ app.post('/uploadOne', upload.single('fileUpload'), function(req, res){
 app.post('/deals/:id', deals.deleteDeal) ;
 
 app.post('/devices', devices.registerNewDevice) ;
+
+//***** List of demo URL end-points : start *********
+app.get('/demoStores', demoStores.findAllStores);
+app.get('/demoStores/:storeName', demoStores.findByStoreName);
+app.get('/demoDeals', demoDeals.findAllDeals);
+
+app.post('/demoStores/:id',demoStores.updateProfilePicture,demoStores.updateBusinessInfo);
+app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
+
+app.post('/createNewDeal', demoDeals.createNewDeal) ;
+app.post('/uploadS3',demoDeals.uploadDealImage, demoDeals.dealImageURLUpdate) ;
+app.post('/deals/editDeal/:id', demoDeals.editDeal);
+
+app.post('/deals/:id', demoDeals.deleteDeal) ;
+
+//***** List of demo URL end-points : end *********
 
 http.createServer(app).listen(app.get('port'), function(){
 
