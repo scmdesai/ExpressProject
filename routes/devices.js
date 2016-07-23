@@ -52,9 +52,21 @@ exports.registerNewDevice = function(req, res) {
 	var endPointARN = '' ;
 	snsClient.createPlatformEndpoint(params, function(err, data) {
 		if (err) {
-			console.log("Error creating endpoint") ;
+			console.log("Error creating endpoint, checking if endpoint is already registered with same token") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{"success":false,"msg":"Endpoint creation Failed"}') ;
+			
+			var pattern1 = new RegExp(".*Endpoint (arn:aws:sns[^ ]+) already exists with the same Token.*"); // retrieve the end-point ARN already present 
+			var result = pattern1.test(err.message) ;
+			if(result == 'true') {
+				var pattern2 = new RegExp("arn:aws:sns[^ ]+");
+				console.log("Endpoint is already registered with same token") ;
+				endPointARN = pattern2.exec(err.message) ;
+			}
+			else {
+				console.log("Endpoint is already registered with same token") ;
+				res.status(500).send('{"success":false,"msg":"Endpoint creation Failed"}') ;
+			}
+			
 		} else {
 			console.log("Device registered successfully") ;
 			console.log(data);           // successful response
