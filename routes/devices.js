@@ -61,9 +61,10 @@ exports.registerNewDevice = function(req, res) {
 				var pattern2 = new RegExp("arn:aws:sns[^ ]+");
 				console.log("Endpoint is already registered with same token") ;
 				endPointARN = pattern2.exec(err.message) ;
+				console.log(endPointARN);
 			}
 			else {
-				console.log("Endpoint is already registered with same token") ;
+				console.log("Endpoint creation Failed") ;
 				res.status(500).send('{"success":false,"msg":"Endpoint creation Failed"}') ;
 			}
 			
