@@ -26,7 +26,7 @@ function Deal(itemName,attributes) {
 			break ;
 		
 		case "businessName":
-			//console.log("Business Name is: " + valueAttr) ;
+			console.log("Business Name is: " + valueAttr) ;
 			this.businessName = valueAttr ;
 			break ;
 			
