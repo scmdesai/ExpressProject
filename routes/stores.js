@@ -349,7 +349,7 @@ exports.updateBusinessInfo = function(req, res) {
 	
 	
 	
-	pictureURL = "http://appsonmobile.com/locallink/stores/" + req.file.path ;
+	pictureURL = "http://images.appsonmobile.com/locallink/stores/" + req.file.path ;
 	
 		
    
