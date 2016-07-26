@@ -55,9 +55,9 @@ exports.registerNewDevice = function(req, res) {
 			console.log("Error creating endpoint, checking if endpoint is already registered with same token") ;
 			console.log(err, err.stack); // an error occurred
 			
-			var pattern1 = new RegExp("\\b.*Endpoint (arn:aws:sns[^ ]+) already exists with the same Token.*\\b"); // retrieve the end-point ARN already present 
+			var pattern1 = new RegExp(".*Endpoint (arn:aws:sns[^ ]+) already exists with the same Token.*"); // retrieve the end-point ARN already present 
 			var result = pattern1.test(err.message) ;
-			if(result == 'true') {
+			if(result) {
 				var pattern2 = new RegExp("arn:aws:sns[^ ]+");
 				console.log("Endpoint is already registered with same token") ;
 				endPointARN = pattern2.exec(err.message) ;
