@@ -475,7 +475,7 @@ exports.uploadDealImage = function(req, res, next) {
 	}
 	
 	
-	upload.single('fileUpload') ;
+	//upload.single('fileUpload') ;
 	console.log("Upload complete...") ;
 	
 	//if(req.file) {
