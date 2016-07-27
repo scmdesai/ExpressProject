@@ -136,11 +136,11 @@ app.get('/demoDeals', demoDeals.findAllDeals);
 app.post('/demoStores/:id',demoStores.updateProfilePicture,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
 
-app.post('/createNewDeal', demoDeals.createNewDeal) ;
-app.post('/uploadS3',demoDeals.uploadDealImage, demoDeals.dealImageURLUpdate) ;
-app.post('/deals/editDeal/:id', demoDeals.editDeal);
+app.post('/democreateNewDeal', demoDeals.createNewDeal) ;
+app.post('/demouploadS3',demoDeals.uploadDealImage, demoDeals.dealImageURLUpdate) ;
+app.post('/demodeals/editDeal/:id', demoDeals.editDeal);
 
-app.post('/deals/:id', demoDeals.deleteDeal) ;
+app.post('/demodeals/:id', demoDeals.deleteDeal) ;
 
 //***** List of demo URL end-points : end *********
 
