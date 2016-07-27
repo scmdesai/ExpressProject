@@ -475,7 +475,7 @@ exports.uploadDealImage = function(req, res, next) {
 	}
 	
 	
-	upload.single('fileUpload') ;
+	//upload.single('fileUpload') ;
 	console.log("Upload complete...") ;
 	
 	//if(req.file) {
@@ -489,7 +489,7 @@ exports.uploadDealImage = function(req, res, next) {
 			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
 			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
 		},
-		bucket      : 'appsonmobile.com/locallink/deals',
+		bucket      : 'images.appsonmobile.com/locallink/deals',
 		region      : 'us-west-2'
 	});
 	var maxSize = 50 * 1024 * 1024;
@@ -561,7 +561,7 @@ exports.dealImageURLUpdate = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
+	var dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
 	

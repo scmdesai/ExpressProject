@@ -55,6 +55,7 @@ exports.findAllStores = function(req, res) {
 			}
 			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
+			//console.log(items) ;
 			
 			
 			for(var i=0; i < items.length; i++) {
@@ -348,7 +349,7 @@ exports.updateBusinessInfo = function(req, res) {
 	
 	
 	
-	pictureURL = "http://appsonmobile.com/locallink/stores/" + req.file.path ;
+	pictureURL = "http://images.appsonmobile.com/locallink/stores/" + req.file.path ;
 	
 		
    
@@ -472,7 +473,7 @@ exports.updateProfilePicture = function(req, res,next) {
 		filename    : function( req, file, cb ) {
 			cb( null, req.body.businessName + ".jpg" );
 		},
-		bucket      : 'appsonmobile.com/locallink/stores',
+		bucket      : 'images.appsonmobile.com/locallink/stores',
 		region      : 'us-west-2'
 	});
 	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
