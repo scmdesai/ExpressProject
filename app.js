@@ -21,7 +21,8 @@ var express = require('express')
   , bodyParser = require('body-parser')
   , methodOverride = require('method-override')
   , errorHandler = require('errorhandler')
-  , multer  = require('multer');
+  , multer  = require('multer')
+  , timeout = require('connect-timeout');
   
   
 //var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
@@ -30,6 +31,7 @@ var express = require('express')
 require('console-stamp')(console, '[HH:MM:ss.l]');  
 
 var app = express();
+app.use(timeout('60s'));
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -56,22 +58,29 @@ app.set('view engine', 'ejs');
 //app.use(express.bodyParser());
 //app.use(express.limit('50mb'));
 app.use(bodyParser.urlencoded({ limit: '50MB',extended: false })) ;
+app.use(haltOnTimedout);
 // parse application/json 
 app.use(bodyParser.json()) ;
+app.use(haltOnTimedout);
 
 
 app.use(methodOverride());
+app.use(haltOnTimedout);
 // app.use(app.router); // No longer required in Express 4.x
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(haltOnTimedout);
 // to allow references to AWS / localhost
 app.use(allowCrossDomain);
+app.use(haltOnTimedout);
 //app.use(express.logger('[:mydate] :method :url :status :res[content-length] - :remote-addr - :response-time ms'));
 app.use(logger('combined'));
+app.use(haltOnTimedout);
 //app.use(multer({dest:'./uploads/'})) ;
 
 // development only
 if ('development' == app.get('env')) {
   app.use(errorHandler());
+  app.use(haltOnTimedout);
 }
 
 app.get('/', routes);
@@ -144,8 +153,10 @@ app.post('/demodeals/:id', demoDeals.deleteDeal) ;
 
 //***** List of demo URL end-points : end *********
 
-http.createServer(app).listen(app.get('port'), function(){
+function haltOnTimedout(req, res, next){
+  if (!req.timedout) next();
+}
 
-  
+http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));
 });
