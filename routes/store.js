@@ -34,6 +34,9 @@ function Store(attributes) {
 		case "email":
 			this.emailAddress = valueAttr ;
 			break ;
+		case "loginEmail":
+			this.loginEmail = valueAttr ;
+			break ;
 			
 		case "zipcode":
 			this.zipcode = valueAttr ;
