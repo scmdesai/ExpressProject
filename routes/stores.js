@@ -262,6 +262,11 @@ exports.updateOnlyBusinessInfo = function(req, res) {
 		  Replace: false
 		},
 		{
+		  Name: 'loginEmail', /* required */
+		  Value: req.body.loginEmail, /* required */
+		  Replace: false
+		},
+		{
 		  Name: 'zipcode', /* required */
 		  Value: req.body.zipcode, /* required */
 		  Replace: false
@@ -383,6 +388,11 @@ exports.updateBusinessInfo = function(req, res) {
 		{
 		  Name: 'email', /* required */
 		  Value: req.body.emailAddress, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'loginEmail', /* required */
+		  Value: req.body.loginEmail, /* required */
 		  Replace: false
 		},
 		{
