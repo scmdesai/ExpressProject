@@ -276,7 +276,7 @@ exports.createNewDeal = function(req, res) {
 			});
 			
 			
-			res.status(200).send('{"success":true,"msg":"Buzz Created!"}') ;
+			res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
 			
 			
 			
@@ -666,7 +666,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			});
 			
 			
-			res.status(200).send('{"success":true,"msg":"Buzz Created!"}') ;
+			res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
 			
 			
 			
