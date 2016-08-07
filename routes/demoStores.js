@@ -494,7 +494,7 @@ exports.updateProfilePicture = function(req, res,next) {
 		if(err) {
 			console.log("Error uploading file" + err) ;
 			//next() ;
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding image: "' + err + "}") ;
 		}
 		else {
 			console.log("File upload successful") ;

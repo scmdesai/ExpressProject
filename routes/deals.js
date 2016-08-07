@@ -99,7 +99,7 @@ exports.findAllDeals = function(req, res) {
 					
 					var tempDeal = new Deal(itemName, attributes) ;
 					if(tempDeal.dealStatus == "Expired") {
-						console.log("Expired deal found:" + tempDeal.dealName) ;
+						console.log("Expired buzz found:" + tempDeal.dealName) ;
 						console.log("Updating its status in AWS SDB so that it does not show up next time") ;
 						
 						var deleteParams = {
@@ -108,17 +108,17 @@ exports.findAllDeals = function(req, res) {
 						};
 						simpleDB.deleteAttributes(deleteParams, function(err, data) {
 							if (err) {
-								console.log("Error deleting expired deal") ;
+								console.log("Error deleting expired buzz") ;
 								console.log(err, err.stack); // an error occurred
 							} else {
-								console.log("Deal deleted successfully") ;
+								console.log("buzz deleted successfully") ;
 								console.log(data); // successful response
 							}								
 						});
 						
 						continue ;
 					}
-					else { // active deal found. Add it to he return value
+					else { // active buzz found. Add it to he return value
  						dealsList[j] = tempDeal ;
 						j++ ;
 					}
@@ -237,14 +237,14 @@ exports.createNewDeal = function(req, res) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 
 			// Create an SNS client
-			console.log("Creating SNS Client to notify customers about the new deal") ;
+			console.log("Creating SNS Client to notify customers about the new buzz") ;
 			if(snsClient == null) {
 				console.log("SNS is null, creating new connection") ;
 				snsClient = new AWS.SNS() ;
@@ -252,21 +252,21 @@ exports.createNewDeal = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			var message = {
-				"default": "New deal from "+ req.body.businessName +" : " + req.body.DealName,
-				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
-				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
 			
 			var params = {
 				Message: JSON.stringify(message),
-				Subject: 'New Deal from ' +  req.body.businessName,
+				Subject: 'New buzz from ' +  req.body.businessName,
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
 				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
-					console.log("Error sending notification on deal") ;
+					console.log("Error sending notification on buzz") ;
 					console.log(err, err.stack); // an error occurred
 				}				
 				else {
@@ -276,7 +276,7 @@ exports.createNewDeal = function(req, res) {
 			});
 			
 			
-			res.status(200).send('{"success":true,"msg":"Buzz Created!"}') ;
+			res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
 			
 			
 			
@@ -369,7 +369,7 @@ exports.editDeal = function(req, res) {
 		if (err) {
 			console.log("Error updating record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating Buzz: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error updating buzz: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record updated successfully") ;
@@ -382,7 +382,7 @@ exports.editDeal = function(req, res) {
 };
 
 exports.deleteDeal = function(req, res) {
-	console.log("Deleting a deal with uuid: " + req.params.id) ;
+	console.log("Deleting a buzz with uuid: " + req.params.id) ;
 	
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -443,14 +443,14 @@ exports.deleteDeal = function(req, res) {
 		if (err) {
 			console.log("Error deleting Buzz") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('"success": false, "msg": "Error deleting deal: " + err') ;
-			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting deal:" + err );</script>');*/
+			res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
+			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
 		}
 		else  {
-			console.log("Deal deleted successfully") ;
+			console.log("buzz deleted successfully") ;
 			console.log(data);           // successful response
-			//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
-			res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
+			
+			res.status(200).send('{ "success": true, "msg": "Buzz deleted" }') ;
 			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
 			
 			
@@ -518,14 +518,14 @@ exports.uploadDealImage = function(req, res, next) {
 			}
 			else {
 			
-				res.status(500).send('{ "success": false, "msg": "No Image to upload" }') ;
+				res.status(500).send('{ "success": false, "msg": "No image to upload" }') ;
 			}
 		
 	});
 	/*}
 	else{
 	    console.log("Now uploading the file...checked no file") ;
-		res.status(500).send('{"success": false, "msg": "No Image to upload"}') ;
+		res.status(500).send('{"success": false, "msg": "No image to upload"}') ;
 	}*/
 	
 	
@@ -627,14 +627,14 @@ exports.dealImageURLUpdate = function(req, res) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 
 			// Create an SNS client
-			console.log("Creating SNS Client to notify customers about the new deal") ;
+			console.log("Creating SNS Client to notify customers about the new buzz") ;
 			if(snsClient == null) {
 				console.log("SNS is null, creating new connection") ;
 				snsClient = new AWS.SNS() ;
@@ -642,21 +642,21 @@ exports.dealImageURLUpdate = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			var message = {
-				"default": "New deal from "+ req.body.businessName +" : " + req.body.DealName,
-				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
-				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
 			
 			var params = {
 				Message: JSON.stringify(message),
-				Subject: 'New Deal from ' +  req.body.businessName,
+				Subject: 'New buzz from ' +  req.body.businessName,
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
 				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
-					console.log("Error sending notification on deal") ;
+					console.log("Error sending notification on buzz") ;
 					console.log(err, err.stack); // an error occurred
 				}				
 				else {
@@ -666,7 +666,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			});
 			
 			
-			res.status(200).send('{"success":true,"msg":"Buzz Created!"}') ;
+			res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
 			
 			
 			

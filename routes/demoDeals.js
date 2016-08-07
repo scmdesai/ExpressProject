@@ -99,7 +99,7 @@ exports.findAllDeals = function(req, res) {
 					
 					var tempDeal = new Deal(itemName, attributes) ;
 					if(tempDeal.dealStatus == "Expired") {
-						console.log("Expired deal found:" + tempDeal.dealName) ;
+						console.log("Expired buzz found:" + tempDeal.dealName) ;
 						console.log("Updating its status in AWS SDB so that it does not show up next time") ;
 						
 						var deleteParams = {
@@ -108,7 +108,7 @@ exports.findAllDeals = function(req, res) {
 						};
 						simpleDB.deleteAttributes(deleteParams, function(err, data) {
 							if (err) {
-								console.log("Error deleting expired deal") ;
+								console.log("Error deleting expired buzz") ;
 								console.log(err, err.stack); // an error occurred
 							} else {
 								console.log("Deal deleted successfully") ;
@@ -118,7 +118,7 @@ exports.findAllDeals = function(req, res) {
 						
 						continue ;
 					}
-					else { // active deal found. Add it to he return value
+					else { // active buzz found. Add it to he return value
  						dealsList[j] = tempDeal ;
 						j++ ;
 					}
@@ -237,14 +237,14 @@ exports.createNewDeal = function(req, res) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 
 			// Create an SNS client
-			console.log("Creating SNS Client to notify customers about the new deal") ;
+			console.log("Creating SNS Client to notify customers about the new buzz") ;
 			if(snsClient == null) {
 				console.log("SNS is null, creating new connection") ;
 				snsClient = new AWS.SNS() ;
@@ -252,9 +252,9 @@ exports.createNewDeal = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			var message = {
-				"default": "New deal from "+ req.body.businessName +" : " + req.body.DealName,
-				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
-				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
 			
 			var params = {
@@ -266,7 +266,7 @@ exports.createNewDeal = function(req, res) {
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
-					console.log("Error sending notification on deal") ;
+					console.log("Error sending notification on buzz") ;
 					console.log(err, err.stack); // an error occurred
 				}				
 				else {
@@ -382,7 +382,7 @@ exports.editDeal = function(req, res) {
 };
 
 exports.deleteDeal = function(req, res) {
-	console.log("Deleting a deal with uuid: " + req.params.id) ;
+	console.log("Deleting a buzz with uuid: " + req.params.id) ;
 	
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -443,8 +443,8 @@ exports.deleteDeal = function(req, res) {
 		if (err) {
 			console.log("Error deleting Buzz") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('"success": false, "msg": "Error deleting deal: " + err') ;
-			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting deal:" + err );</script>');*/
+			res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
+			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
 		}
 		else  {
 			console.log("Deal deleted successfully") ;
@@ -627,14 +627,14 @@ exports.dealImageURLUpdate = function(req, res) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding deal: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 
 			// Create an SNS client
-			console.log("Creating SNS Client to notify customers about the new deal") ;
+			console.log("Creating SNS Client to notify customers about the new buzz") ;
 			if(snsClient == null) {
 				console.log("SNS is null, creating new connection") ;
 				snsClient = new AWS.SNS() ;
@@ -642,9 +642,9 @@ exports.dealImageURLUpdate = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			var message = {
-				"default": "New deal from "+ req.body.businessName +" : " + req.body.DealName,
-				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New deal from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
-				"GCM": "{ \"data\": { \"message\": \"New deal from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
 			
 			var params = {
@@ -656,7 +656,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
-					console.log("Error sending notification on deal") ;
+					console.log("Error sending notification on buzz") ;
 					console.log(err, err.stack); // an error occurred
 				}				
 				else {
