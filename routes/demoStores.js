@@ -676,9 +676,10 @@ exports.createNewUser = function(req, res) {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 
+			req.body.customerId = uuid1;
+			next();
 			
-			
-			res.status(200).send('{"success":true,"msg":"User created!"}') ;
+			//res.status(200).send('{"success":true,"msg":"User created!"}') ;
 			
 			
 			
