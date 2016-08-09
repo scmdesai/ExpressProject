@@ -675,9 +675,9 @@ exports.createNewUser = function(req, res) {
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
-
+            
 			req.body.customerId = uuid1;
-			next();
+			
 			
 			//res.status(200).send('{"success":true,"msg":"User created!"}') ;
 			
@@ -685,5 +685,6 @@ exports.createNewUser = function(req, res) {
 			
 		}
 	});
+	next();
 };
 
