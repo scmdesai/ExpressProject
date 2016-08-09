@@ -29,6 +29,7 @@ exports.createNewSubscription= function(req, res){
 	console.log("Credentials retrieval successful") ;
 	// Create an SDB client
 	console.log("Creating SDB Client") ;
+	var uuid1 = uuid.v1();
 	if(simpleDB == null) {
 		console.log("SimpleDB is null, creating new connection") ;
 		simpleDB = new AWS.SimpleDB() ;
@@ -66,7 +67,7 @@ exports.createNewSubscription= function(req, res){
 		
 	],
 	  DomainName: 'DemoMySubscriptions', /* required */
-	  ItemName: CustomerId, /* required */
+	  ItemName: uuid1, /* required */
 	  Expected: {
 		Exists: false,
 		Name: 'CustomerId'
