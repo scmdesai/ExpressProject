@@ -146,7 +146,7 @@ app.get('/demoDeals', demoDeals.findAllDeals);
 app.post('/demoStores/:id',demoStores.updateProfilePicture,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
 
-app.post('/democreateNewDealNoImage', demoDeals.createNewDeal) ;
+app.post('/democreateNewBuzzNoImage', demoDeals.createNewDeal) ;
 app.post('/democreateNewBuzzWithImage',demoDeals.uploadDealImage, demoDeals.dealImageURLUpdate) ;
 app.post('/demodeals/editDeal/:id', demoDeals.editDeal);
 
