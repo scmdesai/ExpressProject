@@ -144,7 +144,7 @@ exports.findAllDeals = function(req, res) {
 
 
 
-exports.createNewBuzz = function(req, res) {
+exports.createNewDeal = function(req, res) {
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -171,16 +171,7 @@ exports.createNewBuzz = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	var dealURL;
-	if(req.file)
-	{
-			dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
-	}
-	else
-	{
-			dealURL = "http://appsonmobile.com/locallink/deals/localbuzzicon.jpg" ;
-	}
-			
+	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
 	
@@ -543,3 +534,149 @@ exports.uploadDealImage = function(req, res, next) {
 	
 };
 
+exports.createNewBuzz = function(req, res) {
+
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	console.log("SDB Client creation successful") ;
+	
+	var uuid1 = uuid.v1();
+	console.log("Generated uuid for itemName " + uuid1) ;
+	
+	var dealURL ;
+	if(req.file){
+		dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
+	}
+	else {
+		dealURL = "http://images.appsonmobile.com/locallink/deals/localbuzzicon.jpg";
+	}
+	
+	
+	
+
+	var params = {
+	  Attributes: [ /* required */
+		{
+		  Name: 'DealStatus', /* required */
+		  Value: req.body.DealStatus, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealStartDate', /* required */
+		  Value: req.body.DealStartDate, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealPictureURL', /* required */
+		  Value: req.body.DealPictureURL, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealName', /* required */
+		  Value: req.body.DealName, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealEndDate', /* required */
+		  Value: req.body.DealEndDate, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'customerId', /* required */
+		  Value: req.body.customerId, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'businessName', /* required */
+		  Value: req.body.businessName, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealDescription', /* required */
+		  Value: req.body.DealDescription, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'DealImageURL', /* required */
+		  Value: dealURL, /* required */
+		  Replace: false
+		}
+	],
+	  DomainName: 'DemoMyDeals', /* required */
+	  ItemName: uuid1, /* required */
+	  Expected: {
+		Exists: false,
+		Name: 'DealName'
+	  }
+	};
+	
+	console.log("Now inserting new row into DemoMyDeals domain") ;
+	simpleDB.putAttributes(params, function(err, data) {
+		if (err) {
+			console.log("Error inserting record") ;
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
+		}
+		else  {
+			console.log("Record inserted successfully") ;
+			console.log(data);           // successful response
+
+			// Create an SNS client
+			console.log("Creating SNS Client to notify customers about the new buzz") ;
+			if(snsClient == null) {
+				console.log("SNS is null, creating new connection") ;
+				snsClient = new AWS.SNS() ;
+			}
+			console.log("SNS Client creation successful") ;
+			
+			var message = {
+				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
+				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+			};
+			
+			var params = {
+				Message: JSON.stringify(message),
+				Subject: 'New Deal from ' +  req.body.businessName,
+				MessageStructure: 'json',
+				//TargetArn: 'TopicArn',
+				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+			};
+			snsClient.publish(params, function(err, data) {
+				if (err) {
+					console.log("Error sending notification on buzz") ;
+					console.log(err, err.stack); // an error occurred
+				}				
+				else {
+					console.log("Notification sent to topic subscribers") ;
+					console.log(data);           // successful response
+				}
+			});
+			
+			
+			res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
+			
+			
+			
+		}
+	});
+};
+	
