@@ -12,7 +12,8 @@ exports.createNewSubscription= function(req, res){
 
 
   var startDate = new Date();
-  var endDate = startDate + 90;
+  var endDate;
+endDate.setDate(startDate.getDate() + 90);
 // switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
