@@ -11,7 +11,7 @@ var express = require('express')
   // *** demo end-points ***
   , demoStores = require('./routes/demoStores')
   , demoDeals = require('./routes/demoDeals')
-  ,demoSubscriptions = require('./routes/demoSubscriptions')
+  , demoSubscriptions = require('./routes/demoSubscriptions')
   // *** demo end-points ***
   , devices = require('./routes/devices')
   , analytics_buzz_popularity = require('./routes/analytics_buzz_popularity')
