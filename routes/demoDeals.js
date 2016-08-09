@@ -516,10 +516,7 @@ exports.uploadDealImage = function(req, res, next) {
 					//res.status(200).send('{ "success": true, "msg": "http://appsonmobile.com/locallink/deals/fileUpload-1467781697704.jpg" }') ;
 				}
 			
-			else {
 			
-				res.status(500).send('{ "success": false, "msg": "No Image to upload" }') ;
-			}
 		
 	});
 	/*}
