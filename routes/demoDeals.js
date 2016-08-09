@@ -566,7 +566,7 @@ exports.createNewBuzz = function(req, res) {
 		dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 	}
 	else {
-		dealURL = "http://images.appsonmobile.com/locallink/deals/localbuzzicon.jpg";
+		dealURL = "http://images.appsonmobile.com/locallink/deals/localbuzzicon.jpg"
 	}
 	
 	
