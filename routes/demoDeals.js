@@ -534,7 +534,7 @@ exports.uploadDealImage = function(req, res, next) {
 	
 };
 
-exports.dealImageURLUpdate = function(req, res) {
+exports.createNewBuzz = function(req, res) {
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
