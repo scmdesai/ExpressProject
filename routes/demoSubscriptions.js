@@ -51,12 +51,12 @@ exports.createNewSubscription= function(req, res){
 		},
 		{
 		  Name: 'StartDate', /* required */
-		  Value: startDate, /* required */
+		  Value: startDate.toString(), /* required */
 		  Replace: false
 		},
 		{
 		  Name: 'EndDate', /* required */
-		  Value: endDate, /* required */
+		  Value: endDate.toString(), /* required */
 		  Replace: false
 		},
 		{
