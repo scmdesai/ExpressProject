@@ -147,7 +147,7 @@ app.post('/demoStores/:id',demoStores.updateProfilePicture,demoStores.updateBusi
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
 
 app.post('/democreateNewDeal', demoDeals.createNewDeal) ;
-app.post('/demouploadS3',demoDeals.uploadDealImage, demoDeals.dealImageURLUpdate) ;
+app.post('/democreateNewBuzz',demoDeals.uploadDealImage, demoDeals.dealImageURLUpdate) ;
 app.post('/demodeals/editDeal/:id', demoDeals.editDeal);
 
 app.post('/demodeals/:id', demoDeals.deleteDeal) ;
