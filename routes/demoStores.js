@@ -557,7 +557,7 @@ exports.uploadStoreImage = function(req, res,next) {
 	
 	
 };
-exports.createNewStore = function(req, res) {
+exports.createNewStore = function(req, res,next) {
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -677,7 +677,7 @@ exports.createNewStore = function(req, res) {
 			console.log(data);           // successful response
             
 			req.body.customerId = uuid1;
-			
+			next();
 			
 			//res.status(200).send('{"success":true,"msg":"User created!"}') ;
 			
@@ -685,6 +685,6 @@ exports.createNewStore = function(req, res) {
 			
 		}
 	});
-	next();
+	
 };
 
