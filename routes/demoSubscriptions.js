@@ -80,13 +80,13 @@ endDate.setDate(startDate.getDate() + 92);
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error registering store: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding user: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
 
-			res.status(200).send('{"success":true,"msg":"New store created!"}') ;
+			res.status(200).send('{"success":true,"msg":"User created!"}') ;
 			
 			
 			
