@@ -676,7 +676,7 @@ exports.createNewStore = function(req, res,next) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding user: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error Registering Store: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;

@@ -561,7 +561,13 @@ exports.dealImageURLUpdate = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	var dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
+	var dealURL ;
+	if(req.file){
+		dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
+	}
+	else {
+		dealURL = "http://images.appsonmobile.com/locallink/deals/localbuzzicon.jpg"
+	}
 	
 	
 	
