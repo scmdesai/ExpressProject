@@ -113,7 +113,7 @@ app.get('/', function(req, res) {
 app.post('/stores/:id',stores.updateProfilePicture,stores.updateBusinessInfo);
 //app.post('/stores/:storeName',stores.updateOnlyBusinessInfo);
 app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
-app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewUser) ;
+app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewStore,demoSubscriptions.createNewSubscription) ;
 
 app.post('/createNewDeal', deals.createNewDeal) ;
 app.post('/uploadS3',deals.uploadDealImage, deals.dealImageURLUpdate) ;
