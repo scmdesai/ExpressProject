@@ -149,7 +149,12 @@ console.log("GET STORE BY NAME") ;
 				var subscriptionStatus = new Subscription(attributes) ;
 				
                     console.log(subscriptionStatus["signupStatus"]);
-					res.send(subscriptionStatus["signupStatus"]);
+					if(subscriptionStatus["signupStatus"]=="Approved"){
+						res.send("true");
+					}
+					else {
+						res.send("false");
+					}
                
 			}
         
