@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
-var Subscription = require("./subscription");
+var Subscriptions = require("./subscription");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
 var upload = multer({ dest: 'uploads/' }) ;
@@ -96,6 +96,8 @@ endDate.setDate(startDate.getDate() + 92);
 };
 
 exports.getSubscriptionStatus = function(req, res) {
+	console.log("GET STORE BY NAME") ;
+	console.log(req.body) ;
 
    //res.send({id:req.params.storeName, businessName: "The Name", description: req.body});
    if(process.env.RUN_LOCAL=="TRUE") {
