@@ -148,6 +148,7 @@ console.log("GET STORE BY NAME") ;
 			   else {
 			   res.send("false");
 			   }
+			   }
 			/*console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
 			//console.log(items) ;
@@ -198,7 +199,7 @@ console.log("GET STORE BY NAME") ;
 			res.send(storesJsonOutput) ;
 		}
 	});*/
-			
+	});		
 
 };
 
