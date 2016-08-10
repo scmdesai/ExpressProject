@@ -142,7 +142,7 @@ console.log("GET STORE BY NAME") ;
 			}
 			
 			var signupStatus = data["SignupStatus"] ;
-			if(signupStatus==="Pending"){
+			if(signupStatus=="Pending"){
 			   res.send("true");
 			   }
 			   else {
