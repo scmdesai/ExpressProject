@@ -15,7 +15,7 @@ function Subscription(attributes) {
 			break ;
 		
 		case "StartDate":
-			console.log("Business Name is: " + valueAttr) ;
+			
 			this.startDate = valueAttr ;
 			break ;
 			
