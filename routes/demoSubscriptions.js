@@ -141,15 +141,8 @@ console.log("GET STORE BY NAME") ;
 				console.log(name) ;
 			}
 			
-			var signupStatus = data["SignupStatus"] ;
-			if(signupStatus=="Pending"){
-			   res.send("true");
-			   }
-			   else {
-			   res.send("false");
-			   }
-			   }
-			/*console.log("Now accessing Items element") ;
+			
+			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
 			//console.log(items) ;
 			
@@ -159,46 +152,8 @@ console.log("GET STORE BY NAME") ;
                 console.log(item) ;				
 				var attributes = item["Attributes"] ;
 				storesList[i] = new Subscription(attributes) ;
-				
-				/*
-				//console.log(attributes) ;
-				for(var j in attributes) {
-					var attr = attributes[j];
-					//console.log(attr) ;
-					var nameAttr = attr["Name"];
-					var valueAttr = attr["Value"];
-					//console.log(nameAttr + ": " + valueAttr );
-					var storesJsonOutput;
-					storesJsonOutput = (nameAttr + ": " + valueAttr + "\n" );
-					res.write(storesJsonOutput);
-					
-				
-				}
-			
-				res.end() ;*/	
-				/*var store = new Store() ;
-				for(var j=0; j < attributes.length; j++) {
-					var attribute = attributes[j] ;
-					if(attribute["Name"] == "BusinessName") {
-						store.businessName = attribute["Value"] ;
-					}
-				}
-				storesList[i] = store ;*/
-				//console.log(attributes) ;
-			/*}
-			
-		}
-		console.log("Stores List is: " + storesList);
-		var storesJsonOutput = JSON.stringify(storesList) ;
-	    
-		
-		if(cb) {
-			res.send( cb + "(" + storesJsonOutput + ");" );
-		}
-		else {
-			res.send(storesJsonOutput) ;
-		}
-	});*/
+			}
+        }
 	});		
 
 };
