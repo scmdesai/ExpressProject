@@ -141,14 +141,15 @@ console.log("GET STORE BY NAME") ;
 			
 			
 			
-			var item = data["Items"] ;
+			var items = data["Items"] ;
 			
-					
+				var item = items[0];	
                 				
 				var attributes = item["Attributes"] ;
 				var subscriptionStatus = new Subscription(attributes) ;
 				
                     console.log(subscriptionStatus["signupStatus"]);
+					res.send(subscriptionStatus["signupStatus"]);
                
 			}
         
