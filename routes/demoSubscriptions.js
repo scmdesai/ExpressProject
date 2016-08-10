@@ -154,7 +154,7 @@ console.log("GET STORE BY NAME") ;
 					res.send("false");
 				}
 			}
-        }
+        
 	});		
 
 };
