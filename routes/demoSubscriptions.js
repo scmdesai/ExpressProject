@@ -94,3 +94,10 @@ endDate.setDate(startDate.getDate() + 92);
 	});
 
 };
+exports.getSubscriptionStatus= function(req, res){
+
+
+
+};
+
+
