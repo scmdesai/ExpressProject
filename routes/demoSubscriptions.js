@@ -148,7 +148,7 @@ console.log("GET STORE BY NAME") ;
 				var attributes = item["Attributes"] ;
 				var subscriptionStatus = new Subscription(attributes) ;
 				
-                    res.send(subscriptionStatus["signupStatus"]);
+                    console.log(subscriptionStatus["signupStatus"]);
                
 			}
         
