@@ -153,8 +153,8 @@ exports.getSubscriptionStatus = function(req, res) {
 			}
 			
 		}
-		console.log("Stores List is: " + subscriptionDetails);
-		var storesJsonOutput = JSON.stringify(subscriptionDetails) ;
+		console.log("Stores List is: " + storesList);
+		var storesJsonOutput = JSON.stringify(storesList) ;
 	    
 		
 		if(cb) {

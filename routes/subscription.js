@@ -3,7 +3,7 @@
 
 
 function Subscription(attributes) {
-	
+	console.log("Now constructing Store object") ;
 	for(var j in attributes) {
 		var attr = attributes[j];
 		//console.log(attr) ;
@@ -32,10 +32,10 @@ function Subscription(attributes) {
 			break ;
 			
 		
-		}
 	}
+	
 
-
+}
 }
 
 module.exports = Subscription ;
