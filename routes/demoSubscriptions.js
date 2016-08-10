@@ -150,14 +150,15 @@ console.log("GET STORE BY NAME") ;
 				var subscriptionStatus = new Subscription(attributes) ;
 				
                     console.log(subscriptionStatus["signupStatus"]);
+					var endDate = new Date(subscriptionStatus["endDate"]);
 					if(subscriptionStatus["signupStatus"]=="Approved"){
-						if(subscriptionStatus["planType"]=="Free" && subscriptionStatus["endDate"] > today ){
+						if(subscriptionStatus["planType"]=="Free" && endDate >= today ){
 							res.send("Approved and free tier");
 						}
 						else if(subscriptionStatus["planType"]=="Paid"){
 							res.send("Approved and paid tier");
 						}
-						else if(subscriptionStatus["planType"]=="Free" && subscriptionStatus["endDate"] < today){
+						else if(subscriptionStatus["planType"]=="Free" && endDate < today){
 							res.send("Free trial period has ended");
 						}
 					}
