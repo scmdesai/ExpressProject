@@ -98,6 +98,7 @@ exports.getSubscriptionStatus= function(req, res){
 
 console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
+	var today = new Date();
 
    //res.send({id:req.params.storeName, businessName: "The Name", description: req.body});
    if(process.env.RUN_LOCAL=="TRUE") {
@@ -149,11 +150,11 @@ console.log("GET STORE BY NAME") ;
 				var subscriptionStatus = new Subscription(attributes) ;
 				
                     console.log(subscriptionStatus["signupStatus"]);
-					if(subscriptionStatus["signupStatus"]=="Approved"){
-						res.send("true");
+					if(subscriptionStatus["signupStatus"]=="Approved" && subscriptionStatus["planType"]=="Free"  ){
+						res.send("Approved and Free Tier");
 					}
-					else {
-						res.send("false");
+					else if(subscriptionStatus["signupStatus"]=="Approved" && subscriptionStatus["planType"]=="Paid"  ){
+						res.send("Approved and Paid Tier");
 					}
                
 			}
