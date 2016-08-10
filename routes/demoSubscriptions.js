@@ -123,11 +123,11 @@ console.log("GET STORE BY NAME") ;
 		//NextToken: 'STRING_VALUE'
 	};
 	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
-	var cb = req.query.callback;	
-	console.log("Callback URL is " + cb) ;
+	//var cb = req.query.callback;	
+	//console.log("Callback URL is " + cb) ;
 
 	
-	console.log("Now retrieving data set from SDB") ;
+	//console.log("Now retrieving data set from SDB") ;
 	simpleDB.select(params, function(err, data) {
 		if (err) {
 			console.log("ERROR calling AWS Simple DB!!!") ;
@@ -140,7 +140,15 @@ console.log("GET STORE BY NAME") ;
 			for(var name in data) {
 				console.log(name) ;
 			}
-			console.log("Now accessing Items element") ;
+			
+			var signupStatus = data["SignupStatus"] ;
+			if(signupStatus===true){
+			   res.send("true");
+			   }
+			   else {
+			   res.send("false");
+			   }
+			/*console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
 			//console.log(items) ;
 			
@@ -176,7 +184,7 @@ console.log("GET STORE BY NAME") ;
 				}
 				storesList[i] = store ;*/
 				//console.log(attributes) ;
-			}
+			/*}
 			
 		}
 		console.log("Stores List is: " + storesList);
@@ -189,7 +197,7 @@ console.log("GET STORE BY NAME") ;
 		else {
 			res.send(storesJsonOutput) ;
 		}
-	});
+	});*/
 			
 
 };
