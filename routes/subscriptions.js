@@ -8,7 +8,7 @@ var upload = multer({ dest: 'uploads/' }) ;
 var simpleDB = null ;
 var storesList = [] ;
 
-exports.createNewSubscription= function(req, res){
+exports.createNewSubscription = function(req, res){
 
 
   var startDate = new Date();
