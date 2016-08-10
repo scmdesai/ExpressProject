@@ -140,17 +140,19 @@ console.log("GET STORE BY NAME") ;
 			
 			
 			
-			console.log("Now accessing Items element") ;
-			var items = data["Items"] ;
-			//console.log(items) ;
 			
+			var item = data["Items"] ;
 			
-			for(var i=0; i < items.length; i++) {
-				var item = items[i] ;	
-                //console.log(item) ;				
+					
+                				
 				var attributes = item["Attributes"] ;
-				storesList[i] = new Subscription(attributes) ;
-				console.log(storesList[i]["signupStatus"]) ;	
+				var subscriptionStatus = new Subscription(attributes) ;
+				if(subscriptionStatus["signupStatus"]=="Pending"){
+                    res.send("true");
+                }				
+                else {
+					res.send("false");
+				}
 			}
         }
 	});		
