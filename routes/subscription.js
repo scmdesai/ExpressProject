@@ -2,7 +2,7 @@
 // It will take the "attributes" array that we get from the Amazon SimpleDB service
 
 
-function Subscription(attributes) {
+/*function Subscription(attributes) {
 	
 	for(var j in attributes) {
 		var attr = attributes[j];
@@ -38,4 +38,4 @@ function Subscription(attributes) {
 
 }
 
-module.exports = Subscription ;
+module.exports = Subscription ;*/
