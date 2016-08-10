@@ -150,7 +150,7 @@ console.log("GET STORE BY NAME") ;
                 //console.log(item) ;				
 				var attributes = item["Attributes"] ;
 				storesList[i] = new Subscription(attributes) ;
-				console.log(storesList[i]) ;	
+				console.log(storesList[i]["signupStatus"]) ;	
 			}
         }
 	});		
