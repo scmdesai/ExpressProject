@@ -8,6 +8,7 @@ var express = require('express')
   , user = require('./routes/user')
   , stores = require('./routes/stores')
   , deals = require('./routes/deals')
+  , subscriptions = require('./routes/subscriptions')
   // *** demo end-points ***
   , demoStores = require('./routes/demoStores')
   , demoDeals = require('./routes/demoDeals')
@@ -114,10 +115,10 @@ app.get('/', function(req, res) {
 app.post('/stores/:id',stores.updateProfilePicture,stores.updateBusinessInfo);
 //app.post('/stores/:storeName',stores.updateOnlyBusinessInfo);
 app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
-app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewStore,demoSubscriptions.createNewSubscription) ;
+app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore,subscriptions.createNewSubscription) ;
 
-app.post('/createNewDeal', deals.createNewDeal) ;
-app.post('/uploadS3',deals.uploadDealImage, deals.dealImageURLUpdate) ;
+app.post('/createNewBuzzNoImage', deals.createNewDeal) ;
+app.post('/createNewBuzzWithImage',deals.uploadDealImage, deals.dealImageURLUpdate) ;
 app.post('/deals/editDeal/:id', deals.editDeal);
 // accept one file where the name of the form field is named fileUpload
 /*app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
@@ -151,6 +152,8 @@ app.post('/democreateNewBuzzWithImage',demoDeals.uploadDealImage, demoDeals.deal
 app.post('/demodeals/editDeal/:id', demoDeals.editDeal);
 
 app.post('/demodeals/:id', demoDeals.deleteDeal) ;
+
+app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewStore,demoSubscriptions.createNewSubscription) ;
 
 //***** List of demo URL end-points : end *********
 
