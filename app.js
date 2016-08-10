@@ -112,7 +112,7 @@ app.get('/', function(req, res) {
 //app.post('/stores/:storeName',stores.updateProfilePicture,stores.updateBusinessInfo);
 //app.post('/stores/:id',stores.updateBusinessInfo);
 
-app.post('/stores/:id',stores.updateProfilePicture,stores.updateBusinessInfo);
+app.post('/stores/:id',stores.uploadStoreImage,stores.updateBusinessInfo);
 //app.post('/stores/:storeName',stores.updateOnlyBusinessInfo);
 app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore,subscriptions.createNewSubscription) ;
@@ -143,6 +143,7 @@ app.post('/devices', devices.registerNewDevice) ;
 app.get('/demoStores', demoStores.findAllStores);
 app.get('/demoStores/:storeName', demoStores.findByStoreName);
 app.get('/demoDeals', demoDeals.findAllDeals);
+app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus);
 
 app.post('/demoStores/:id',demoStores.updateProfilePicture,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);

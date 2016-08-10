@@ -455,7 +455,7 @@ exports.updateBusinessInfo = function(req, res) {
 	
 	
 };
-exports.updateProfilePicture = function(req, res,next) {
+exports.uploadStoreImage = function(req, res,next) {
 	
 	
 		// switch to either use local file or AWS credentials depending on where the program is running
