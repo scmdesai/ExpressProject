@@ -147,12 +147,9 @@ console.log("GET STORE BY NAME") ;
                 				
 				var attributes = item["Attributes"] ;
 				var subscriptionStatus = new Subscription(attributes) ;
-				if(subscriptionStatus["signupStatus"]=="Pending"){
-                    res.send("true");
-                }				
-                else {
-					res.send("false");
-				}
+				
+                    res.send(subscriptionStatus["signupStatus"]);
+               
 			}
         
 	});		
