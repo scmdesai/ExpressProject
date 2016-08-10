@@ -36,5 +36,6 @@ function Subscription(attributes) {
 	
 
 }
+}
 
 module.exports = Subscription ;
