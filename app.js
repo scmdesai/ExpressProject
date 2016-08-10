@@ -143,6 +143,7 @@ app.post('/devices', devices.registerNewDevice) ;
 app.get('/demoStores', demoStores.findAllStores);
 app.get('/demoStores/:storeName', demoStores.findByStoreName);
 app.get('/demoDeals', demoDeals.findAllDeals);
+app.get('/demoGetSubscriptionStatus',demoSubscriptions.getSubscriptionStatus);
 
 app.post('/demoStores/:id',demoStores.updateProfilePicture,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
