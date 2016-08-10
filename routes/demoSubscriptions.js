@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 var uuid = require('node-uuid');
-var Store = require("./store");
+var Subscription = require("./subscription");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
 var upload = multer({ dest: 'uploads/' }) ;
@@ -149,7 +149,7 @@ console.log("GET STORE BY NAME") ;
 				var item = items[i] ;	
                 console.log(item) ;				
 				var attributes = item["Attributes"] ;
-				storesList[i] = new Store(attributes) ;
+				storesList[i] = new Subscription(attributes) ;
 				
 				/*
 				//console.log(attributes) ;
