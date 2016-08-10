@@ -151,7 +151,7 @@ console.log("GET STORE BY NAME") ;
 				
                     console.log(subscriptionStatus["signupStatus"]);
 					if(subscriptionStatus["signupStatus"]=="Approved"){
-						if(subscriptionStatus["planType"]=="Free" && subscriptionStatus["endDate"] >= today ){
+						if(subscriptionStatus["planType"]=="Free" && subscriptionStatus["endDate"] > today ){
 							res.send("Approved and free tier");
 						}
 						else if(subscriptionStatus["planType"]=="Paid"){
