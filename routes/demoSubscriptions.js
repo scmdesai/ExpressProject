@@ -137,9 +137,7 @@ console.log("GET STORE BY NAME") ;
 			console.log("SUCCESS from AWS!") ;
 			console.log(JSON.stringify(data));           // successful response
 			console.log("Objects in the AWS data element:" ) ;
-			for(var name in data) {
-				console.log(name) ;
-			}
+			
 			
 			
 			console.log("Now accessing Items element") ;
@@ -149,9 +147,10 @@ console.log("GET STORE BY NAME") ;
 			
 			for(var i=0; i < items.length; i++) {
 				var item = items[i] ;	
-                console.log(item) ;				
+                //console.log(item) ;				
 				var attributes = item["Attributes"] ;
 				storesList[i] = new Subscription(attributes) ;
+				console.log(storesList[i]) ;	
 			}
         }
 	});		
