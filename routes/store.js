@@ -60,6 +60,25 @@ function Store(attributes) {
 		case "websiteDisplayName":
 			this.websiteDisplayName = valueAttr ;
 			break ;
+		case "StartDate":
+			
+			this.startDate = valueAttr ;
+			break ;
+			
+		case "EndDate":
+			this.endDate = valueAttr ;
+			break ;
+			
+		case "SignupStatus":
+			this.signupStatus = valueAttr ;
+			break ;
+			
+		case "PlanType":
+			this.planType = valueAttr ;
+			break ;
+			
+		
+		}	
 			
 		}	
 		

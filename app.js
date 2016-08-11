@@ -116,7 +116,7 @@ app.post('/stores/:id',stores.uploadStoreImage,stores.updateBusinessInfo);
 //app.post('/stores/:storeName',stores.updateOnlyBusinessInfo);
 app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 //app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore,subscriptions.createNewSubscription) ;
-app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore,subscriptions.createNewSubscription) ;
+app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore) ;
 
 app.post('/createNewBuzzNoImage', deals.createNewDeal) ;
 app.post('/createNewBuzzWithImage',deals.uploadDealImage, deals.dealImageURLUpdate) ;
@@ -155,7 +155,7 @@ app.post('/demodeals/editDeal/:id', demoDeals.editDeal);
 
 app.post('/demodeals/:id', demoDeals.deleteDeal) ;
 
-app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewStore,demoSubscriptions.createNewSubscription) ;
+app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewStore) ;
 
 //***** List of demo URL end-points : end *********
 

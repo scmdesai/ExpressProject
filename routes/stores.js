@@ -506,8 +506,11 @@ exports.uploadStoreImage = function(req, res,next) {
 	
 	
 };
-exports.createNewStore = function(req, res,next) {
+exports.createNewStore = function(req, res) {
 
+	var startDate = new Date();
+	var endDate = new Date(startDate);
+	endDate.setDate(startDate.getDate() + 92);
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
@@ -610,6 +613,27 @@ exports.createNewStore = function(req, res,next) {
 		  Name: 'websiteDisplayName', /* required */
 		  Value: req.body.websiteDisplayName, /* required */
 		  Replace: false
+		},
+		,
+		{
+		  Name: 'SignupStatus', /* required */
+		  Value: 'Pending', /* required */
+		  Replace: true
+		},
+		{
+		  Name: 'StartDate', /* required */
+		  Value: startDate.toString(), /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'EndDate', /* required */
+		  Value: endDate.toString(), /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'PlanType', /* required */
+		  Value: 'Free',
+		  Replace: true
 		}
 	],
 	  DomainName: 'MyCustomers', /* required */
@@ -625,16 +649,16 @@ exports.createNewStore = function(req, res,next) {
 		if (err) {
 			console.log("Error inserting record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error adding user: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error adding new store: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record inserted successfully") ;
 			console.log(data);           // successful response
             
-			req.body.customerId = uuid1;
-			next();
+			//req.body.customerId = uuid1;
+			//next();
 			
-			//res.status(200).send('{"success":true,"msg":"User created!"}') ;
+			res.status(200).send('{"success":true,"msg":"New store created!"}') ;
 			
 			
 			
