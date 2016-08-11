@@ -33,7 +33,7 @@ exports.findAllStores = function(req, res) {
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from DemoMyCustomers"', /* required */
+		SelectExpression: 'select * from DemoMyCustomers', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
