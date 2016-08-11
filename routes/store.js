@@ -15,7 +15,7 @@ function Store(attributes) {
 			break ;
 		
 		case "BusinessName":
-			console.log("Business Name is: " + valueAttr) ;
+			//console.log("Business Name is: " + valueAttr) ;
 			this.businessName = valueAttr ;
 			break ;
 			
@@ -51,7 +51,7 @@ function Store(attributes) {
 			break ;
 			
 		case "pictureURL":
-			console.log("Picture URL is: " + valueAttr) ;
+			//console.log("Picture URL is: " + valueAttr) ;
 			this.pictureURL = valueAttr ;
 			break ;
 		case "website":
@@ -70,6 +70,7 @@ function Store(attributes) {
 			break ;
 			
 		case "SignupStatus":
+		    console.log("Picture URL is: " + SignupStatus) ;
 			this.signupStatus = valueAttr ;
 			break ;
 			

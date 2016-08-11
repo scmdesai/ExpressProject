@@ -39,7 +39,7 @@ exports.findAllStores = function(req, res) {
 	};
 	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
 	var cb = req.query.callback;	
-	console.log("Callback URL is " + cb) ;
+	//console.log("Callback URL is " + cb) ;
 
 	
 	console.log("Now retrieving data set from SDB") ;
@@ -52,9 +52,9 @@ exports.findAllStores = function(req, res) {
 			console.log("SUCCESS from AWS!") ;
 			console.log(JSON.stringify(data));           // successful response
 			console.log("Objects in the AWS data element:" ) ;
-			for(var name in data) {
+			/*for(var name in data) {
 				console.log(name) ;
-			}
+			}*/
 			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
 			console.log(items.length) ;
@@ -66,7 +66,7 @@ exports.findAllStores = function(req, res) {
                 				
                 				
 				var attributes = item["Attributes"] ;
-				console.log(item["SignupStatus"]);
+				console.log(item["signupStatus"]);
 				
 					storesList[i] = new Store(attributes) ;
 				
