@@ -34,7 +34,7 @@ exports.findAllStores = function(req, res) {
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from DemoMyCustomers', /* required */
+		SelectExpression: 'select * from DemoMyCustomers where SignupStatus="Approved"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -64,14 +64,15 @@ exports.findAllStores = function(req, res) {
 			for(var i=0; i < items.length; i++) {
 				var item = items[i] ;
                 
-                				
+                var endDate;				
                 				
 				var attributes = item["Attributes"] ;
 				
 				    
 				
 					storesListTmp[i] = new Store(attributes) ;
-					 if(storesListTmp[i]["signupStatus"]=="Approved"){
+					endDate = new Date(storesListTmp[i]["endDate"]);
+					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
 						storesList[i] = new Store(attributes) ;
 					}
 					 
