@@ -62,14 +62,14 @@ exports.findAllStores = function(req, res) {
 			
 			for(var i=0; i < items.length; i++) {
 				var item = items[i] ;
-                var dateEnd = new Date(item["endDate"]);				
-                console.log(dateEnd) ;	
+                
                 				
                 				
 				var attributes = item["Attributes"] ;
-				if (item["PlanType"]=="Paid"){
+				console.log(item["SignupStatus"]);
+				
 					storesList[i] = new Store(attributes) ;
-				}
+				
 				/*
 				//console.log(attributes) ;
 				for(var j in attributes) {
@@ -98,7 +98,7 @@ exports.findAllStores = function(req, res) {
 			}
 			
 		}
-		console.log("Stores List is: " + storesList);
+		//console.log("Stores List is: " + storesList);
 		var storesJsonOutput = JSON.stringify(storesList) ;
 	    
 		
