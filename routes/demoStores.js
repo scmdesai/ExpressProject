@@ -680,22 +680,22 @@ exports.createNewStore = function(req, res) {
 		},
 		,
 		{
-		  Name: 'SignupStatus', /* required */
+		  Name: 'signupStatus', /* required */
 		  Value: 'Pending', /* required */
 		  Replace: true
 		},
 		{
-		  Name: 'StartDate', /* required */
+		  Name: 'startDate', /* required */
 		  Value: startDate.toString(), /* required */
 		  Replace: false
 		},
 		{
-		  Name: 'EndDate', /* required */
+		  Name: 'endDate', /* required */
 		  Value: endDate.toString(), /* required */
 		  Replace: false
 		},
 		{
-		  Name: 'PlanType', /* required */
+		  Name: 'planType', /* required */
 		  Value: 'Free',
 		  Replace: true
 		}
