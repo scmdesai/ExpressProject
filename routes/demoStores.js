@@ -57,16 +57,17 @@ exports.findAllStores = function(req, res) {
 			}
 			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
-			//console.log(items) ;
+			console.log(items.length) ;
 			
 			
 			for(var i=0; i < items.length; i++) {
 				var item = items[i] ;
                 var dateEnd = new Date(item["endDate"]);				
-                console.log(item) ;		
+                console.log(dateEnd) ;	
+                				
                 				
 				var attributes = item["Attributes"] ;
-				if ((item["PlanType"]=="Free" && dateEnd >= today) || item["PlanType"]=="Paid"){
+				if (item["PlanType"]=="Paid"){
 					storesList[i] = new Store(attributes) ;
 				}
 				/*
