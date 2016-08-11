@@ -68,9 +68,9 @@ exports.findAllStores = function(req, res) {
 				var attributes = item["Attributes"] ;
 				
 				    
-				console.log(items[i]["signupStatus"]);
+				
 					storesList[i] = new Store(attributes) ;
-					
+					 console.log(storesList[i]["signupStatus"]);
 				
 				/*
 				//console.log(attributes) ;

@@ -70,7 +70,7 @@ function Store(attributes) {
 			break ;
 			
 		case "SignupStatus":
-		    console.log("Picture URL is: " + valueAttr) ;
+		    //console.log("Picture URL is: " + valueAttr) ;
 			this.signupStatus = valueAttr ;
 			break ;
 			
