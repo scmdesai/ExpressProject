@@ -58,7 +58,7 @@ exports.findAllStores = function(req, res) {
 			}*/
 			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
-			console.log(items.length) ;
+			
 			
 			
 			for(var i=0; i < items.length; i++) {
