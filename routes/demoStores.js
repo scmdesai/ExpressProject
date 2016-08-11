@@ -678,7 +678,6 @@ exports.createNewStore = function(req, res) {
 		  Value: req.body.websiteDisplayName, /* required */
 		  Replace: false
 		},
-		,
 		{
 		  Name: 'signupStatus', /* required */
 		  Value: 'Pending', /* required */
