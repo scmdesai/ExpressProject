@@ -66,9 +66,10 @@ exports.findAllStores = function(req, res) {
                 				
                 				
 				var attributes = item["Attributes"] ;
-				console.log(item["signupStatus"]);
 				
+				    (if items[i]["signupStatus"]=="Approved")
 					storesList[i] = new Store(attributes) ;
+					
 				
 				/*
 				//console.log(attributes) ;
