@@ -78,13 +78,13 @@ function Store(attributes) {
 			break ;
 			
 		
-		}	
+			
 			
 		}	
 		
 	}
 	//this.picture = "URL" ;
-	this.isFavorite = "true" ;
+	//this.isFavorite = "true" ;
 
 }
 
