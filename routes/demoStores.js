@@ -50,7 +50,7 @@ exports.findAllStores = function(req, res) {
 		}
 		else     {
 			console.log("SUCCESS from AWS!") ;
-			console.log(JSON.stringify(data));           // successful response
+			//console.log(JSON.stringify(data));           // successful response
 			console.log("Objects in the AWS data element:" ) ;
 			/*for(var name in data) {
 				console.log(name) ;
@@ -68,7 +68,7 @@ exports.findAllStores = function(req, res) {
 				var attributes = item["Attributes"] ;
 				
 				    
-				if(items[i]["SignupStatus"]=="Approved")
+				console.log(items[i]["signupStatus"]);
 					storesList[i] = new Store(attributes) ;
 					
 				
