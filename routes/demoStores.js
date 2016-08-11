@@ -31,7 +31,7 @@ exports.findAllStores = function(req, res) {
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from DemoMyCustomers where every (SignupStatus) = "Approved" ', /* required */
+		SelectExpression: 'select * from DemoMyCustomers where every (SignupStatus) = "Approved" and "PlanType"="Free" intersection "endDate" > "'+ today +'" or "PlanType"="Paid" ', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
