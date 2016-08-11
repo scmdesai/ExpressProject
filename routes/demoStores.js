@@ -10,6 +10,8 @@ var storesList = [] ;
 var pictureURL;
 
 exports.findAllStores = function(req, res) {
+    var today = (new Date()).toString();
+	
 	//console.log("GET STORES") ;
 
 	// switch to either use local file or AWS credentials depending on where the program is running
