@@ -10,9 +10,9 @@ var storesList = [] ;
 var pictureURL;
 
 exports.findAllStores = function(req, res) {
-    var today = (new Date()).toString();
+    var today = new Date();
 	
-	//console.log("GET STORES") ;
+	
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -33,7 +33,7 @@ exports.findAllStores = function(req, res) {
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from DemoMyCustomers where every (SignupStatus) = "Approved" AND "PlanType"="Free" intersection "endDate" > "'+ today+'"', /* required */
+		SelectExpression: 'select * from DemoMyCustomers where every (SignupStatus) = "Approved"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -61,11 +61,14 @@ exports.findAllStores = function(req, res) {
 			
 			
 			for(var i=0; i < items.length; i++) {
-				var item = items[i] ;	
-                console.log(item) ;				
+				var item = items[i] ;
+                var dateEnd = new Date(item["endDate"]);				
+                console.log(item) ;		
+                				
 				var attributes = item["Attributes"] ;
-				storesList[i] = new Store(attributes) ;
-				
+				if ((item["PlanType"]=="Free" && dateEnd >= today) || item["PlanType"]=="Paid"){
+					storesList[i] = new Store(attributes) ;
+				}
 				/*
 				//console.log(attributes) ;
 				for(var j in attributes) {
