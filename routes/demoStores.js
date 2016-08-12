@@ -600,7 +600,7 @@ exports.createNewStore = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	var pictureURL; // = "http://images.appsonmobile.com/locallink/stores/" + req.file.path ;
+	var pictureURL;// = "http://images.appsonmobile.com/locallink/stores/" + req.file.path ;
 	if(req.file){
 		pictureURL = "http://images.appsonmobile.com/locallink/stores/" + req.file.path ;
 	}
@@ -608,10 +608,7 @@ exports.createNewStore = function(req, res) {
 		pictureURL = "http://images.appsonmobile.com/locallink/stores/DefaultStoreImage.jpg";  
 	}
 	
-	console.log(pictureURL);
-	if(req.file){
-		console.log(req.file.path);
-	}
+	
 	
 
 	var params = {
