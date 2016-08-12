@@ -181,22 +181,22 @@ exports.createNewDeal = function(req, res) {
 		{
 		  Name: 'DealStatus', /* required */
 		  Value: req.body.DealStatus, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealStartDate', /* required */
 		  Value: req.body.DealStartDate, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealPictureURL', /* required */
 		  Value: req.body.DealPictureURL, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealName', /* required */
 		  Value: req.body.DealName, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealEndDate', /* required */
@@ -216,12 +216,12 @@ exports.createNewDeal = function(req, res) {
 		{
 		  Name: 'DealDescription', /* required */
 		  Value: req.body.DealDescription, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'DealImageURL', /* required */
 		  Value: req.body.DealImageURL, /* required */
-		  Replace: false
+		  Replace: true
 		}
 	],
 	  DomainName: 'DemoMyDeals', /* required */
