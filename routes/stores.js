@@ -8,9 +8,10 @@ var upload = multer({ dest: 'uploads/' }) ;
 var simpleDB = null ;
 var storesList = [] ;
 var pictureURL;
-
 exports.findAllStores = function(req, res) {
-	//console.log("GET STORES") ;
+    var today = new Date();
+	
+	
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -31,13 +32,13 @@ exports.findAllStores = function(req, res) {
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyCustomers', /* required */
+		SelectExpression: 'select * from MyCustomers where SignupStatus="Approved"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
 	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
 	var cb = req.query.callback;	
-	console.log("Callback URL is " + cb) ;
+	//console.log("Callback URL is " + cb) ;
 
 	
 	console.log("Now retrieving data set from SDB") ;
@@ -48,21 +49,31 @@ exports.findAllStores = function(req, res) {
 		}
 		else     {
 			console.log("SUCCESS from AWS!") ;
-			console.log(JSON.stringify(data));           // successful response
+			//console.log(JSON.stringify(data));           // successful response
 			console.log("Objects in the AWS data element:" ) ;
-			for(var name in data) {
+			/*for(var name in data) {
 				console.log(name) ;
-			}
+			}*/
 			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
-			//console.log(items) ;
 			
-			if(items){
+			
+			
 			for(var i=0; i < items.length; i++) {
-				var item = items[i] ;	
-                console.log(item) ;				
+				var item = items[i] ;
+                
+                var endDate;				
+                				
 				var attributes = item["Attributes"] ;
-				storesList[i] = new Store(attributes) ;
+				
+				    
+				
+					storesListTmp[i] = new Store(attributes) ;
+					endDate = new Date(storesListTmp[i]["endDate"]);
+					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
+						storesList[i] = new Store(attributes) ;
+					}
+					 
 				
 				/*
 				//console.log(attributes) ;
@@ -90,11 +101,9 @@ exports.findAllStores = function(req, res) {
 				storesList[i] = store ;*/
 				//console.log(attributes) ;
 			}
-			}
 			
 		}
-		
-		console.log("Stores List is: " + storesList);
+		//console.log("Stores List is: " + storesList);
 		var storesJsonOutput = JSON.stringify(storesList) ;
 	    
 		
@@ -508,6 +517,57 @@ exports.uploadStoreImage = function(req, res,next) {
 	
 	
 };
+exports.uploadStoreImage = function(req, res,next) {
+	
+	
+		// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+	console.log("Now uploading the file...") ;
+	
+	upload.single('fileUpload') ;
+	console.log("Upload complete...") ;
+	
+	
+	var storage_s3 = s3({
+		destination : function( req, file, cb ) {
+			cb( null, '' );
+		},
+		filename    : function( req, file, cb ) {
+			cb( null, req.body.businessName + ".jpg" );
+		},
+		bucket      : 'images.appsonmobile.com/locallink/stores',
+		region      : 'us-west-2'
+	});
+	var uploadMiddleware = multer({ storage: storage_s3 }).single('fileUpload');
+	console.log("Uploading file");
+	
+	// calling middleware function directly instead of allowing express to call, so we can do error handling. 
+	uploadMiddleware(req, res, function(err) {
+		if(err) {
+			console.log("Error uploading file" + err) ;
+			//next() ;
+			res.status(500).send('{ "success": false, "msg": "Error adding image: "' + err + "}") ;
+		}
+		else {
+			console.log("File upload successful") ;
+			next();
+			//res.status(200).send("File upload successful") ;
+		}
+	});
+	
+	
+	
+};
 exports.createNewStore = function(req, res) {
 
 	var startDate = new Date();
@@ -616,7 +676,6 @@ exports.createNewStore = function(req, res) {
 		  Value: req.body.websiteDisplayName, /* required */
 		  Replace: false
 		},
-		,
 		{
 		  Name: 'SignupStatus', /* required */
 		  Value: 'Pending', /* required */
@@ -625,12 +684,12 @@ exports.createNewStore = function(req, res) {
 		{
 		  Name: 'StartDate', /* required */
 		  Value: startDate.toString(), /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'EndDate', /* required */
 		  Value: endDate.toString(), /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'PlanType', /* required */
@@ -668,3 +727,4 @@ exports.createNewStore = function(req, res) {
 	});
 	
 };
+
