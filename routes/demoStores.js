@@ -626,7 +626,7 @@ exports.createNewStore = function(req, res) {
 		{
 		  Name: 'Category', /* required */
 		  Value: req.body.category, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'phoneNumber', /* required */
@@ -641,42 +641,42 @@ exports.createNewStore = function(req, res) {
 		{
 		  Name: 'email', /* required */
 		  Value: req.body.emailAddress, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'loginEmail', /* required */
 		  Value: req.body.loginEmail, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'zipcode', /* required */
 		  Value: req.body.zipcode, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'state', /* required */
 		  Value: req.body.state, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'city', /* required */
 		  Value: req.body.city, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'pictureURL', /* required */
 		  Value: pictureURL,//req.body.pictureURL, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'website', /* required */
 		  Value: "http://" + req.body.websiteDisplayName, //req.body.website, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'websiteDisplayName', /* required */
 		  Value: req.body.websiteDisplayName, /* required */
-		  Replace: false
+		  Replace: true
 		},
 		{
 		  Name: 'SignupStatus', /* required */
