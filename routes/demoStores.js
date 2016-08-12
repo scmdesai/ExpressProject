@@ -608,6 +608,10 @@ exports.createNewStore = function(req, res) {
 		pictureURL = "http://images.appsonmobile.com/locallink/stores/DefaultStoreImage.jpg";  
 	}
 	
+	console.log(pictureURL);
+	if(req.file){
+		console.log(req.file.path);
+	}
 	
 
 	var params = {
