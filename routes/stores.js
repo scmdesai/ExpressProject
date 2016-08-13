@@ -6,7 +6,6 @@ var s3 = require( 'multer-storage-s3' );
 var upload = multer({ dest: 'uploads/' }) ;
 
 var simpleDB = null ;
-var storesListTmp = [] ;
 var storesList = [] ;
 var pictureURL;
 exports.findAllStores = function(req, res) {
