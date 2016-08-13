@@ -60,7 +60,7 @@ exports.findAllStores = function(req, res) {
 			
 			
 			
-			for(var i=0; i < items.length; i++) {
+			for(var i=0,j=0; i < items.length; i++) {
 				var item = items[i] ;
                 
                 var endDate;				
@@ -72,7 +72,8 @@ exports.findAllStores = function(req, res) {
 					storesListTmp[i] = new Store(attributes) ;
 					endDate = new Date(storesListTmp[i]["endDate"]);
 					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
-						storesList[i] = new Store(attributes) ;
+						storesList[j] = new Store(attributes) ;
+						j++;
 					}
 					 
 				
