@@ -8,9 +8,11 @@ var express = require('express')
   , user = require('./routes/user')
   , stores = require('./routes/stores')
   , deals = require('./routes/deals')
+  , subscriptions = require('./routes/subscriptions')
   // *** demo end-points ***
   , demoStores = require('./routes/demoStores')
   , demoDeals = require('./routes/demoDeals')
+  , demoSubscriptions = require('./routes/demoSubscriptions')
   // *** demo end-points ***
   , devices = require('./routes/devices')
   , analytics_buzz_popularity = require('./routes/analytics_buzz_popularity')
@@ -142,7 +144,7 @@ app.post('/devices', devices.registerNewDevice) ;
 app.get('/demoStores', demoStores.findAllStores);
 app.get('/demoStores/:storeName', demoStores.findByStoreName);
 app.get('/demoDeals', demoDeals.findAllDeals);
-//app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus);
+app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus);
 
 app.post('/demoStores/:id',demoStores.uploadStoreImage,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
