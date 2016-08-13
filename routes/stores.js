@@ -7,6 +7,7 @@ var upload = multer({ dest: 'uploads/' }) ;
 
 var simpleDB = null ;
 var storesList = [] ;
+var storesListTmp = [] ;
 var pictureURL;
 exports.findAllStores = function(req, res) {
     var today = new Date();
