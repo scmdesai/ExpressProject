@@ -728,7 +728,7 @@ exports.createNewStore = function(req, res) {
 			var sendToEmail = req.body.loginEmail ;
 			console.log("Now sending email to: " + sendToEmail) ;
 			// load AWS SES
-			var ses = new aws.SES({apiVersion: '2010-12-01'});
+			var ses = new AWS.SES({apiVersion: '2010-12-01'});
 
 			// send to list
 			var to = [sendToEmail] ;
