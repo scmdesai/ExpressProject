@@ -14,14 +14,6 @@ exports.registerNewDevice = function(req, res) {
 	console.log("Device type is:" + json.deviceType) ;
 	console.log("Registration ID is:" + json.registrationID) ;
 	
-	var latitude;
-    var longitude;
-	navigator.geolocation.getCurrentPosition(function showLocation(position) {
-             latitude = position.coords.latitude;
-             longitude = position.coords.longitude;
-            
-         });
-	
 	// Invoke AWS SNS call to create platform endpoint
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -55,7 +47,7 @@ exports.registerNewDevice = function(req, res) {
 	var params = {
 		PlatformApplicationArn: platformAppARN, /* required */
 		Token: json.registrationID , /* required */
-		CustomUserData: latitude + ','+ longitude
+		CustomUserData: ''
 	};
 	var endPointARN = '' ;
 	snsClient.createPlatformEndpoint(params, function(err, data) {
