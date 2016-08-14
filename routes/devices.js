@@ -47,7 +47,7 @@ exports.registerNewDevice = function(req, res) {
 	var params = {
 		PlatformApplicationArn: platformAppARN, /* required */
 		Token: json.registrationID , /* required */
-		CustomUserData: ''
+		CustomUserData: json.userLocation
 	};
 	var endPointARN = '' ;
 	snsClient.createPlatformEndpoint(params, function(err, data) {
