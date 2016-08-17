@@ -647,10 +647,16 @@ exports.dealImageURLUpdate = function(req, res) {
 			var params = {
 				Message: JSON.stringify(message),
 				Subject: 'New Deal from ' +  req.body.businessName,
+				MessageAttributes: {
+					businessName: {
+						DataType: 'String', /* required */
+						StringValue: req.body.businessName
+					}
+				},
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
-				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
+				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
