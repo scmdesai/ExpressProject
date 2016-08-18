@@ -624,10 +624,10 @@ exports.createNewStore = function(req, res) {
 	
 	var city = req.body.city;
 	
-	var topicName = city;
+	var topicName = 'LocalBuzz'+city;
 	
 	var paramsTopic = {
-		Name: city /* required */
+		Name: '"'+topicName+'"' /* required */
 	};
 	snsClient.createTopic(paramsTopic, function(err, data) {
 	  if (err) console.log(err, err.stack); // an error occurred
