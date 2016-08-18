@@ -47,7 +47,7 @@ exports.registerNewDevice = function(req, res) {
 	var params = {
 		PlatformApplicationArn: platformAppARN, /* required */
 		Token: json.registrationID , /* required */
-		CustomUserData: '' //json.userLocation
+		CustomUserData: json.userLocation
 	};
 	var endPointARN = '' ;
 	snsClient.createPlatformEndpoint(params, function(err, data) {
@@ -73,11 +73,16 @@ exports.registerNewDevice = function(req, res) {
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			//res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
-			
+			if(json.userLocation=="60540"){
+			 topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzNaperville';
+			}
+			else {
+				topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+			}
 			console.log("Endpoint ARN is: " + endPointARN) ;
 			var params = {
 				Protocol: 'application', /* required */
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
+				TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
 				Endpoint: data.EndpointArn
 			};
 			snsClient.subscribe(params, function(err, data) {
