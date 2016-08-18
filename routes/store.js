@@ -78,7 +78,9 @@ function Store(attributes) {
 			this.planType = valueAttr ;
 			break ;
 			
-		
+		case "TopicName":
+			this.topicName = valueAttr ;
+			break ;
 			
 			
 		}	

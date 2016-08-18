@@ -9,6 +9,7 @@ var simpleDB = null ;
 var storesListTmp = [] ;
 var storesList = [] ;
 var pictureURL;
+var snsClient = null ;
 
 exports.findAllStores = function(req, res) {
     var today = new Date();
@@ -589,8 +590,18 @@ exports.createNewStore = function(req, res) {
 		}); 
 		AWS.config.region = "us-west-2" ;
 	}
-
-	console.log("Credentials retrieval successful") ;
+    console.log("Credentials retrieval successful") ;
+	
+	// Create an SNS client
+	console.log("Creating SNS Client to create a topic") ;
+	if(snsClient == null) {
+		console.log("SNS is null, creating new connection") ;
+		snsClient = new AWS.SNS() ;
+	}
+	console.log("SNS Client creation successful") ;
+	
+	
+	
 	// Create an SDB client
 	console.log("Creating SDB Client") ;
 	if(simpleDB == null) {
@@ -611,6 +622,17 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
+	var city = req.body.city;
+	
+	var topicName = "LocalBuzzTopic-"+ city;
+	
+	var paramsTopic = {
+		Name: topicName /* required */
+	};
+	sns.createTopic(paramsTopic, function(err, data) {
+	  if (err) console.log(err, err.stack); // an error occurred
+	  else     console.log(data);           // successful response
+	});
 	
 
 	var params = {
@@ -698,6 +720,11 @@ exports.createNewStore = function(req, res) {
 		{
 		  Name: 'PlanType', /* required */
 		  Value: 'Free',
+		  Replace: true
+		},
+		{
+		  Name: 'TopicName', /* required */
+		  Value: topicName,
 		  Replace: true
 		}
 	],
