@@ -623,6 +623,7 @@ exports.createNewStore = function(req, res) {
 	
 	
 	var city = 'Aurora';
+	console.log(req.body.city); 
 	
 	var topicName = 'LocalBuzz' + city ;
 	
