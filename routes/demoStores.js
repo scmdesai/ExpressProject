@@ -622,7 +622,7 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
-	var city = "'" + req.body.city + "'";
+	var city = '\'' + req.body.city + '\'';
 	console.log(city); 
 	
 	var topicName = 'LocalBuzz' + city ;
