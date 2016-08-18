@@ -624,7 +624,7 @@ exports.createNewStore = function(req, res) {
 	
 	var city = req.body.city;
 	
-	var topicName = city.toString();
+	var topicName = 'LocalBuzzNaperville';
 	
 	var paramsTopic = {
 		Name: topicName /* required */
