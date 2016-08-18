@@ -13,6 +13,7 @@ exports.registerNewDevice = function(req, res) {
 	
 	console.log("Device type is:" + json.deviceType) ;
 	console.log("Registration ID is:" + json.registrationID) ;
+	console.log("User Location is:" + json.userLocation) ;
 	
 	// Invoke AWS SNS call to create platform endpoint
 	// switch to either use local file or AWS credentials depending on where the program is running
