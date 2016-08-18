@@ -622,7 +622,7 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
-	var city = 'Naperville';
+	var city = 'Aurora';
 	
 	var topicName = 'LocalBuzz' + city ;
 	
