@@ -722,11 +722,56 @@ exports.createNewStore = function(req, res) {
 			//req.body.customerId = uuid1;
 			//next();
 			
+			//res.status(200).send('{"success":true,"msg":"New store created!"}') ;
+			//send confirmation email about registration to facebook email address
+			var sendToEmail = req.body.loginEmail ;
+			console.log("Now sending email to: " + sendToEmail) ;
+			// load AWS SES
+			var ses = new AWS.SES({apiVersion: '2010-12-01'});
+
+			// send to list
+			var to = [sendToEmail] ;
+
+			// this must relate to a verified SES account
+			var from = "info@appsonmobile.com" ;
+
+
+			// this sends the email
+			// @todo - add HTML version
+			ses.sendEmail( { 
+			   Source: from, 
+			   Destination: { ToAddresses: to },
+			   Message: {	
+				   Subject: {
+					  Data: 'Thank you for subscribing to Local Buzz'
+				   },
+				   Body: {
+					   Text: {
+						   Data: 'We will confirm your subscription in the next two days',
+					   }
+					}
+			   }
+			}
+			, function(err, data) {
+				if(err) {
+					console.log("Error sending email") ;
+					console.log(err, err.stack) ;
+				} else {
+					console.log('Email sent:');
+					console.log(data);
+				}
+			 });
+			
+			
 			res.status(200).send('{"success":true,"msg":"New store created!"}') ;
 			
 			
 			
 		}
+			
+			
+			
+		
 	});
 	
 };
