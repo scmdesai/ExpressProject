@@ -77,7 +77,7 @@ exports.registerNewDevice = function(req, res) {
 			 topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzNaperville';
 			}
 			else {
-				topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification';
 			}
 			console.log("Endpoint ARN is: " + endPointARN) ;
 			var params = {
