@@ -251,18 +251,20 @@ exports.createNewDeal = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
+			
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
-			
+			var topicArn= 'LocalBuzzNaperville';
 			var params = {
 				Message: JSON.stringify(message),
 				Subject: 'New Deal from ' +  req.body.businessName,
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				TopicArn: 'arn:aws:sns:us-west-2:861942316283:'+topicArn
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
