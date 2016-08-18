@@ -622,8 +622,8 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
-	var city = 'Aurora';
-	console.log(req.body.city); 
+	var city = "'" + req.body.city + "'";
+	console.log(city); 
 	
 	var topicName = 'LocalBuzz' + city ;
 	
