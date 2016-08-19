@@ -79,7 +79,7 @@ exports.registerNewDevice = function(req, res) {
 			function (error, response, body) {
 		    if (!error && response.statusCode == 200) {
 			    
-				console.log(body["postalCodes"]); // Show the HTML for the Google homepage.
+				console.log(body.postalCodes); // Show the HTML for the Google homepage.
 				/*for(var i=0;i<100;i++){
 				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ postalCodes[i].placeName;
 				  console.log("Endpoint ARN is: " + endPointARN) ;
