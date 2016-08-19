@@ -79,6 +79,7 @@ exports.registerNewDevice = function(req, res) {
 			  if (err) console.log(err, err.stack); // an error occurred
 			  else     console.log(data);           // successful response
 			});
+			}
 			/*
 			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
 			function (error, response, body) {
@@ -111,8 +112,8 @@ exports.registerNewDevice = function(req, res) {
 						
 				});
 			  }
-			  }*/
 			  }
+			  }*/
 			  
 			});
 
@@ -129,8 +130,8 @@ exports.registerNewDevice = function(req, res) {
 				topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification';
 			}*/
 			
-		}
-	});
+		//}
+	//});
 	
 	
 	
