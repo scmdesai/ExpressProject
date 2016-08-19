@@ -651,7 +651,9 @@ exports.dealImageURLUpdate = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			console.log(req.body.city);
-			var topicArn= 'LocalBuzzNaperville';
+			var city = (req.body.city).toString();
+			var topicArn= 'LocalBuzz'+ city;
+			//topicArnStr = topicArn.toString();
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
