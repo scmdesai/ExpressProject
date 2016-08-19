@@ -75,7 +75,7 @@ exports.registerNewDevice = function(req, res) {
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			
-			snsClient.listTopics(params, function(err, data) {
+			snsClient.listTopics(params1={}, function(err, data) {
 			  if (err) console.log(err, err.stack); // an error occurred
 			  else     console.log(data);           // successful response
 			});
