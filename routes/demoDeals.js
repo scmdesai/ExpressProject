@@ -654,7 +654,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			var city = (req.body.city).toString();
 			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ city;
 			var topicArnStr = topicArn.toString();
-			console.log(topicArnStr));
+			console.log(topicArnStr);
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
