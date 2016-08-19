@@ -622,10 +622,10 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
-	var city = (req.body.city).toString();
-	console.log(city); 
+	var place = (req.body.city).toString() + (req.body.state).toString();
+	console.log(place); 
 	
-	var topicName = 'LocalBuzz' + city ;
+	var topicName = 'LocalBuzz' + place ;
 	var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
 	
 	var paramsTopic = {
