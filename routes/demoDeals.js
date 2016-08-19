@@ -262,7 +262,7 @@ exports.createNewDeal = function(req, res) {
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
-			var topicArn= (req.body.TopicArn).toString();
+			var topicArn= req.body.TopicArn;
 			
 			var params = {
 				Message: JSON.stringify(message),
@@ -652,7 +652,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			
-			var topicArn= (req.body.TopicArn).toString();
+			var topicArn= req.body.TopicArn;
 			
 			
 			var message = {
