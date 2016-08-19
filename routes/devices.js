@@ -79,8 +79,8 @@ exports.registerNewDevice = function(req, res) {
 			function (error, response, body) {
 		    if (!error && response.statusCode == 200) {
 				console.log(body) // Show the HTML for the Google homepage.
-				for(postalcodes in body.postalCodes){
-				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ body.postalCodes[postalcodes].placeName;
+				for(var i=0;i<100;i++){
+				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ body.postalCodes[i].placeName;
 				  console.log("Endpoint ARN is: " + endPointARN) ;
 				  var params = {
 					Protocol: 'application', /* required */
@@ -98,7 +98,7 @@ exports.registerNewDevice = function(req, res) {
 					}
 						
 				});
-			}  
+			  }
 			  }
 			});
 
