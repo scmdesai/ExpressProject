@@ -76,7 +76,9 @@ exports.registerNewDevice = function(req, res) {
 			endPointARN = data.EndpointArn  ;
 			//res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
 			var options = {
-			  host: "http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678",
+			  host: "http://api.geonames.org",
+			  path:"/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678",
+			  
 			  
 			};
 			var req = http.get(options, function(res) {
