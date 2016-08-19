@@ -74,13 +74,11 @@ exports.registerNewDevice = function(req, res) {
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			//res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
-			if(json.userLocation=="60540"){
-			 topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzNaperville';
-			}
-			else {
-				topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification';
-			}
-			console.log("Endpoint ARN is: " + endPointARN) ;
+	    $.getJSON("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678", function(jsonArea) {
+		   (for postalcodes in jsonArea.postalCodes){
+		   
+		    topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[postalcodes].placeName;
+		    console.log("Endpoint ARN is: " + endPointARN) ;
 			var params = {
 				Protocol: 'application', /* required */
 				TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
@@ -97,6 +95,18 @@ exports.registerNewDevice = function(req, res) {
 				}
 					
 			});
+		   }
+			
+		
+		
+			});
+			/*if(json.userLocation=="60540"){
+			 topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzNaperville';
+			}
+			else {
+				topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification';
+			}*/
+			
 		}
 	});
 	
