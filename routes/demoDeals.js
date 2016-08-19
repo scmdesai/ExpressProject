@@ -262,7 +262,7 @@ exports.createNewDeal = function(req, res) {
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
-			vvar topicArn= (req.body.TopicArn).toString();
+			var topicArn= (req.body.TopicArn).toString();
 			
 			var params = {
 				Message: JSON.stringify(message),
