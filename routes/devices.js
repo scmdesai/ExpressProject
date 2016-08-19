@@ -1,5 +1,6 @@
 var AWS = require('aws-sdk');
 var snsClient = null ;
+var http = require('http');
 
 exports.registerNewDevice = function(req, res) {
 
@@ -74,16 +75,30 @@ exports.registerNewDevice = function(req, res) {
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			//res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
-			xhr = new XMLHttpRequest();
-			var url = "http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678";
-			xhr.open("GET", url, true);
-			//xhr.setRequestHeader("Content-type", "application/json");
-			xhr.onreadystatechange = function () { 
-				if (xhr.readyState == 4 && xhr.status == 200) {
-					var jsonArea = JSON.parse(xhr.responseText);
-					console.log(jsonArea.success + ", " + jsonArea.msg) ;
-				}
-			}
+			var options = {
+			  host: "http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678",
+			  
+			};
+			var req = http.get(options, function(res) {
+			  console.log('STATUS: ' + res.statusCode);
+			  console.log('HEADERS: ' + JSON.stringify(res.headers));
+
+			  // Buffer the body entirely for processing as a whole.
+			  var bodyChunks = [];
+			  res.on('data', function(chunk) {
+				// You can process streamed parts here...
+				bodyChunks.push(chunk);
+			  }).on('end', function() {
+				var body = Buffer.concat(bodyChunks);
+				console.log('BODY: ' + body);
+				// ...and/or process the entire body here.
+			  })
+			});
+
+req.on('error', function(e) {
+  console.log('ERROR: ' + e.message);
+});
+			
 			
 			
 			  
