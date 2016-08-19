@@ -80,10 +80,10 @@ exports.registerNewDevice = function(req, res) {
 			  if (err) console.log(err, err.stack); // an error occurred
 			  else   {
 				//console.log(data);           // successful response
-				var parseList  = JSON.parse(data);
+				//var parseList  = JSON.parse(data);
 				var i=0;
-				while(parseList.Topics[i]){
-				console.log(parseList.Topics[i].TopicArn);
+				while(data.Topics[i]){
+				console.log(data.Topics[i].TopicArn);
 				i++;
 				}
 				}
