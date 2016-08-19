@@ -1,6 +1,6 @@
 var AWS = require('aws-sdk');
 var snsClient = null ;
-var http = require('http');
+var request = require('request');
 
 exports.registerNewDevice = function(req, res) {
 
@@ -74,32 +74,13 @@ exports.registerNewDevice = function(req, res) {
 			console.log("Device registered successfully") ;
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
-			//res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
-			var options = {
-			  host: "http://api.geonames.org",
-			  path:"/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678",
-			  
-			  
-			};
-			var req = http.get(options, function(res) {
-			  console.log('STATUS: ' + res.statusCode);
-			  console.log('HEADERS: ' + JSON.stringify(res.headers));
-
-			  // Buffer the body entirely for processing as a whole.
-			  var bodyChunks = [];
-			  res.on('data', function(chunk) {
-				// You can process streamed parts here...
-				bodyChunks.push(chunk);
-			  }).on('end', function() {
-				var body = Buffer.concat(bodyChunks);
-				console.log('BODY: ' + body);
-				// ...and/or process the entire body here.
-			  })
+			
+			request('http://www.google.com', function (error, response, body) {
+		    if (!error && response.statusCode == 200) {
+				console.log(body) // Show the HTML for the Google homepage.
+			  }
 			});
 
-req.on('error', function(e) {
-  console.log('ERROR: ' + e.message);
-});
 			
 			
 			

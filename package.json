@@ -21,6 +21,7 @@
     "multer-storage-s3": "1.1.1",
     "node-uuid": ">= 1.4.1",
     "serve-favicon": "^2.3.0",
-	"connect-timeout": "1.7.0"
+	"connect-timeout": "1.7.0",
+	"request":"2.74.0"
   }
 }
