@@ -24,8 +24,7 @@ var express = require('express')
   , methodOverride = require('method-override')
   , errorHandler = require('errorhandler')
   , multer  = require('multer')
-  , timeout = require('connect-timeout')
-  ,request= require('request');
+  , timeout = require('connect-timeout');
   
   
 //var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
