@@ -86,7 +86,7 @@ exports.registerNewDevice = function(req, res) {
 				listOfTopics.push(data.Topics[i].TopicArn);
 				i++;
 				}
-				}+-
+				}
 			});
 			//}
 			
