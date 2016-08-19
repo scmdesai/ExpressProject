@@ -75,7 +75,7 @@ exports.registerNewDevice = function(req, res) {
 			endPointARN = data.EndpointArn  ;
 			//res.status(200).send('{"success":true,"msg":"Device Registered Successfully"}') ;
 	    $.getJSON("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678", function(jsonArea) {
-		   (for postalcodes in jsonArea.postalCodes){
+		   for(postalcodes in jsonArea.postalCodes){
 		   
 		    topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[postalcodes].placeName;
 		    console.log("Endpoint ARN is: " + endPointARN) ;
