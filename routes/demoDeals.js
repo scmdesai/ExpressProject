@@ -651,10 +651,9 @@ exports.dealImageURLUpdate = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
-			var city = (req.body.city);
-			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ city;
-			var topicArnStr = topicArn;
-			console.log(topicArnStr);
+			var city = (req.body.city).toString();
+			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ city + ' ' ;
+			
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
@@ -674,7 +673,7 @@ exports.dealImageURLUpdate = function(req, res) {
 				//TargetArn: 'TopicArn',
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
-				TopicArn: topicArnStr
+				TopicArn: topicArn
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
