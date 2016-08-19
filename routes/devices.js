@@ -74,7 +74,7 @@ exports.registerNewDevice = function(req, res) {
 			console.log("Device registered successfully") ;
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
-			var listOfTopics = null;
+			var listOfTopics = [];
 			
 			snsClient.listTopics(params1={}, function(err, data) {
 			  if (err) console.log(err, err.stack); // an error occurred
