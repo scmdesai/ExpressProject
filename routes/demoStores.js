@@ -626,6 +626,7 @@ exports.createNewStore = function(req, res) {
 	console.log(city); 
 	
 	var topicName = 'LocalBuzz' + city ;
+	var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
 	
 	var paramsTopic = {
 		Name: topicName /* required */
@@ -730,7 +731,7 @@ exports.createNewStore = function(req, res) {
 		},
 		{
 		  Name: 'TopicArn', /* required */
-		  Value: 'arn:aws:sns:us-west-2:861942316283'+topicName,
+		  Value: topicArn,
 		  Replace: true
 		}
 	],
