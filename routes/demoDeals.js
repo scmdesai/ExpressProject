@@ -262,7 +262,7 @@ exports.createNewDeal = function(req, res) {
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
-			var topicArn= 'LocalBuzz'+(req.body.city).toString();
+			vvar topicArn= (req.body.TopicArn).toString();
 			
 			var params = {
 				Message: JSON.stringify(message),
@@ -270,7 +270,7 @@ exports.createNewDeal = function(req, res) {
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:'+topicArn
+				TopicArn: topicArn
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
@@ -651,8 +651,9 @@ exports.dealImageURLUpdate = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
-			var city = (req.body.city).toString();
-			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+city ;
+			
+			var topicArn= (req.body.TopicArn).toString();
+			
 			
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
@@ -673,7 +674,7 @@ exports.dealImageURLUpdate = function(req, res) {
 				//TargetArn: 'TopicArn',
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
-				TopicArn: topicArn.toString()
+				TopicArn: topicArn
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {

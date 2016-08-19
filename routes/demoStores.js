@@ -727,6 +727,11 @@ exports.createNewStore = function(req, res) {
 		  Name: 'TopicName', /* required */
 		  Value: topicName,
 		  Replace: true
+		},
+		{
+		  Name: 'TopicArn', /* required */
+		  Value: 'arn:aws:sns:us-west-2:861942316283'+topicName,
+		  Replace: true
 		}
 	],
 	  DomainName: 'DemoMyCustomers', /* required */
