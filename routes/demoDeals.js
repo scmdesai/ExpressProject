@@ -222,6 +222,11 @@ exports.createNewDeal = function(req, res) {
 		  Name: 'DealImageURL', /* required */
 		  Value: req.body.DealImageURL, /* required */
 		  Replace: false
+		},
+		{
+		  Name: 'city', /* required */
+		  Value: req.body.city, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'DemoMyDeals', /* required */
@@ -257,7 +262,8 @@ exports.createNewDeal = function(req, res) {
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
-			var topicArn= 'LocalBuzzNaperville';
+			var topicArn= 'LocalBuzz'+(req.body.city).toString();
+			
 			var params = {
 				Message: JSON.stringify(message),
 				Subject: 'New Deal from ' +  req.body.businessName,
@@ -611,6 +617,11 @@ exports.dealImageURLUpdate = function(req, res) {
 		  Name: 'DealImageURL', /* required */
 		  Value: dealURL, /* required */
 		  Replace: false
+		},
+		{
+		  Name: 'city', /* required */
+		  Value: req.body.city, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'DemoMyDeals', /* required */
@@ -639,7 +650,7 @@ exports.dealImageURLUpdate = function(req, res) {
 				snsClient = new AWS.SNS() ;
 			}
 			console.log("SNS Client creation successful") ;
-			
+			var topicArn= 'LocalBuzz'+(req.body.city).toString();
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
@@ -657,8 +668,9 @@ exports.dealImageURLUpdate = function(req, res) {
 				},
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
+				TopicArn: 'arn:aws:sns:us-west-2:861942316283:'+ topicArn;
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {

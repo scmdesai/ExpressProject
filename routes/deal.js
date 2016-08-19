@@ -62,7 +62,10 @@ function Deal(itemName,attributes) {
 		
         case "DealImageURL":
 			this.dealImageURL = valueAttr ;
-			break ;		
+			break ;	
+		case "city":
+			this.city = valueAttr ;
+			break ;				
 		}		
 	}
 }
