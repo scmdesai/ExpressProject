@@ -78,7 +78,7 @@ exports.registerNewDevice = function(req, res) {
 			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
 			function (error, response, body) {
 		    if (!error && response.statusCode == 200) {
-				console.log(JSON.stringify(body)); // Show the HTML for the Google homepage.
+				console.log(request.pipe(body)); // Show the HTML for the Google homepage.
 				/*for(var i=0;i<100;i++){
 				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ postalCodes[i].placeName;
 				  console.log("Endpoint ARN is: " + endPointARN) ;
