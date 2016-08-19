@@ -670,7 +670,7 @@ exports.dealImageURLUpdate = function(req, res) {
 				//TargetArn: 'TopicArn',
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
 				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:'+ topicArn;
+				TopicArn: 'arn:aws:sns:us-west-2:861942316283:'+ topicArn
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
