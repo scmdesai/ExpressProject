@@ -80,14 +80,18 @@ exports.registerNewDevice = function(req, res) {
 		    if (!error && response.statusCode == 200) {
 			    
 				var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
-				console.log(jsonArea.postalCodes[0].placeName);
-				/*for(var i=0;i<100;i++){
-				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ postalCodes[i].placeName;
+				
+				for(var i=0;i<500;i++){
+				  if(jsonArea.postalCodes[i]){
+				  console.log(jsonArea.postalCodes[i].placeName);
+				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName;
 				  console.log("Endpoint ARN is: " + endPointARN) ;
+				  console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName) ;
+				  
 				  var params = {
 					Protocol: 'application', /* required */
-				/*	TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
-				/*	Endpoint: data.EndpointArn
+					TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
+					Endpoint: data.EndpointArn
 				 };
 				 snsClient.subscribe(params, function(err, data) {
 					if (err) {
@@ -100,7 +104,8 @@ exports.registerNewDevice = function(req, res) {
 					}
 						
 				});
-			  }*/
+			  }
+			  }
 			  }
 			});
 
