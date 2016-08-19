@@ -74,10 +74,19 @@ exports.registerNewDevice = function(req, res) {
 			console.log("Device registered successfully") ;
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
+			var listOfTopics = null;
 			
 			snsClient.listTopics(params1={}, function(err, data) {
 			  if (err) console.log(err, err.stack); // an error occurred
-			  else     console.log(data);           // successful response
+			  else   {
+				//console.log(data);           // successful response
+				var parseList  = JSON.parse(data);
+				var i=0;
+				while(parseList.Topics[i]){
+				console.log(parseList.Topics[i].TopicArn);
+				i++;
+				}
+				}
 			});
 			}
 			/*
