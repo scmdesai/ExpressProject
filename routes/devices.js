@@ -97,6 +97,9 @@ exports.registerNewDevice = function(req, res) {
 					if (err) {
 						console.log(err, err.stack); // an error occurred
 						//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+						//if(err.stack==='NotFound: Topic does not exist'){ 
+							return 0;
+						//}
 					}	
 					else {
 						console.log(data);           // successful response
@@ -107,6 +110,7 @@ exports.registerNewDevice = function(req, res) {
 			  }
 			  }
 			  }
+			  
 			});
 
 			
