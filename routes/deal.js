@@ -66,7 +66,11 @@ function Deal(itemName,attributes) {
 		case "city":
 			this.city = valueAttr ;
 			break ;				
-		}		
+		}	
+        case "state":
+			this.state = valueAttr ;
+			break ;				
+		}			
 	}
 }
 

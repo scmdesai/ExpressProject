@@ -227,6 +227,11 @@ exports.createNewDeal = function(req, res) {
 		  Name: 'city', /* required */
 		  Value: req.body.city, /* required */
 		  Replace: false
+		},
+		{
+		  Name: 'state', /* required */
+		  Value: req.body.state, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'DemoMyDeals', /* required */
@@ -262,7 +267,7 @@ exports.createNewDeal = function(req, res) {
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
-			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString();
+			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
 			
 			var params = {
 				Message: JSON.stringify(message),
@@ -622,6 +627,11 @@ exports.dealImageURLUpdate = function(req, res) {
 		  Name: 'city', /* required */
 		  Value: req.body.city, /* required */
 		  Replace: false
+		},
+		{
+		  Name: 'state', /* required */
+		  Value: req.body.state, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'DemoMyDeals', /* required */
@@ -653,7 +663,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			
 			
 			
-			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString();
+			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
 			
 			
 			
