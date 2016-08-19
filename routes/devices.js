@@ -83,13 +83,13 @@ exports.registerNewDevice = function(req, res) {
 				//var parseList  = JSON.parse(data);
 				var i=0;
 				while(data.Topics[i]){
-				console.log(data.Topics[i].TopicArn);
+				listOfTopics.push(data.Topics[i].TopicArn);
 				i++;
 				}
-				}
+				}+-
 			});
 			}
-			/*
+			
 			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
 			function (error, response, body) {
 		    if (!error && response.statusCode == 200) {
@@ -102,27 +102,31 @@ exports.registerNewDevice = function(req, res) {
 				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName;
 				  console.log("Endpoint ARN is: " + endPointARN) ;
 				  console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName) ;
-				   
-				  var params = {
-					Protocol: 'application', /* required */
-				/*	TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
-				/*	Endpoint: data.EndpointArn
-				 };
-				 snsClient.subscribe(params, function(err, data) {
-					if (err) {
-						console.log(err, err.stack); // an error occurred
-						res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+				   for(var j=0;j< listOfTopics.length ;j++){
+				    if( topicArn == listOfTopics[j]){
+						var params = {
+						Protocol: 'application', /* required */
+						TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
+						Endpoint: data.EndpointArn
+					 };
+					snsClient.subscribe(params, function(err, data) {
+						if (err) {
+							console.log(err, err.stack); // an error occurred
+							res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+							
+						}	
+						else {
+							console.log(data);           // successful response
+							res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+						}
 						
-					}	
-					else {
-						console.log(data);           // successful response
-						res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+					});
 					}
-						
-				});
+				   }
+				  
 			  }
 			  }
-			  }*/
+			  }
 			  
 			});
 
