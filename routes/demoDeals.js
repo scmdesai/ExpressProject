@@ -652,7 +652,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			var city = (req.body.city).toString();
-			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzzNaperville' ;
+			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+city ;
 			
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
