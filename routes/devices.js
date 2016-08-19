@@ -101,7 +101,7 @@ exports.registerNewDevice = function(req, res) {
 				  console.log(jsonArea.postalCodes[i].placeName);
 				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
 				  console.log("Endpoint ARN is: " + endPointARN) ;
-				  console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName++ jsonArea.postalCodes[i].adminCode1) ;
+				  console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1) ;
 				   for(var j=0;j< listOfTopics.length ;j++){
 				    if( topicArn == listOfTopics[j]){
 						var params = {
