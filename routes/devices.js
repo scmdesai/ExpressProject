@@ -1,7 +1,8 @@
 var AWS = require('aws-sdk');
+var uuid = require('node-uuid');
 var snsClient = null ;
 var request = require('request');
-
+var simpleDB = null ;
 exports.registerNewDevice = function(req, res) {
 
 	console.log("Registering Device with AWS SNS") ;
@@ -38,7 +39,19 @@ exports.registerNewDevice = function(req, res) {
 		snsClient = new AWS.SNS() ;
 	}
 	console.log("SNS Client creation successful") ;
-
+	
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	
+	console.log("SDB Client creation successful") ;
+	
+	
+	
+   /*  createPlatformEndpoint */
 	var platformAppARN = "" ;
 	if(json.deviceType=="iOS") {
 		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS_SANDBOX/LocalLink-iOS-Dev' ;
@@ -52,134 +65,204 @@ exports.registerNewDevice = function(req, res) {
 		CustomUserData: json.userLocation
 	};
 	var endPointARN = '' ;
-	snsClient.createPlatformEndpoint(params, function(err, data) {
-		if (err) {
+	snsClient.createPlatformEndpoint(params, function(err, data) 
+	{
+		if (err) 
+		{
+		
 			console.log("Error creating endpoint, checking if endpoint is already registered with same token") ;
 			console.log(err, err.stack); // an error occurred
 			
 			var pattern1 = new RegExp(".*Endpoint (arn:aws:sns[^ ]+) already exists with the same Token.*"); // retrieve the end-point ARN already present 
 			var result = pattern1.test(err.message) ;
-			if(result) {
+			if(result) 
+			{
 				var pattern2 = new RegExp("arn:aws:sns[^ ]+");
 				console.log("Endpoint is already registered with same token") ;
 				endPointARN = pattern2.exec(err.message) ;
 				console.log(endPointARN);
 			}
-			else {
+			else 
+			{
 				console.log("Endpoint creation Failed") ;
 				res.status(500).send('{"success":false,"msg":"Endpoint creation Failed"}') ;
 			}
 			
-		} else {
+		} 
+		else
+		{
 			console.log("Device registered successfully") ;
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			var listOfTopics = [];
 			
-			
-			snsClient.listTopics(params1={}, function(err, data) {
-			  if (err) console.log(err, err.stack); // an error occurred
-			  else   {
-				//console.log(data);           // successful response
-				//var parseList  = JSON.parse(data);
-				var i=0;
-				while(data.Topics[i]){
-				listOfTopics.push(data.Topics[i].TopicArn);
-				i++;
-				}
-				}
-			});
-			
-			snsClient.listSubscriptions(params1={}, function(err, data) {
-			  if (err) console.log(err, err.stack); // an error occurred
-			  else   {
-				var i=0;
-				while(data.Subscriptions[i]){
-				var params = {
-					  SubscriptionArn: data.Subscriptions[i].SubscriptionArn.toString() /* required */
-					};
-					snsClient.unsubscribe(params, function(err, data) {
-						if (err) {
-							console.log(err, err.stack); // an error occurred
-							//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
-							
-						}	
-						else {
-							console.log(data);           // successful response
-							//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
-						}
-						
-					});
-					i++;
-				}
-				}
-			});
-			
-			
-			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
-			function (error, response, body) {
-		    if (!error && response.statusCode == 200) {
-			    
-				var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
-				
-				for(var i=0;i<500;i++){
-				  if(jsonArea.postalCodes[i]){
-				 // console.log(jsonArea.postalCodes[i].placeName);
-				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
-				  //console.log("Endpoint ARN is: " + endPointARN) ;
-				  
-				  
-				  
-				   for(var j=0;j< listOfTopics.length ;j++){
-				    if( topicArn == listOfTopics[j]){
-						var params = {
-						Protocol: 'application', /* required */
-						TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
-						Endpoint: data.EndpointArn
-					 };
-					//console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1) ;
-					snsClient.subscribe(params, function(err, data) {
-						if (err) {
-							console.log(err, err.stack); // an error occurred
-							//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
-							
-						}	
-						else {
-							console.log(data);           // successful response
-							//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
-						}
-						
-					});
+			/* List All Topics to get the list of cities that are registered with Local Buzz */
+			snsClient.listTopics(params1={}, function(err, data)
+			{
+				if (err) console.log(err, err.stack); // an error occurred
+				else  
+				{
+					//console.log(data);           // successful response
+					//var parseList  = JSON.parse(data);
+					var i=0;
+					while(data.Topics[i]){
+						listOfTopics.push(data.Topics[i].TopicArn);
+						i++;
+						//If the list of topics is more than 100,use Next token
 					}
-				   }
-				  
-			  }
-			  
-			  }
-			  res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
-			  }
-			  
+				}
 			});
+			/*At this point,we have the endpointARN,query the SDB table to get the associated subscriptions*/
+			
+			
+			/* Get current list of active subscriptions for the endpoint and unsubscribe them*/
+			
+			var	params2 = 
+			{
+				SelectExpression: 'select SubscriptionARN from EndpointARNs where EndpointARN = ' + '"' + endpointARN + '"', /* required */
+				ConsistentRead: true
+				//NextToken: 'STRING_VALUE'
+		   };
 		
-			
-			
-			
-			  
-			
-	  
-			/*if(json.userLocation=="60540"){
-			 topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzNaperville';
-			}
-			else {
-				topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification';
-			}*/
+
+		
+			console.log("Now retrieving data set from SDB") ;
+			simpleDB.select(params2, function(err, data) {
+				if (err) {
+					console.log("ERROR calling AWS Simple DB!!!") ;
+					console.log(err, err.stack); // an error occurred
+				}
+				else     
+				{
+					console.log("SUCCESS from AWS!") ;
+					var items = data["Items"];
+					for(var i=0; i < items.length; i++) {
+						var item = items[i] ;	
+						console.log(item) ;				
+						var attributes = item["Attributes"] ;
+						var attr = attributes[0] ; // we are only getting the SubscriptionARN
+						var attrName = attr["Name"] ;  // SubscriptionARN
+						var attrValue = attr["Value"] ; // value of the SubscriptionARN to pass to unsubscribe call
+						
+						console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
+						var params3 = {
+						  SubscriptionArn: attrValue /* required */
+						};
+						snsClient.unsubscribe(params3, function(err, data) {
+							if (err) {
+								console.log(err, err.stack); // an error occurred
+								//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+								
+							}	
+							else {
+								console.log(data);           // successful response
+								//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+							}
+							
+						});
+						
+					}
+				
+				}
+			});
+					
+		/* Find the list of cities within 30 miles of the user */
+			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
+				function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+					
+						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
+					
+						for(var i=0;i<500;i++){
+						  if(jsonArea.postalCodes[i]){
+						 // console.log(jsonArea.postalCodes[i].placeName);
+						  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
+						  //console.log("Endpoint ARN is: " + endPointARN) ;
+						  
+						  
+						  /* Subscribe the user to the cities that are registered with Local Buzz */
+						   for(var j=0;j< listOfTopics.length ;j++)
+							{
+								if( topicArn == listOfTopics[j])
+								{
+									var params = {
+									Protocol: 'application', /* required */
+									TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
+									Endpoint: data.EndpointArn
+								 };
+								//console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1) ;
+									snsClient.subscribe(params, function(err, data)
+									{
+										if (err) {
+											console.log(err, err.stack); // an error occurred
+											//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+											
+										}	
+										else 
+										{
+											console.log('Subscription ARN is : ' + data.SubscriptionARN);           // successful response
+											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+											/* Insert the endpoint and subscription into the SDB table ***/
+											var uuid1 = uuid.v1();
+											console.log("Generated uuid for itemName " + uuid1) ;
+											var params1 = {
+											  Attributes: [ /* required */
+												{
+												  Name: 'EndpointARN', /* required */
+												  Value: endPointARN, /* required */
+												  Replace: false
+												},
+												{
+												  Name: 'SubscriptionARN', /* required */
+												  Value: data.SubscriptionARN, /* required */
+												  Replace: false
+												}
+											],
+											  DomainName: 'EndpointARNs', /* required */
+											  ItemName: uuid1, /* required */
+											  Expected: {
+												Exists: false,
+												Name: 'EndpointARN'
+											  }
+											};
+					
+											console.log("Now inserting new row into EndpointARNs domain") ;
+											simpleDB.putAttributes(params1, function(err, data) 
+											{
+												if (err) {
+													console.log("Error inserting record") ;
+													console.log(err, err.stack); // an error occurred
+													//res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
+												}
+												else  
+												{
+													console.log("Record inserted successfully") ;
+													console.log(data);           // successful response
+
+													
+													
+													
+													
+												}
+											});
+										/**************************************************************************/
+										
+										}
+								
+									});
+								}
+							}
+					  
+						}
+				  
+					}
+					res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+				}
+				  
+			});
+	
 			
 		}
 	});
-	
-	
-	
-	
-	
 };	
 
