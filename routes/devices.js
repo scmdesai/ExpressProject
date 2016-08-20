@@ -242,7 +242,7 @@ exports.registerNewDevice = function(req, res) {
 											  ItemName: uuid1, /* required */
 											  Expected: {
 												Exists: false,
-												Name: 'SubscriptionARN'
+												Name: 'EndpointARN'
 											  }
 											};
 					
