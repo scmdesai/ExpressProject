@@ -45,6 +45,7 @@ exports.registerNewDevice = function(req, res) {
 	if(simpleDB == null) {
 		console.log("SimpleDB is null, creating new connection") ;
 		simpleDB = new AWS.SimpleDB() ;
+		
 	}
 	
 	console.log("SDB Client creation successful") ;
@@ -142,7 +143,8 @@ exports.registerNewDevice = function(req, res) {
 					{
 						for(var i=0; i < items.length; i++) {
 							var item = items[i] ;	
-							//console.log(item) ;				
+							//console.log(item) ;
+                            var itemName = item["Name"];							
 							var attributes = item["Attributes"] ;
 							var attr = attributes[0] ; // we are only getting the SubscriptionARN
 							var attrName = attr["Name"] ;  // SubscriptionARN
@@ -162,7 +164,42 @@ exports.registerNewDevice = function(req, res) {
 									//console.log(data);           // successful response
 									//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 									
+									var simpleDB2 = new AWS.SimpleDB() ;
+									var params4 = {
+									  Attributes: [ 
+										
+										{
+										  Name: 'SubscriptionARN' 
+										},
+										{
+										  Name: 'EndpointARN' 
+										}
+										
+									],
+									  DomainName: 'EndpointARNs'/* required */
+									  ItemName :itemName
+									  
+									};
 									
+									console.log("Now deleting a row in EndpointARNs domain") ;
+									simpleDB2.deleteAttributes(params4, function(err, data) {
+										 
+										if (err) {
+											console.log("Error deleting Subscription") ;
+											//console.log(err, err.stack); // an error occurred
+											//res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
+											/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
+										}
+										else  {
+											console.log("Subscription deleted successfully") ;
+											//console.log(data);           // successful response
+											//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
+											//res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
+											//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
+											
+											
+										}
+									});
 									
 								}
 								
@@ -174,41 +211,7 @@ exports.registerNewDevice = function(req, res) {
 			});
     
 			
-	var params4 = {
-	  Attributes: [ 
-		
-		{
-		  Name: 'SubscriptionARN' 
-		},
-		{
-		  Name: 'EndpointARN' 
-		}
-		
-	],
-	  DomainName: 'EndpointARNs'/* required */
-	  
-	  
-	};
 	
-	console.log("Now deleting a row in DemoMyDeals domain") ;
-	simpleDB.deleteAttributes(params4, function(err, data) {
-	     
-		if (err) {
-			console.log("Error deleting Buzz") ;
-			console.log(err, err.stack); // an error occurred
-			res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
-			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
-		}
-		else  {
-			console.log("Deal deleted successfully") ;
-			console.log(data);           // successful response
-			//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
-			res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
-			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
-			
-			
-		}
-	});
 	
 					
 		/* Find the list of cities within 30 miles of the user */
