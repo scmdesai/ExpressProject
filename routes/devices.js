@@ -189,7 +189,7 @@ exports.registerNewDevice = function(req, res) {
 						  
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
-						   if (listOfCitiesAlreadySubscribed.indexOf(jsonArea.postalCodes[i].placeName)>=0) {
+						   if (listOfCitiesAlreadySubscribed.filter(function(e){ return (e !=jsonArea.postalCodes[i].placeName);})) {
 						   //for(var j=0;j< listOfTopics.length ;j++)
 							//{
 								//if( topicArn == listOfTopics[j])
