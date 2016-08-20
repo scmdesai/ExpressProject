@@ -75,7 +75,7 @@ exports.registerNewDevice = function(req, res) {
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			var listOfTopics = [];
-			var listOfSubscriptions = [];
+			
 			
 			snsClient.listTopics(params1={}, function(err, data) {
 			  if (err) console.log(err, err.stack); // an error occurred
@@ -93,16 +93,28 @@ exports.registerNewDevice = function(req, res) {
 			snsClient.listSubscriptions(params1={}, function(err, data) {
 			  if (err) console.log(err, err.stack); // an error occurred
 			  else   {
-				console.log(data);           // successful response
-				/*//var parseList  = JSON.parse(data);
 				var i=0;
-				while(data.Topics[i]){
-				listOfSubscriptions.push(data.Topics[i].TopicArn);
-				i++;
-				}*/
+				while(data.Subscriptions[i]){
+				var params = {
+					  SubscriptionArn: data.Subscriptions[i].SubscriptionArn.toString() /* required */
+					};
+					snsClient.unsubscribe(params, function(err, data) {
+						if (err) {
+							console.log(err, err.stack); // an error occurred
+							//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+							
+						}	
+						else {
+							console.log(data);           // successful response
+							//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+						}
+						
+					});
+					i++;
+				}
 				}
 			});
-			//}
+			
 			
 			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
 			function (error, response, body) {
@@ -112,9 +124,11 @@ exports.registerNewDevice = function(req, res) {
 				
 				for(var i=0;i<500;i++){
 				  if(jsonArea.postalCodes[i]){
-				  console.log(jsonArea.postalCodes[i].placeName);
+				 // console.log(jsonArea.postalCodes[i].placeName);
 				  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
-				  console.log("Endpoint ARN is: " + endPointARN) ;
+				  //console.log("Endpoint ARN is: " + endPointARN) ;
+				  
+				  
 				  
 				   for(var j=0;j< listOfTopics.length ;j++){
 				    if( topicArn == listOfTopics[j]){
@@ -123,7 +137,7 @@ exports.registerNewDevice = function(req, res) {
 						TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
 						Endpoint: data.EndpointArn
 					 };
-					console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1) ;
+					//console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1) ;
 					snsClient.subscribe(params, function(err, data) {
 						if (err) {
 							console.log(err, err.stack); // an error occurred
