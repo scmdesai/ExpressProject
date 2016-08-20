@@ -167,8 +167,8 @@ exports.registerNewDevice = function(req, res) {
 									var simpleDB2 = new AWS.SimpleDB() ;
 									var params4 = {
 									 
-									  DomainName: 'EndpointARNs'/* required */
-									  ItemName : itemName.toString()
+									  DomainName: 'EndpointARNs',/* required */
+									  ItemName : itemName
 									  
 									};
 									
