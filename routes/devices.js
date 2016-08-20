@@ -173,7 +173,7 @@ exports.registerNewDevice = function(req, res) {
 	
 					
 		/* Find the list of cities within 30 miles of the user */
-			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60540&country=US&radius=30&maxRows=500&username=1234_5678", 
+			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678", 
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
 					
@@ -189,11 +189,11 @@ exports.registerNewDevice = function(req, res) {
 						  
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
-						  console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
+						  //console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
 						  var placeName = (jsonArea.postalCodes[i].placeName).toString();
-						   if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
+						   //if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
 						   
-						   console.log('city not subscribed ' + placeName + ' Subscribing Now');
+						   console.log(' Subscribing Now ' + placeName);
 						   
 						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
 						   //for(var j=0;j< listOfTopics.length ;j++)
@@ -216,8 +216,8 @@ exports.registerNewDevice = function(req, res) {
 										else 
 										{
 											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
-											console.log(placeName);
-											listOfCitiesAlreadySubscribed.push(placeName);
+											//console.log(placeName);
+											//listOfCitiesAlreadySubscribed.push(placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
 											var uuid1 = uuid.v1();
@@ -239,7 +239,7 @@ exports.registerNewDevice = function(req, res) {
 											  ItemName: uuid1, /* required */
 											  Expected: {
 												Exists: false,
-												Name: 'EndpointARN'
+												Name: 'SubscriptionARN'
 											  }
 											};
 					
