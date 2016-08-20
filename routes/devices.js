@@ -173,7 +173,7 @@ exports.registerNewDevice = function(req, res) {
 	
 					
 		/* Find the list of cities within 30 miles of the user */
-			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678", 
+			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678", 
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
 					
