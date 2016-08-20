@@ -142,14 +142,13 @@ exports.registerNewDevice = function(req, res) {
 					{
 						for(var i=0; i < items.length; i++) {
 							var item = items[i] ;	
-							console.log(item) ;				
+							//console.log(item) ;				
 							var attributes = item["Attributes"] ;
 							var attr = attributes[0] ; // we are only getting the SubscriptionARN
 							var attrName = attr["Name"] ;  // SubscriptionARN
 							var attrValue = attr["Value"] ; // value of the SubscriptionARN to pass to unsubscribe call
 							
-							listOfUnsubscribedArns.push(attrName);
-							console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
+							//console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
 							var params3 = {
 							  SubscriptionArn: attrValue /* required */
 							};
@@ -162,6 +161,8 @@ exports.registerNewDevice = function(req, res) {
 								else {
 									console.log(data);           // successful response
 									//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+									
+									
 									
 								}
 								
@@ -225,7 +226,7 @@ exports.registerNewDevice = function(req, res) {
 						  
 						   if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
 						   listOfCitiesAlreadySubscribed.push(placeName);
-						   console.log(' Subscribing Now ' + placeName);
+						  // console.log(' Subscribing Now ' + placeName);
 						   
 						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
 						   //for(var j=0;j< listOfTopics.length ;j++)
@@ -247,7 +248,7 @@ exports.registerNewDevice = function(req, res) {
 										}	
 										else 
 										{
-											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
+											//console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
 											//console.log(placeName);
 											//listOfCitiesAlreadySubscribed.push(placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
@@ -286,7 +287,7 @@ exports.registerNewDevice = function(req, res) {
 												else  
 												{
 													console.log("Record inserted successfully") ;
-													console.log(data);           // successful response
+													//console.log(data);           // successful response
 
 													
 													
