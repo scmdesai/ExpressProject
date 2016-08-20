@@ -179,7 +179,8 @@ exports.registerNewDevice = function(req, res) {
 								for(var m=0;m<500;m++){
 								  if(jsonArea.postalCodes[m]){
 								 // console.log(jsonArea.postalCodes[i].placeName);
-								  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[m].placeName + jsonArea.postalCodes[m].adminCode1;
+								  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[m].placeName + 
+								  jsonArea.postalCodes[m].adminCode1;
 								  //console.log("Endpoint ARN is: " + endPointARN) ;
 								  
 								  
@@ -271,8 +272,8 @@ exports.registerNewDevice = function(req, res) {
 				}
 			});
 		}
-		res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+		
 	});
-	
+	res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 };	
 
