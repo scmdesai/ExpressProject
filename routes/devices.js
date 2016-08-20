@@ -151,7 +151,8 @@ exports.registerNewDevice = function(req, res) {
 							var attrName = attr["Name"] ;  // SubscriptionARN
 							var attrValue = attr["Value"] ; // value of the SubscriptionARN to pass to unsubscribe call
                             
-							//console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
+							console.log('SubscriptionARN to unsubscribe is Name: '+ attrName);
+							console.log('SubscriptionARN to unsubscribe is Value: '+ attrValue);
 							var params3 = {
 							  SubscriptionArn: attrValue /* required */
 							};
