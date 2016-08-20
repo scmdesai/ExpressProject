@@ -6,9 +6,11 @@ var s3 = require( 'multer-storage-s3' );
 var upload = multer({ dest: 'uploads/' }) ;
 
 var simpleDB = null ;
-var storesList = [] ;
 var storesListTmp = [] ;
+var storesList = [] ;
 var pictureURL;
+var snsClient = null ;
+
 exports.findAllStores = function(req, res) {
     var today = new Date();
 	
@@ -588,8 +590,18 @@ exports.createNewStore = function(req, res) {
 		}); 
 		AWS.config.region = "us-west-2" ;
 	}
-
-	console.log("Credentials retrieval successful") ;
+    console.log("Credentials retrieval successful") ;
+	
+	// Create an SNS client
+	console.log("Creating SNS Client to create a topic") ;
+	if(snsClient == null) {
+		console.log("SNS is null, creating new connection") ;
+		snsClient = new AWS.SNS() ;
+	}
+	console.log("SNS Client creation successful") ;
+	
+	
+	
 	// Create an SDB client
 	console.log("Creating SDB Client") ;
 	if(simpleDB == null) {
@@ -610,6 +622,19 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
+	var place = (req.body.city).toString() + (req.body.state).toString();
+	console.log(place); 
+	
+	var topicName = 'LocalBuzz' + place ;
+	var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
+	
+	var paramsTopic = {
+		Name: topicName /* required */
+	};
+	snsClient.createTopic(paramsTopic, function(err, data) {
+	  if (err) console.log(err, err.stack); // an error occurred
+	  else     console.log(data);           // successful response
+	});
 	
 
 	var params = {
@@ -698,6 +723,11 @@ exports.createNewStore = function(req, res) {
 		  Name: 'PlanType', /* required */
 		  Value: 'Free',
 		  Replace: true
+		},
+		{
+		  Name: 'TopicName', /* required */
+		  Value: topicName,
+		  Replace: true
 		}
 	],
 	  DomainName: 'MyCustomers', /* required */
@@ -722,7 +752,7 @@ exports.createNewStore = function(req, res) {
 			//req.body.customerId = uuid1;
 			//next();
 			
-			//res.status(200).send('{"success":true,"msg":"New store created!"}') ;
+			
 			//send confirmation email about registration to facebook email address
 			var sendToEmail = req.body.loginEmail ;
 			console.log("Now sending email to: " + sendToEmail) ;
@@ -768,10 +798,6 @@ exports.createNewStore = function(req, res) {
 			
 			
 		}
-			
-			
-			
-		
 	});
 	
 };
