@@ -144,7 +144,8 @@ exports.registerNewDevice = function(req, res) {
 						for(var i=0; i < items.length; i++) {
 							var item = items[i] ;	
 							//console.log(item) ;
-                            var itemName = item["Name"];							
+                            var itemName = item["Name"];	
+                            console.log('ItemName is :' + itemName);							
 							var attributes = item["Attributes"] ;
 							var attr = attributes[0] ; // we are only getting the SubscriptionARN
 							var attrName = attr["Name"] ;  // SubscriptionARN
