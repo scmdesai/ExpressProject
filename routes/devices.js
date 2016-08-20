@@ -182,7 +182,7 @@ exports.registerNewDevice = function(req, res) {
 					
 						for(var i=0;i<500;i++){
 						  if(jsonArea.postalCodes[i]){
-						 // placeName = jsonArea.postalCodes[i].placeName;
+						  placeName = jsonArea.postalCodes[i].placeName;
 						 // console.log(jsonArea.postalCodes[i].placeName);
 						  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
 						  //console.log("Endpoint ARN is: " + endPointARN) ;
@@ -214,7 +214,7 @@ exports.registerNewDevice = function(req, res) {
 										{
 											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
 											
-											listOfCitiesAlreadySubscribed.push(jsonArea.postalCodes[i].placeName);
+											listOfCitiesAlreadySubscribed.push(placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
 											var uuid1 = uuid.v1();
