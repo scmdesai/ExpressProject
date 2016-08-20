@@ -171,35 +171,7 @@ exports.registerNewDevice = function(req, res) {
 				}
 			});
 	
-    console.log('Length of unsubscribed ARNs is : ' + listOfUnsubscribedArns.length);	
-	for(var m=0;m<listOfUnsubscribedArns.length;m++){     
-	var params4 = {
-	  
-	  DomainName: 'EndpointARNs', /* required */
-	  ItemName: listOfUnsubscribedArns[m] /* required */
-	  
-	};
-	
-	console.log("Now deleting a row in DemoMyDeals domain") ;
-	simpleDB.deleteAttributes(params4, function(err, data) {
-	     
-		if (err) {
-			console.log("Error deleting Buzz") ;
-			console.log(err, err.stack); // an error occurred
-			//res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
-			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
-		}
-		else  {
-			//console.log("Deal deleted successfully") ;
-			console.log(data);           // successful response
-			//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
-			//res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
-			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
-			
-			
-		}
-	});
-	}
+    
 	
 					
 		/* Find the list of cities within 30 miles of the user */
@@ -258,12 +230,12 @@ exports.registerNewDevice = function(req, res) {
 												{
 												  Name: 'EndpointARN', /* required */
 												  Value: endPointARN, /* required */
-												  Replace: false
+												  Replace: true
 												},
 												{
 												  Name: 'SubscriptionARN', /* required */
 												  Value: data.SubscriptionArn, /* required */
-												  Replace: false
+												  Replace: true
 												}
 											],
 											  DomainName: 'EndpointARNs', /* required */
