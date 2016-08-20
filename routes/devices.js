@@ -96,6 +96,7 @@ exports.registerNewDevice = function(req, res) {
 			endPointARN = data.EndpointArn  ;
 			var listOfTopics = [];
 			var listOfCitiesAlreadySubscribed = [];
+			var listOfUnsubscribedArns =[];
 			
 			/* List All Topics to get the list of cities that are registered with Local Buzz */
 			snsClient.listTopics(params1={}, function(err, data)
@@ -146,7 +147,7 @@ exports.registerNewDevice = function(req, res) {
 							var attr = attributes[0] ; // we are only getting the SubscriptionARN
 							var attrName = attr["Name"] ;  // SubscriptionARN
 							var attrValue = attr["Value"] ; // value of the SubscriptionARN to pass to unsubscribe call
-							
+							listOfUnsubscribedArns.push(attrValue);
 							console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
 							var params3 = {
 							  SubscriptionArn: attrValue /* required */
@@ -160,6 +161,7 @@ exports.registerNewDevice = function(req, res) {
 								else {
 									console.log(data);           // successful response
 									//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+									
 								}
 								
 							});
@@ -169,7 +171,34 @@ exports.registerNewDevice = function(req, res) {
 				}
 			});
 			
+	for(var m=0;m<listOfUnsubscribedArns.length;m++){     
+	var params4 = {
+	  
+	  DomainName: 'EndpointARNs', /* required */
+	  ItemName: listOfUnsubscribedArns[m] /* required */
+	  
+	};
+	
+	console.log("Now deleting a row in DemoMyDeals domain") ;
+	simpleDB.deleteAttributes(params4, function(err, data) {
 	     
+		if (err) {
+			console.log("Error deleting Buzz") ;
+			console.log(err, err.stack); // an error occurred
+			//res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
+			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
+		}
+		else  {
+			//console.log("Deal deleted successfully") ;
+			console.log(data);           // successful response
+			//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
+			//res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
+			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
+			
+			
+		}
+	});
+	}
 	
 					
 		/* Find the list of cities within 30 miles of the user */
