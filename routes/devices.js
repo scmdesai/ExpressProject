@@ -75,6 +75,7 @@ exports.registerNewDevice = function(req, res) {
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			var listOfTopics = [];
+			var listOfSubscriptions = [];
 			
 			snsClient.listTopics(params1={}, function(err, data) {
 			  if (err) console.log(err, err.stack); // an error occurred
@@ -86,6 +87,19 @@ exports.registerNewDevice = function(req, res) {
 				listOfTopics.push(data.Topics[i].TopicArn);
 				i++;
 				}
+				}
+			});
+			
+			snsClient.listSubscriptions(params1={}, function(err, data) {
+			  if (err) console.log(err, err.stack); // an error occurred
+			  else   {
+				console.log(data);           // successful response
+				/*//var parseList  = JSON.parse(data);
+				var i=0;
+				while(data.Topics[i]){
+				listOfSubscriptions.push(data.Topics[i].TopicArn);
+				i++;
+				}*/
 				}
 			});
 			//}
