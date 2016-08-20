@@ -139,12 +139,13 @@ exports.registerNewDevice = function(req, res) {
 				{
 					console.log("SUCCESS from AWS!") ;
 					var items = data["Items"];
-					if(items)
-					{
-						for(var i=0; i < items.length; i++) {
-							var item = items[i] ;	
-							//console.log(item) ;
-                            var itemName = item["Name"];	
+					//if(items)
+					//{
+					
+					
+					items.forEach(function(listItem, index){
+						var item = listItem ;
+						 var itemName = item["Name"];	
                             console.log('ItemName is :' + itemName);							
 							var attributes = item["Attributes"] ;
 							var attr = attributes[0] ; // we are only getting the SubscriptionARN
@@ -196,10 +197,11 @@ exports.registerNewDevice = function(req, res) {
 									
 								}
 								
-							});
-							
-						}
-					}
+							});						
+					});
+					
+						
+				//	}
 				}
 			});
     
