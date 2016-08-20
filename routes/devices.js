@@ -185,8 +185,8 @@ exports.registerNewDevice = function(req, res) {
 		}
 		
 	],
-	  DomainName: 'EndpointARNs', /* required */
-	  ItemName:  itemName() /* required */
+	  DomainName: 'EndpointARNs'/* required */
+	  
 	  
 	};
 	
