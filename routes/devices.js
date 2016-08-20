@@ -119,7 +119,7 @@ exports.registerNewDevice = function(req, res) {
 			
 			var	params2 = 
 			{
-				SelectExpression: 'select SubscriptionARN from EndpointARNs where EndpointARN = ' + '"' + endpointARN + '"', /* required */
+				SelectExpression: 'select SubscriptionARN from EndpointARNs where EndpointARN = ' + '"' + endPointARN + '"', /* required */
 				ConsistentRead: true
 				//NextToken: 'STRING_VALUE'
 		   };
