@@ -184,16 +184,18 @@ exports.registerNewDevice = function(req, res) {
 						  if(jsonArea.postalCodes[i]){
 						  
 						 // console.log(jsonArea.postalCodes[i].placeName);
-						  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
+						  //topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
 						  //console.log("Endpoint ARN is: " + endPointARN) ;
 						  
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
 						  console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
-						  var placeName = jsonArea.postalCodes[i].placeName;
-						   if ((listOfCitiesAlreadySubscribed.indexOf(jsonArea.postalCodes[i].placeName))<0) {
+						  var placeName = (jsonArea.postalCodes[i].placeName).toString();
+						   if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
 						   
-						   console.log('city not subscribed ' + jsonArea.postalCodes[i].placeName + ' Subscribing Now');
+						   console.log('city not subscribed ' + placeName + ' Subscribing Now');
+						   
+						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
 						   //for(var j=0;j< listOfTopics.length ;j++)
 							//{
 								//if( topicArn == listOfTopics[j])
