@@ -174,7 +174,7 @@ exports.registerNewDevice = function(req, res) {
 											  
 											  
 											};
-			simpleDB.deleteAttributes(params2, function(err, data) {
+			simpleDB.deleteAttributes(params4, function(err, data) {
 	     
 		if (err) {
 			console.log("Error deleting Unsubscribed entries") ;
