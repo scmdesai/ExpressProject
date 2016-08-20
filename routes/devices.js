@@ -191,8 +191,9 @@ exports.registerNewDevice = function(req, res) {
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
 						  //console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
 						  var placeName = (jsonArea.postalCodes[i].placeName).toString();
-						   //if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
-						   
+						  
+						   if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
+						   listOfCitiesAlreadySubscribed.push(placeName);
 						   console.log(' Subscribing Now ' + placeName);
 						   
 						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
@@ -267,7 +268,7 @@ exports.registerNewDevice = function(req, res) {
 										}
 								
 									});
-								//}
+								}
 							//}
 					    
 						}
