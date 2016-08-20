@@ -270,13 +270,14 @@ exports.registerNewDevice = function(req, res) {
 						}
 				  
 					}
-					res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+					
 				}
 				  
 			});
 	
 			
 		}
+	res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 	});
 };	
 
