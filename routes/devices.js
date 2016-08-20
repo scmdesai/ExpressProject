@@ -167,31 +167,9 @@ exports.registerNewDevice = function(req, res) {
 					}
 				}
 			});
-			/*Delete unsubscribed arn*/
-			var params4 = {
-											 
-											  DomainName: 'EndpointARNs', /* required */
-											  
-											  
-											};
-			simpleDB.deleteAttributes(params4, function(err, data) {
+			
 	     
-		if (err) {
-			console.log("Error deleting Unsubscribed entries") ;
-			console.log(err, err.stack); // an error occurred
-			//res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
-			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
-		}
-		else  {
-			console.log("Deleted Unsubscribed entries successfully") ;
-			console.log(data);           // successful response
-			//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
-			//res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
-			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
-			
-			
-		}
-	});
+	
 					
 		/* Find the list of cities within 30 miles of the user */
 			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
@@ -208,6 +186,7 @@ exports.registerNewDevice = function(req, res) {
 						  
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
+						   console.log('Number Of Topic entries : ' + listOfTopics.length);
 						   for(var j=0;j< listOfTopics.length ;j++)
 							{
 								if( topicArn == listOfTopics[j])
