@@ -268,7 +268,7 @@ exports.registerNewDevice = function(req, res) {
 								
 									});
 								//}
-							}
+							//}
 					    
 						}
 				  
