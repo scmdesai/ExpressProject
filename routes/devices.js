@@ -190,7 +190,7 @@ exports.registerNewDevice = function(req, res) {
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
 						  console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
-						   if (listOfCitiesAlreadySubscribed.indexOf(jsonArea.postalCodes[i].placeName)<0) {
+						   if ((listOfCitiesAlreadySubscribed.indexOf(jsonArea.postalCodes[i].placeName))<0) {
 						   
 						   console.log('city not subscribed ' + jsonArea.postalCodes[i].placeName + ' Subscribing Now');
 						   //for(var j=0;j< listOfTopics.length ;j++)
@@ -214,7 +214,7 @@ exports.registerNewDevice = function(req, res) {
 										{
 											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
 											
-											listOfCitiesAlreadySubscribed.push(placeName);
+											listOfCitiesAlreadySubscribed.push(jsonArea.postalCodes[i].placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
 											var uuid1 = uuid.v1();
