@@ -147,7 +147,7 @@ exports.registerNewDevice = function(req, res) {
 							var attr = attributes[0] ; // we are only getting the SubscriptionARN
 							var attrName = attr["Name"] ;  // SubscriptionARN
 							var attrValue = attr["Value"] ; // value of the SubscriptionARN to pass to unsubscribe call
-							
+							listOfUnsubscribedArns.push(attrName);
 							//console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
 							var params3 = {
 							  SubscriptionArn: attrValue /* required */
@@ -159,7 +159,7 @@ exports.registerNewDevice = function(req, res) {
 									
 								}	
 								else {
-									console.log(data);           // successful response
+									//console.log(data);           // successful response
 									//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 									
 									
