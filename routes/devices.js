@@ -136,33 +136,35 @@ exports.registerNewDevice = function(req, res) {
 				{
 					console.log("SUCCESS from AWS!") ;
 					var items = data["Items"];
-					for(var i=0; i < items.length; i++) {
-						var item = items[i] ;	
-						console.log(item) ;				
-						var attributes = item["Attributes"] ;
-						var attr = attributes[0] ; // we are only getting the SubscriptionARN
-						var attrName = attr["Name"] ;  // SubscriptionARN
-						var attrValue = attr["Value"] ; // value of the SubscriptionARN to pass to unsubscribe call
-						
-						console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
-						var params3 = {
-						  SubscriptionArn: attrValue /* required */
-						};
-						snsClient.unsubscribe(params3, function(err, data) {
-							if (err) {
-								console.log(err, err.stack); // an error occurred
-								//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
-								
-							}	
-							else {
-								console.log(data);           // successful response
-								//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
-							}
+					if(items)
+					{
+						for(var i=0; i < items.length; i++) {
+							var item = items[i] ;	
+							console.log(item) ;				
+							var attributes = item["Attributes"] ;
+							var attr = attributes[0] ; // we are only getting the SubscriptionARN
+							var attrName = attr["Name"] ;  // SubscriptionARN
+							var attrValue = attr["Value"] ; // value of the SubscriptionARN to pass to unsubscribe call
 							
-						});
-						
+							console.log('SubscriptionARN to unsubscribe is : '+ attrValue);
+							var params3 = {
+							  SubscriptionArn: attrValue /* required */
+							};
+							snsClient.unsubscribe(params3, function(err, data) {
+								if (err) {
+									console.log(err, err.stack); // an error occurred
+									//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+									
+								}	
+								else {
+									console.log(data);           // successful response
+									//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+								}
+								
+							});
+							
+						}
 					}
-				
 				}
 			});
 					
