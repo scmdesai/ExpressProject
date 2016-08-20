@@ -165,6 +165,8 @@ exports.registerNewDevice = function(req, res) {
 					while(dataListTopics.Topics[i]){
 						//listOfTopics.push(dataListTopics.Topics[i].TopicArn);
 						i++;
+						console.log(dataListTopics.Topics[i]);
+						console.log(dataListTopics.Topics[i].TopicArn);
 						//If the list of topics is more than 100,use Next token
 					//}
 				//}
