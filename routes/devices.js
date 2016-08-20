@@ -172,13 +172,12 @@ exports.registerNewDevice = function(req, res) {
 	
 					
 		/* Find the list of cities within 30 miles of the user */
-			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+json.userLocation+"&country=US&radius=30&maxRows=500&username=1234_5678", 
+			request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
 					
-						var listOfCitiesAlreadySubscribed = [];
 						for(var i=0;i<500;i++){
 						  if(jsonArea.postalCodes[i]){
 						 // console.log(jsonArea.postalCodes[i].placeName);
@@ -186,17 +185,12 @@ exports.registerNewDevice = function(req, res) {
 						  //console.log("Endpoint ARN is: " + endPointARN) ;
 						  
 						  
-						  
-							if (listOfCitiesAlreadySubscribed.filter(function(e) e == jsonArea.postalCodes[i].placeName).length == 0) {
-						  // This means we don't have a subscription for this city. 
-						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
-						   
-						   //for(var j=0;j< listOfTopics.length ;j++)
-							//{
-								console.log("Topic List length is" + listOfTopics.length) ;
-								//if( topicArn == listOfTopics[j])
-								//{
+						   console.log('Number Of Topic entries : ' + listOfTopics.length);
+						   for(var j=0;j< listOfTopics.length ;j++)
+							{
+								if( topicArn == listOfTopics[j])
+								{
 									var params = {
 									Protocol: 'application', /* required */
 									TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
@@ -213,8 +207,6 @@ exports.registerNewDevice = function(req, res) {
 										else 
 										{
 											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
-											console.log('EndpointARN ARN is : ' + endPointARN);      
-											listOfCitiesAlreadySubscribed.push(jsonArea.postalCodes[i].placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
 											var uuid1 = uuid.v1();
@@ -265,20 +257,18 @@ exports.registerNewDevice = function(req, res) {
 								
 									});
 								}
-							//}
+							}
 					  
 						}
 				  
 					}
-					
-				
-				}  
+					res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+				}
+				  
 			});
 	
 			
 		}
-		res.status(200).send('{"success":true,"msg":"Created PlatformEndpoint Successfully"}') ;
 	});
-	
 };	
 
