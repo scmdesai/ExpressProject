@@ -102,7 +102,7 @@ exports.registerNewDevice = function(req, res) {
 				if (err) console.log(err, err.stack); // an error occurred
 				else  
 				{
-					//console.log(data);           // successful response
+					console.log(dataListTopics);           // successful response
 					//var parseList  = JSON.parse(data);
 					var i=0;
 					while(dataListTopics.Topics[i]){
@@ -136,7 +136,7 @@ exports.registerNewDevice = function(req, res) {
 						{
 							console.log("SUCCESS from AWS!") ;
 							var items = dataSDB["Items"];
-							console.log(dataSDB);
+							//console.log(dataSDB);
 							if(items)
 							{
 								for(var k=0; k < items.length;k++) {
@@ -158,7 +158,7 @@ exports.registerNewDevice = function(req, res) {
 											
 										}	
 										else {
-											console.log(dataUnsubscribe);           // successful response
+											//console.log(dataUnsubscribe);           // successful response
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 										}
 										
@@ -262,7 +262,7 @@ exports.registerNewDevice = function(req, res) {
 								}
 						  
 							}
-							res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+							
 						}
 						  
 					});
@@ -271,6 +271,8 @@ exports.registerNewDevice = function(req, res) {
 				}
 			});
 		}
+		res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 	});
+	
 };	
 
