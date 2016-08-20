@@ -164,7 +164,7 @@ exports.registerNewDevice = function(req, res) {
 								else {
 									//console.log(data);           // successful response
 									//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
-									
+									console.log('Unsubscription successful for itemName: ' + itemName);
 									var simpleDB2 = new AWS.SimpleDB() ;
 									var params4 = {
 									 
