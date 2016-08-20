@@ -239,7 +239,7 @@ exports.registerNewDevice = function(req, res) {
 												}
 											],
 											  DomainName: 'EndpointARNs', /* required */
-											  ItemName: uuid1, /* required */
+											  //ItemName: uuid1, /* required */
 											  Expected: {
 												Exists: false,
 												Name: 'EndpointARN'
