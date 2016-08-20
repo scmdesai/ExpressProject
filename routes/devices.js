@@ -212,20 +212,20 @@ exports.registerNewDevice = function(req, res) {
 												{
 												  Name: 'EndpointARN', /* required */
 												  Value: endPointARN, /* required */
-												  Replace: false
+												  Replace: true
 												},
 												{
 												  Name: 'SubscriptionARN', /* required */
 												  Value: data.SubscriptionArn, /* required */
-												  Replace: false
+												  Replace: true
 												}
 											],
 											  DomainName: 'EndpointARNs', /* required */
 											  ItemName: uuid1, /* required */
 											  Expected: {
-												Exists: true,
+												Exists: false,
 												Name: 'EndpointARN',
-												Value: endPointARN
+												
 											  }
 											};
 					
