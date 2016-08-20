@@ -167,6 +167,13 @@ exports.registerNewDevice = function(req, res) {
 					}
 				}
 			});
+			/*Delete unsubscribed arn*/
+			var params4 = {
+											 
+											  DomainName: 'EndpointARNs', /* required */
+											  ItemName: uuid1 /* required */
+											  
+											};
 			simpleDB.deleteAttributes(params2, function(err, data) {
 	     
 		if (err) {
