@@ -210,6 +210,7 @@ exports.registerNewDevice = function(req, res) {
 										else 
 										{
 											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
+											console.log(placeName);
 											listOfCitiesAlreadySubscribed.push(placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
