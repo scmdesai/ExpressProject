@@ -96,28 +96,12 @@ exports.registerNewDevice = function(req, res) {
 			endPointARN = data.EndpointArn  ;
 			var listOfTopics = [];
 			
-			/* List All Topics to get the list of cities that are registered with Local Buzz */
-			snsClient.listTopics(params1={}, function(err, dataListTopics)
-			{
-				if (err) console.log(err, err.stack); // an error occurred
-				else  
-				{
-					console.log(dataListTopics);           // successful response
-					//var parseList  = JSON.parse(data);
-					var i=0;
-					while(dataListTopics.Topics[i]){
-						listOfTopics.push(dataListTopics.Topics[i].TopicArn);
-						i++;
-						//If the list of topics is more than 100,use Next token
-					}
-				//}
-			//});
-					/*At this point,we have the endpointARN,query the SDB table to get the associated subscriptions*/
+			/*At this point,we have the endpointARN,query the SDB table to get the associated subscriptions*/
 					
 					
 					/* Get current list of active subscriptions for the endpoint and unsubscribe them*/
-					
-					var	params2 = 
+			
+			var	params2 = 
 					{
 						SelectExpression: 'select SubscriptionARN from EndpointARNs where EndpointARN = ' + '"' + endPointARN + '"', /* required */
 						ConsistentRead: true
@@ -136,7 +120,7 @@ exports.registerNewDevice = function(req, res) {
 						{
 							console.log("SUCCESS from AWS!") ;
 							var items = dataSDB["Items"];
-							//console.log(dataSDB);
+							console.log(dataSDB);
 							if(items)
 							{
 								for(var k=0; k < items.length;k++) {
@@ -168,6 +152,26 @@ exports.registerNewDevice = function(req, res) {
 							}
 						}
 					});
+			
+			/* List All Topics to get the list of cities that are registered with Local Buzz */
+			snsClient.listTopics(params1={}, function(err, dataListTopics)
+			{
+				if (err) console.log(err, err.stack); // an error occurred
+				else  
+				{
+					console.log(dataListTopics);           // successful response
+					//var parseList  = JSON.parse(data);
+					var i=0;
+					while(dataListTopics.Topics[i]){
+						//listOfTopics.push(dataListTopics.Topics[i].TopicArn);
+						i++;
+						//If the list of topics is more than 100,use Next token
+					//}
+				//}
+			//});
+					
+					
+					
 					
 				/* Find the list of cities within 30 miles of the user */
 					request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode=60504&country=US&radius=30&maxRows=500&username=1234_5678", 
@@ -185,9 +189,9 @@ exports.registerNewDevice = function(req, res) {
 								  
 								  
 								  /* Subscribe the user to the cities that are registered with Local Buzz */
-								   for(var n=0;n< listOfTopics.length ;n++)
-									{
-										if( topicArn == listOfTopics[n])
+								   //for(var n=0;n< listOfTopics.length ;n++)
+									//{
+										if( topicArn == dataListTopics.Topics[i].TopicArn)
 										{
 											var params = {
 											Protocol: 'application', /* required */
@@ -238,13 +242,13 @@ exports.registerNewDevice = function(req, res) {
 															console.log("Error inserting record") ;
 															console.log(err, err.stack); // an error occurred
 															//res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
-															return;
+															
 														}
 														else  
 														{
 															console.log("Record inserted successfully") ;
 															console.log(dataInsertSDB);           // successful response
-															return;
+															
 
 															
 															
@@ -260,7 +264,7 @@ exports.registerNewDevice = function(req, res) {
 											
 										}
 										
-									}
+									//}
 							  
 								}
 						  
@@ -271,6 +275,7 @@ exports.registerNewDevice = function(req, res) {
 					});
 	
 			
+				}
 				}
 			});
 		}
