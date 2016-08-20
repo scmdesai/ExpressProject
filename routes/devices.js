@@ -172,7 +172,7 @@ exports.registerNewDevice = function(req, res) {
 									  
 									};
 									
-									console.log("Now deleting a row in EndpointARNs domain") ;
+									console.log("Now deleting a row in EndpointARNs domain : "+itemName) ;
 									simpleDB2.deleteAttributes(params4, function(err, data) {
 										 
 										if (err) {
