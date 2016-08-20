@@ -111,7 +111,7 @@ exports.findAllDeals = function(req, res) {
 								console.log("Error deleting expired buzz") ;
 								console.log(err, err.stack); // an error occurred
 							} else {
-								console.log("buzz deleted successfully") ;
+								console.log("Buzz deleted successfully") ;
 								console.log(data); // successful response
 							}								
 						});
@@ -222,6 +222,16 @@ exports.createNewDeal = function(req, res) {
 		  Name: 'DealImageURL', /* required */
 		  Value: req.body.DealImageURL, /* required */
 		  Replace: false
+		},
+		{
+		  Name: 'city', /* required */
+		  Value: req.body.city, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'state', /* required */
+		  Value: req.body.state, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
@@ -251,18 +261,21 @@ exports.createNewDeal = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
+			
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
+			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
 			
 			var params = {
 				Message: JSON.stringify(message),
-				Subject: 'New buzz from ' +  req.body.businessName,
+				Subject: 'New Buzz from ' +  req.body.businessName,
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				TopicArn: topicArn
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
@@ -369,7 +382,7 @@ exports.editDeal = function(req, res) {
 		if (err) {
 			console.log("Error updating record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating buzz: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error updating Buzz: "' + err + "}") ;
 		}
 		else  {
 			console.log("Record updated successfully") ;
@@ -447,11 +460,11 @@ exports.deleteDeal = function(req, res) {
 			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
 		}
 		else  {
-			console.log("buzz deleted successfully") ;
+			console.log("Buzz deleted successfully") ;
 			console.log(data);           // successful response
-			
-			res.status(200).send('{ "success": true, "msg": "Buzz deleted" }') ;
-			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
+			//res.status(201).send('"success": true, "msg": "Buzz deleted successfully"') ;
+			res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
+			//res.status(200).send('<script type=\"text/javascript\"> alert("Buzz deleted successfully") ;</script>' ) ;
 			
 			
 		}
@@ -516,12 +529,13 @@ exports.uploadDealImage = function(req, res, next) {
 					//res.status(200).send('{ "success": true, "msg": "http://appsonmobile.com/locallink/deals/fileUpload-1467781697704.jpg" }') ;
 				}
 			
+			
 		
 	});
 	/*}
 	else{
 	    console.log("Now uploading the file...checked no file") ;
-		res.status(500).send('{"success": false, "msg": "No image to upload"}') ;
+		res.status(500).send('{"success": false, "msg": "No Image to upload"}') ;
 	}*/
 	
 	
@@ -557,9 +571,9 @@ exports.dealImageURLUpdate = function(req, res) {
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
-	var dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 	
+	var	dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 	
 
 	var params = {
@@ -608,6 +622,16 @@ exports.dealImageURLUpdate = function(req, res) {
 		  Name: 'DealImageURL', /* required */
 		  Value: dealURL, /* required */
 		  Replace: false
+		},
+		{
+		  Name: 'city', /* required */
+		  Value: req.body.city, /* required */
+		  Replace: false
+		},
+		{
+		  Name: 'state', /* required */
+		  Value: req.body.state, /* required */
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyDeals', /* required */
@@ -637,6 +661,12 @@ exports.dealImageURLUpdate = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
+			
+			
+			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
+			
+			
+			
 			var message = {
 				"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
@@ -645,10 +675,18 @@ exports.dealImageURLUpdate = function(req, res) {
 			
 			var params = {
 				Message: JSON.stringify(message),
-				Subject: 'New buzz from ' +  req.body.businessName,
+				Subject: 'New Buzz from ' +  req.body.businessName,
+				MessageAttributes: {
+					businessName: {
+						DataType: 'String', /* required */
+						StringValue: req.body.businessName
+					}
+				},
 				MessageStructure: 'json',
 				//TargetArn: 'TopicArn',
-				TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+				//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
+				TopicArn: topicArn
 			};
 			snsClient.publish(params, function(err, data) {
 				if (err) {
