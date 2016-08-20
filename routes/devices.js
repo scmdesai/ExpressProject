@@ -187,10 +187,10 @@ exports.registerNewDevice = function(req, res) {
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
 						   console.log('Number Of Topic entries : ' + listOfTopics.length);
-						   for(var j=0;j< listOfTopics.length ;j++)
-							{
-								if( topicArn == listOfTopics[j])
-								{
+						   //for(var j=0;j< listOfTopics.length ;j++)
+							//{
+								//if( topicArn == listOfTopics[j])
+								//{
 									var params = {
 									Protocol: 'application', /* required */
 									TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
@@ -256,8 +256,8 @@ exports.registerNewDevice = function(req, res) {
 										}
 								
 									});
-								}
-							}
+								//}
+							//}
 					  
 						}
 				  
