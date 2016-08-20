@@ -95,6 +95,7 @@ exports.registerNewDevice = function(req, res) {
 			console.log(data);           // successful response
 			endPointARN = data.EndpointArn  ;
 			var listOfTopics = [];
+			var listOfCitiesAlreadySubscribed = [];
 			
 			/* List All Topics to get the list of cities that are registered with Local Buzz */
 			snsClient.listTopics(params1={}, function(err, data)
@@ -186,7 +187,7 @@ exports.registerNewDevice = function(req, res) {
 						  
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
-						   console.log('Number Of Topic entries : ' + listOfTopics.length);
+						   if (listOfCitiesAlreadySubscribed.filter(function(e) e == jsonArea.postalCodes[i].placeName).length == 0) {
 						   //for(var j=0;j< listOfTopics.length ;j++)
 							//{
 								//if( topicArn == listOfTopics[j])
@@ -207,6 +208,7 @@ exports.registerNewDevice = function(req, res) {
 										else 
 										{
 											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
+											listOfCitiesAlreadySubscribed.push(jsonArea.postalCodes[i].placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
 											var uuid1 = uuid.v1();
@@ -257,7 +259,7 @@ exports.registerNewDevice = function(req, res) {
 								
 									});
 								//}
-							//}
+							}
 					  
 						}
 				  
