@@ -238,11 +238,13 @@ exports.registerNewDevice = function(req, res) {
 															console.log("Error inserting record") ;
 															console.log(err, err.stack); // an error occurred
 															//res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
+															return;
 														}
 														else  
 														{
 															console.log("Record inserted successfully") ;
 															console.log(dataInsertSDB);           // successful response
+															return;
 
 															
 															
@@ -272,8 +274,8 @@ exports.registerNewDevice = function(req, res) {
 				}
 			});
 		}
-		
+		res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 	});
-	res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+	
 };	
 
