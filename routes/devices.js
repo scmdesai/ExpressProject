@@ -202,7 +202,7 @@ exports.registerNewDevice = function(req, res) {
 										}	
 										else 
 										{
-											console.log('Subscription ARN is : ' + data.SubscriptionARN);           // successful response
+											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
 											var uuid1 = uuid.v1();
