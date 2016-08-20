@@ -136,6 +136,7 @@ exports.registerNewDevice = function(req, res) {
 				{
 					console.log("SUCCESS from AWS!") ;
 					var items = data["Items"];
+					console.log(data);
 					if(items)
 					{
 						for(var i=0; i < items.length; i++) {
@@ -212,12 +213,12 @@ exports.registerNewDevice = function(req, res) {
 												{
 												  Name: 'EndpointARN', /* required */
 												  Value: endPointARN, /* required */
-												  Replace: true
+												  Replace: false
 												},
 												{
 												  Name: 'SubscriptionARN', /* required */
 												  Value: data.SubscriptionArn, /* required */
-												  Replace: true
+												  Replace: false
 												}
 											],
 											  DomainName: 'EndpointARNs', /* required */
