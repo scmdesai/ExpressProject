@@ -217,7 +217,7 @@ exports.registerNewDevice = function(req, res) {
 												},
 												{
 												  Name: 'SubscriptionARN', /* required */
-												  Value: data.SubscriptionArn, /* required */
+												  Value: dataSubscribe.SubscriptionArn, /* required */
 												  Replace: false
 												}
 											],
