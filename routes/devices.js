@@ -170,7 +170,8 @@ exports.registerNewDevice = function(req, res) {
 					}
 				}
 			});
-			
+	
+    console.log('Length of unsubscribed ARNs is : ' + listOfUnsubscribedArns.length);	
 	for(var m=0;m<listOfUnsubscribedArns.length;m++){     
 	var params4 = {
 	  
