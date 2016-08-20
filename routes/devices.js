@@ -110,8 +110,8 @@ exports.registerNewDevice = function(req, res) {
 						i++;
 						//If the list of topics is more than 100,use Next token
 					}
-				}
-			});
+				//}
+			//});
 			/*At this point,we have the endpointARN,query the SDB table to get the associated subscriptions*/
 			
 			
@@ -139,8 +139,8 @@ exports.registerNewDevice = function(req, res) {
 					console.log(dataSDB);
 					if(items)
 					{
-						for(var i=0; i < items.length; i++) {
-							var item = items[i] ;	
+						for(var k=0; k < items.length;k++) {
+							var item = items[k] ;	
 							console.log(item) ;				
 							var attributes = item["Attributes"] ;
 							var attr = attributes[0] ; // we are only getting the SubscriptionARN
@@ -176,17 +176,17 @@ exports.registerNewDevice = function(req, res) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
 					
-						for(var i=0;i<500;i++){
-						  if(jsonArea.postalCodes[i]){
+						for(var m=0;m<500;m++){
+						  if(jsonArea.postalCodes[m]){
 						 // console.log(jsonArea.postalCodes[i].placeName);
-						  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
+						  topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[m].placeName + jsonArea.postalCodes[m].adminCode1;
 						  //console.log("Endpoint ARN is: " + endPointARN) ;
 						  
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
-						   for(var j=0;j< listOfTopics.length ;j++)
+						   for(var n=0;n< listOfTopics.length ;n++)
 							{
-								if( topicArn == listOfTopics[j])
+								if( topicArn == listOfTopics[n])
 								{
 									var params = {
 									Protocol: 'application', /* required */
@@ -254,7 +254,9 @@ exports.registerNewDevice = function(req, res) {
 										}
 								
 									});
+									
 								}
+								
 							}
 					  
 						}
@@ -267,6 +269,8 @@ exports.registerNewDevice = function(req, res) {
 	
 			
 		}
+		}
+		});
 	});
 };	
 
