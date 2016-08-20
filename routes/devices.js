@@ -97,7 +97,7 @@ exports.registerNewDevice = function(req, res) {
 			var listOfTopics = [];
 			
 			/* List All Topics to get the list of cities that are registered with Local Buzz */
-			snsClient.listTopics(params1={}, function(err, data)
+			snsClient.listTopics(params1={}, function(err, dataListTopics)
 			{
 				if (err) console.log(err, err.stack); // an error occurred
 				else  
@@ -105,8 +105,8 @@ exports.registerNewDevice = function(req, res) {
 					//console.log(data);           // successful response
 					//var parseList  = JSON.parse(data);
 					var i=0;
-					while(data.Topics[i]){
-						listOfTopics.push(data.Topics[i].TopicArn);
+					while(dataListTopics.Topics[i]){
+						listOfTopics.push(dataListTopics.Topics[i].TopicArn);
 						i++;
 						//If the list of topics is more than 100,use Next token
 					}
@@ -127,7 +127,7 @@ exports.registerNewDevice = function(req, res) {
 
 		
 			console.log("Now retrieving data set from SDB") ;
-			simpleDB.select(params2, function(err, data) {
+			simpleDB.select(params2, function(err, dataSDB) {
 				if (err) {
 					console.log("ERROR calling AWS Simple DB!!!") ;
 					console.log(err, err.stack); // an error occurred
@@ -135,8 +135,8 @@ exports.registerNewDevice = function(req, res) {
 				else     
 				{
 					console.log("SUCCESS from AWS!") ;
-					var items = data["Items"];
-					console.log(data);
+					var items = dataSDB["Items"];
+					console.log(dataSDB);
 					if(items)
 					{
 						for(var i=0; i < items.length; i++) {
@@ -151,14 +151,14 @@ exports.registerNewDevice = function(req, res) {
 							var params3 = {
 							  SubscriptionArn: attrValue /* required */
 							};
-							snsClient.unsubscribe(params3, function(err, data) {
+							snsClient.unsubscribe(params3, function(err, dataUnsubscribe) {
 								if (err) {
 									console.log(err, err.stack); // an error occurred
 									//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
 									
 								}	
 								else {
-									console.log(data);           // successful response
+									console.log(dataUnsubscribe);           // successful response
 									//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 								}
 								
@@ -194,7 +194,7 @@ exports.registerNewDevice = function(req, res) {
 									Endpoint: data.EndpointArn
 								 };
 								//console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1) ;
-									snsClient.subscribe(params, function(err, data)
+									snsClient.subscribe(params, function(err, dataSubscribe)
 									{
 										if (err) {
 											console.log(err, err.stack); // an error occurred
@@ -203,7 +203,7 @@ exports.registerNewDevice = function(req, res) {
 										}	
 										else 
 										{
-											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
+											console.log('Subscription ARN is : ' + dataSubscribe.SubscriptionArn);           // successful response
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 											/* Insert the endpoint and subscription into the SDB table ***/
 											var uuid1 = uuid.v1();
@@ -231,7 +231,7 @@ exports.registerNewDevice = function(req, res) {
 											};
 					
 											console.log("Now inserting new row into EndpointARNs domain") ;
-											simpleDB.putAttributes(params1, function(err, data) 
+											simpleDB.putAttributes(params1, function(err, dataInsertSDB) 
 											{
 												if (err) {
 													console.log("Error inserting record") ;
@@ -241,7 +241,7 @@ exports.registerNewDevice = function(req, res) {
 												else  
 												{
 													console.log("Record inserted successfully") ;
-													console.log(data);           // successful response
+													console.log(dataInsertSDB);           // successful response
 
 													
 													
