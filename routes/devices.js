@@ -171,7 +171,7 @@ exports.registerNewDevice = function(req, res) {
 			var params4 = {
 											 
 											  DomainName: 'EndpointARNs', /* required */
-											  ItemName: uuid1 /* required */
+											  
 											  
 											};
 			simpleDB.deleteAttributes(params2, function(err, data) {
