@@ -18,7 +18,7 @@ exports.enableSubscription = function(req, res) {
 		}
 		else {
 			console.log('Success! New customer created!');
-			consoe.log('Customer is subscribed to : ' + customer.subscriptions);
+			console.log('Customer is subscribed to : ' + customer.subscriptions);
 			res.status(200).send('{ "success": true, "msg": "Customer subscribed successfully" }') ;
 		}
 	});
