@@ -71,12 +71,17 @@ exports.findAllStores = function(req, res) {
 				
 				    
 				
+					storesList[i] = new Store(attributes) ;
+				/**** Commenting out this logic of filtering merchants who are no longer in trial period or paid customers. 
+					For such customers will not be able to post new deals. 
 					storesListTmp[i] = new Store(attributes) ;
 					endDate = new Date(storesListTmp[i]["endDate"]);
 					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
 						storesList[j] = new Store(attributes) ;
 						j++;
 					}
+					 
+				*/
 					 
 				
 				/*
