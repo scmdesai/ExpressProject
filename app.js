@@ -13,6 +13,7 @@ var express = require('express')
   , demoStores = require('./routes/demoStores')
   , demoDeals = require('./routes/demoDeals')
   , demoSubscriptions = require('./routes/demoSubscriptions')
+  , demoSubscribe = require('./routes/demoSubscribe')
   // *** demo end-points ***
   , devices = require('./routes/devices')
   , analytics_buzz_popularity = require('./routes/analytics_buzz_popularity')
@@ -157,6 +158,8 @@ app.post('/demodeals/editDeal/:id', demoDeals.editDeal);
 app.post('/demodeals/:id', demoDeals.deleteDeal) ;
 
 app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewStore) ;
+
+app.post('/demoSubscribe',demoSubscribe.enableSubscription);
 
 //***** List of demo URL end-points : end *********
 
