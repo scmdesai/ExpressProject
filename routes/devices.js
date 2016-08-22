@@ -233,7 +233,7 @@ exports.registerNewDevice = function(req, res) {
 						   listOfCitiesAlreadySubscribed.push(placeName);
 						  // console.log(' Subscribing Now ' + placeName);
 						   
-						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1;
+						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminName1;
 						   //for(var j=0;j< listOfTopics.length ;j++)
 							//{
 								//if( topicArn == listOfTopics[j])
