@@ -233,7 +233,7 @@ exports.registerNewDevice = function(req, res) {
 						   listOfCitiesAlreadySubscribed.push(placeName);
 						   //console.log(' Subscribing Now ' + placeName);
 						   
-						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminName1;
+							topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminName1.toString();
 						   //for(var j=0;j< listOfTopics.length ;j++)
 							//{
 								//if( topicArn == listOfTopics[j])
@@ -253,7 +253,7 @@ exports.registerNewDevice = function(req, res) {
 										}	
 										else 
 										{
-											//console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
+											console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
 											//console.log(placeName);
 											//listOfCitiesAlreadySubscribed.push(placeName);
 											//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
