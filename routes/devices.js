@@ -231,7 +231,7 @@ exports.registerNewDevice = function(req, res) {
 						  
 						   if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
 						   listOfCitiesAlreadySubscribed.push(placeName);
-						   console.log(' Subscribing Now ' + placeName);
+						   //console.log(' Subscribing Now ' + placeName);
 						   
 						   topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminName1;
 						   //for(var j=0;j< listOfTopics.length ;j++)
@@ -247,7 +247,7 @@ exports.registerNewDevice = function(req, res) {
 									snsClient.subscribe(params, function(err, data)
 									{
 										if (err) {
-											//console.log(err, err.stack); // an error occurred
+											console.log(err, err.stack); // an error occurred
 											//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
 											
 										}	
