@@ -282,6 +282,7 @@ exports.registerNewDevice = function(req, res) {
 											};
 					
 											console.log("Now inserting new row into EndpointARNs domain") ;
+											console.log(data.SubscriptionArn);
 											simpleDB.putAttributes(params1, function(err, data) 
 											{
 												if (err) {
