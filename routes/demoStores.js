@@ -770,17 +770,18 @@ exports.createNewStore = function(req, res) {
 
 
 			// this sends the email
-			// @todo - add HTML version
 			ses.sendEmail( { 
 			   Source: from, 
 			   Destination: { ToAddresses: to },
 			   Message: {	
 				   Subject: {
-					  Data: 'Thank you for subscribing to Local Buzz'
+					  Data: 'Local Buzz registration request received'
 				   },
 				   Body: {
-					   Text: {
-						   Data: 'We will confirm your subscription in the next two days',
+					   Html: {
+						   Data: 'Dear <b>' + req.body.businessName + '</b> Team <br>, ' 
+						   + 'Thank you for registering using the <i>Local Buzz for Merchants App</i>. <br> We have received your registration request and we will email you a confirmation in the next two business days. In the meantime, if you have any questions, please feel free to write to us at info@appsonmobile.com or leave us a note <a href="http://www.appsonmobile.com/contact-us">here</a>. <br><br>' 
+						   + 'Best Regards,<br> Local Buzz Team <br> Visit us at http://www.appsonmobile.com <br>'						   
 					   }
 					}
 			   }
