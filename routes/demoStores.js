@@ -625,7 +625,7 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
-	var place = (req.body.city).toString() + (req.body.state).toString();
+	var place = (req.body.city) + (req.body.state);
 	console.log(place); 
 	
 	var topicName = 'LocalBuzz' + place ;
@@ -779,7 +779,7 @@ exports.createNewStore = function(req, res) {
 				   },
 				   Body: {
 					   Html: {
-						   Data: 'Dear <b>' + req.body.businessName + '</b> Team <br>, ' 
+						   Data: 'Dear <b>' + req.body.businessName + '</b> Team, <br>' 
 						   + 'Thank you for registering using the <i>Local Buzz for Merchants App</i>. <br> We have received your registration request and we will email you a confirmation in the next two business days. In the meantime, if you have any questions, please feel free to write to us at info@appsonmobile.com or leave us a note <a href="http://www.appsonmobile.com/contact-us">here</a>. <br><br>' 
 						   + 'Best Regards,<br> Local Buzz Team <br> Visit us at http://www.appsonmobile.com <br>'						   
 					   }
