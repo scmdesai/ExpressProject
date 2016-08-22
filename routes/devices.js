@@ -228,12 +228,13 @@ exports.registerNewDevice = function(req, res) {
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
 						  //console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
 						  var placeName = (jsonArea.postalCodes[i].placeName).toString();
+						  var state = (jsonArea.postalCodes[i].adminName1).toString();
 						  
 						   if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
 						   listOfCitiesAlreadySubscribed.push(placeName);
 						   //console.log(' Subscribing Now ' + placeName);
 						   
-							topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminName1.toString();
+							topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+ placeName + state;
 						   //for(var j=0;j< listOfTopics.length ;j++)
 							//{
 								//if( topicArn == listOfTopics[j])
@@ -243,7 +244,7 @@ exports.registerNewDevice = function(req, res) {
 									TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
 									Endpoint: data.EndpointArn
 								 };
-								//console.log('Subscribing to: ' + 'LocalBuzz'+ jsonArea.postalCodes[i].placeName + jsonArea.postalCodes[i].adminCode1) ;
+								console.log('Subscribing to: ' + topicArn);
 									snsClient.subscribe(params, function(err, data)
 									{
 										if (err) {
