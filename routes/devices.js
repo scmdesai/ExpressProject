@@ -139,8 +139,8 @@ exports.registerNewDevice = function(req, res) {
 				{
 					console.log("SUCCESS from AWS!") ;
 					var items = data["Items"];
-					//if(items)
-					//{
+					if(items)
+					{
 					
 					
 					items.forEach(function(listItem, index){
@@ -201,7 +201,7 @@ exports.registerNewDevice = function(req, res) {
 					});
 					
 						
-				//	}
+					}
 				}
 			});
     

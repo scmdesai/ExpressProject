@@ -88,7 +88,7 @@ function Store(attributes) {
 		
 	}
 	//this.picture = "URL" ;
-	this.isFavorite = "true" ;
+	//this.isFavorite = "true" ;
 
 }
 
