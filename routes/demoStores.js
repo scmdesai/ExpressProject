@@ -625,7 +625,7 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	
-	var place = (req.body.city) + (req.body.state);
+	var place = (req.body.city).toString() + (req.body.state).toString();
 	console.log(place); 
 	
 	var topicName = 'LocalBuzz' + place ;
