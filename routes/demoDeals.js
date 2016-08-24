@@ -661,7 +661,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
-			var cityName = req.body.city).toString();
+			var cityName = (req.body.city).toString();
 			var tmpArray = [];
 			var city ;
 			var stateName = (req.body.state).toString();
