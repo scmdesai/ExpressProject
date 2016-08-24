@@ -661,10 +661,10 @@ exports.dealImageURLUpdate = function(req, res) {
 			}
 			console.log("SNS Client creation successful") ;
 			
-			var cityName = req.body.city;
+			var cityName = (req.body.city).toString();
 			var tmpArray = [];
 			var city ;
-			var stateName = req.body.state;
+			var stateName = (req.body.state).toString();
 			var state ;
 			var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
 			if (regexp.test(cityName)) {
