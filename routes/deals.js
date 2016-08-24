@@ -267,7 +267,40 @@ exports.createNewDeal = function(req, res) {
 				"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 				"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 			};
-			var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
+			var cityName = (req.body.city).toString();
+			console.log('Place Name is ' + cityName); 
+			var tmpArray = [];
+			var city ;
+			var stateName = (req.body.state).toString();
+			console.log('Place Name is ' + stateName); 
+			var state ;
+			var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
+			if (regexp.test(cityName)) {
+				// at least 2 words consisting of letters
+				tmpArray = cityName.split(' ');
+				city = tmpArray[0]+tmpArray[1];
+				
+			}
+			else
+			city=cityName;
+			
+			if (regexp.test(stateName)) {
+				// at least 2 words consisting of letters
+				tmpArray = stateName.split(' ');
+				state = tmpArray[0]+tmpArray[1];
+				
+			}
+			else
+			state = stateName;
+			var place = city + state ;
+			console.log('City Name is ' + city); 
+			console.log('State Name is ' + state); 
+			console.log('Place Name is ' + place); 
+			 
+			
+			var topicName = 'LocalBuzz' + place ;
+			var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
+			//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
 			
 			var params = {
 				Message: JSON.stringify(message),
