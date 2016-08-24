@@ -662,9 +662,11 @@ exports.dealImageURLUpdate = function(req, res) {
 			console.log("SNS Client creation successful") ;
 			
 			var cityName = (req.body.city).toString();
+			console.log('Place Name is ' + cityName); 
 			var tmpArray = [];
 			var city ;
 			var stateName = (req.body.state).toString();
+			console.log('Place Name is ' + stateName); 
 			var state ;
 			var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
 			if (regexp.test(cityName)) {
@@ -685,7 +687,9 @@ exports.dealImageURLUpdate = function(req, res) {
 			else
 			state = stateName;
 			var place = city + state ;
-			console.log(place); 
+			console.log('City Name is ' + city); 
+			console.log('State Name is ' + state); 
+			console.log('Place Name is ' + place); 
 			 
 			
 			var topicName = 'LocalBuzz' + place ;
