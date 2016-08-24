@@ -626,8 +626,29 @@ exports.createNewStore = function(req, res) {
 		pictureURL = "http://images.appsonmobile.com/locallink/stores/DefaultStoreImage.jpg";  
 	}
 	
+	var cityName = req.body.city;
+	var city ;
+	var stateName = req.body.state;
+	var state ;
+	var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
+	if (regexp.test(cityName)) {
+		// at least 2 words consisting of letters
+		cityName.split(' ');
+		city = cityName[0]+cityName[1];
+		
+	}
+	else
+	city=cityName;
 	
-	var place = (req.body.city) + (req.body.state);
+	if (regexp.test(stateName)) {
+		// at least 2 words consisting of letters
+		stateName.split(' ');
+		state = stateName[0]+stateName[1];
+		
+	}
+	else
+	state = stateName;
+	var place = city + state ;
 	console.log(place); 
 	
 	var topicName = 'LocalBuzz' + place ;

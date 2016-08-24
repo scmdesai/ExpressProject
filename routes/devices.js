@@ -227,8 +227,32 @@ exports.registerNewDevice = function(req, res) {
 						  
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
 						  //console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
-						  var placeName = (jsonArea.postalCodes[i].placeName).toString();
-						  var state = (jsonArea.postalCodes[i].adminName1).toString();
+						var cityName = (jsonArea.postalCodes[i].placeName).toString();
+						var city ;
+						var stateName = (jsonArea.postalCodes[i].adminName1).toString();
+						var state ;
+						var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
+						if (regexp.test(cityName)) {
+							// at least 2 words consisting of letters
+							cityName.split(' ');
+							city = cityName[0]+cityName[1];
+							
+						}
+						else
+						city = cityName;
+						
+						if (regexp.test(stateName)) {
+							// at least 2 words consisting of letters
+							stateName.split(' ');
+							state = stateName[0]+stateName[1];
+							
+						}
+						else
+						state = stateName;
+						
+						//var place = city + state ;
+						  var placeName = city;//(jsonArea.postalCodes[i].placeName).toString();
+						 // var state = (jsonArea.postalCodes[i].adminName1).toString();
 						  
 						   if ((listOfCitiesAlreadySubscribed.indexOf(placeName))<0) {
 						   listOfCitiesAlreadySubscribed.push(placeName);
