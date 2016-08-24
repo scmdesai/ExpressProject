@@ -635,7 +635,7 @@ exports.createNewStore = function(req, res) {
 	if (regexp.test(cityName)) {
 		// at least 2 words consisting of letters
 		tmpArray = cityName.split(' ');
-		city = tmpArray[0]+tmpArray[2];
+		city = tmpArray[0]+tmpArray[1];
 		
 	}
 	else
@@ -644,7 +644,7 @@ exports.createNewStore = function(req, res) {
 	if (regexp.test(stateName)) {
 		// at least 2 words consisting of letters
 		tmpArray = stateName.split(' ');
-		state = tmpArray[0]+tmpArray[2];
+		state = tmpArray[0]+tmpArray[1];
 		
 	}
 	else
