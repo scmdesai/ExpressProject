@@ -228,14 +228,15 @@ exports.registerNewDevice = function(req, res) {
 						  /* Subscribe the user to the cities that are registered with Local Buzz */
 						  //console.log('Check if city is subscribed ' + jsonArea.postalCodes[i].placeName);
 						var cityName = (jsonArea.postalCodes[i].placeName).toString();
+						var tmpArray = [];
 						var city ;
 						var stateName = (jsonArea.postalCodes[i].adminName1).toString();
 						var state ;
 						var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
 						if (regexp.test(cityName)) {
 							// at least 2 words consisting of letters
-							cityName.split(' ');
-							city = cityName[0]+cityName[1];
+							tmpArray = cityName.split(' ');
+							city = tmpArray[0]+tmpArray[2];
 							
 						}
 						else
@@ -243,8 +244,8 @@ exports.registerNewDevice = function(req, res) {
 						
 						if (regexp.test(stateName)) {
 							// at least 2 words consisting of letters
-							stateName.split(' ');
-							state = stateName[0]+stateName[1];
+							tmpArray = stateName.split(' ');
+							state = tmpArray[0]+tmpArray[2];
 							
 						}
 						else

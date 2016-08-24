@@ -627,14 +627,15 @@ exports.createNewStore = function(req, res) {
 	}
 	
 	var cityName = req.body.city;
+	var tmpArray = [];
 	var city ;
 	var stateName = req.body.state;
 	var state ;
 	var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
 	if (regexp.test(cityName)) {
 		// at least 2 words consisting of letters
-		cityName.split(' ');
-		city = cityName[0]+cityName[1];
+		tmpArray = cityName.split(' ');
+		city = tmpArray[0]+tmpArray[2];
 		
 	}
 	else
@@ -642,8 +643,8 @@ exports.createNewStore = function(req, res) {
 	
 	if (regexp.test(stateName)) {
 		// at least 2 words consisting of letters
-		stateName.split(' ');
-		state = stateName[0]+stateName[1];
+		tmpArray = stateName.split(' ');
+		state = tmpArray[0]+tmpArray[2];
 		
 	}
 	else
