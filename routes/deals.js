@@ -547,7 +547,7 @@ exports.deleteDeal = function(req, res) {
 						}
 					});
 
-				}
+				});
 			}
 			
 		}
