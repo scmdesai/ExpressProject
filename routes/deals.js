@@ -457,35 +457,37 @@ exports.deleteDeal = function(req, res) {
 	
 	//*** Get dealImageURL of the deal to delete, to first delete the deal from S3 
 	
-	var	getParams = {
-		SelectExpression: 'select * from MyDeals where ItemName ="' + req.params.id + '"', /* required */
-		ConsistentRead: true
-		//NextToken: 'STRING_VALUE'
+	var getParams = {
+		DomainName: 'MyDeals', /* required */
+		ItemName: req.params.id, /* required */
+		AttributeNames: [
+		'DealImageURL'
+		/* more items */
+		],
+		ConsistentRead: true 
 	};
 	
 	console.log("Now retrieving data set of deal to delete from SDB") ;
-	simpleDB.select(getParams, function(err, data) {
+	simpledb.getAttributes(getParams, function(err, data) {
 		if (err) {
 			console.log("ERROR calling AWS Simple DB!!!") ;
 			console.log(err, err.stack); // an error occurred
 		}
 		else {
 			console.log("SUCCESS from AWS!") ;
-			console.log(JSON.stringify(data));           // successful response
+			console.log("JSON Stringify is: " + JSON.stringify(data));           // successful response
 			console.log("Now accessing Items element") ;
-			var items = data["Items"] ;
-			console.log(items) ;
+			var attributes = data["Attributes"] ;
+			console.log(attributes) ;
 			
-			if(items){
-				items.forEach(function(listItem, index){
-					var itemName = listItem["Name"] ;
-					console.log("In for loop, ItemName is " + itemName) ;
-					var attributes = listItem["Attributes"] ;
-					console.log("Now de-serializing the deal object") ;
-					var tempDeal = new Deal(itemName, attributes) ;
-					var dealImageURL = tempDeal.dealImageURL ;
-					console.log("Deleting image from S3: " + tempDeal.dealImageURL) ;
-					if(tempDeal.dealImageURL != "") {				
+			if(attributes){
+				// we know there is only one attribute in this array and it is DealImageURL
+				attributes.forEach(function(listAttr, index){
+					var attrName = listAttr["Name"] ;
+					console.log("In for loop, attrName is " + attrName) ;
+					var dealImageURL = listAttr["Value"] ;
+					console.log("Deleting image from S3: " + dealImageURL) ;
+					if(dealImageURL != "") {				
 					
 						console.log("Deal image URL is not empty") ;
 						
