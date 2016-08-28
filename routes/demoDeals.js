@@ -10,7 +10,7 @@ var upload = multer({ dest: 'uploads/' }) ;
 var dealsList = [] ;
 var simpleDB = null ;
 var snsClient = null ;
-
+var s3Client = null ;
 var dealURL = null;
 
 
@@ -524,12 +524,12 @@ exports.deleteDeal = function(req, res) {
 					console.log("S3 deletion complete, now deleting SDB record") ;
 	
 					var params = {
-					  DomainName: 'MyDeals', /* required */
+					  DomainName: 'DemoMyDeals', /* required */
 					  ItemName: req.params.id /* required */
 					  
 					};
 					
-					console.log("Now deleting a row in MyDeals domain") ;
+					console.log("Now deleting a row in DemoMyDeals domain") ;
 					var simpleDB2 = new AWS.SimpleDB() ;
 					simpleDB2.deleteAttributes(params, function(err, data) {
 						 
