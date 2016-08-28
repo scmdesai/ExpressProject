@@ -561,6 +561,18 @@ exports.deleteDeal = function(req, res) {
 
 } ;
 
+
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEF0123456789";
+
+    for( var i=0; i < 4; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
+
 exports.uploadDealImage = function(req, res, next) {
 	
 	// switch to either use local file or AWS credentials depending on where the program is running
@@ -588,7 +600,6 @@ exports.uploadDealImage = function(req, res, next) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
-			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
 			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
 		},
 		bucket      : 'images.appsonmobile.com/locallink/deals',
