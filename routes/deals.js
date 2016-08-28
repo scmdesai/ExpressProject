@@ -497,7 +497,7 @@ exports.deleteDeal = function(req, res) {
 						}
 
 						// Extract deal image URL as the "Key" parameter
-						var dealS3Key = dealImageURL.substring(dealImageURL.lastIndexOf("/")) ;
+						var dealS3Key = dealImageURL.substring(dealImageURL.lastIndexOf("/")+1) ;
 						console.log("Deal S3 Key is " + dealS3Key) ;
 						
 						var s3DeleteParams = {
