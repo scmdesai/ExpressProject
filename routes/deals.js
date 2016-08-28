@@ -465,13 +465,11 @@ exports.deleteDeal = function(req, res) {
 	
 	console.log("Now retrieving data set of deal to delete from SDB") ;
 	simpleDB.select(getParams, function(err, data) {
-	
-	
 		if (err) {
 			console.log("ERROR calling AWS Simple DB!!!") ;
 			console.log(err, err.stack); // an error occurred
 		}
-		else     {
+		else {
 			console.log("SUCCESS from AWS!") ;
 			//console.log(JSON.stringify(data));           // successful response
 			console.log("Now accessing Items element") ;
@@ -524,6 +522,35 @@ exports.deleteDeal = function(req, res) {
  						console.log("No S3 deal image to delete") ;
 						
 					}
+					
+					console.log("S3 deletion complete, now deleting SDB record") ;
+	
+					var params = {
+					  DomainName: 'MyDeals', /* required */
+					  ItemName: req.params.id /* required */
+					  
+					};
+					
+					console.log("Now deleting a row in MyDeals domain") ;
+					var simpleDB2 = new AWS.SimpleDB() ;
+					simpleDB2.deleteAttributes(params, function(err, data) {
+						 
+						if (err) {
+							console.log("Error deleting Buzz") ;
+							console.log(err, err.stack); // an error occurred
+							res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
+							/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
+						}
+						else  {
+							console.log("Buzz deleted successfully") ;
+							console.log(data);           // successful response
+							//res.status(201).send('"success": true, "msg": "Buzz deleted successfully"') ;
+							res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
+							//res.status(200).send('<script type=\"text/javascript\"> alert("Buzz deleted successfully") ;</script>' ) ;
+							
+						}
+					});
+
 				}
 			}
 			
@@ -531,58 +558,6 @@ exports.deleteDeal = function(req, res) {
 	
 	} ) ;
 	
-	console.log("S3 deletion complete, now deleting SDB record") ;
-	
-	var params = {
-	  /*Attributes: [ 
-		
-		{
-		  Name: 'DealStatus' 
-		},
-		{
-		  Name: 'DealStartDate' 
-		},
-		{
-		  Name: 'DealPictureURL' 
-		},
-		{
-		  Name: 'DealName' 
-		},
-		{
-		  Name: 'DealEndDate' 
-		},
-		{
-		  Name: 'CustID' 
-		},
-		{
-		  Name: 'BusinessName' 
-		}
-		
-	],*/
-	  DomainName: 'MyDeals', /* required */
-	  ItemName: req.params.id /* required */
-	  
-	};
-	
-	console.log("Now deleting a row in MyDeals domain") ;
-	simpleDB.deleteAttributes(params, function(err, data) {
-	     
-		if (err) {
-			console.log("Error deleting Buzz") ;
-			console.log(err, err.stack); // an error occurred
-			res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
-			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
-		}
-		else  {
-			console.log("Buzz deleted successfully") ;
-			console.log(data);           // successful response
-			//res.status(201).send('"success": true, "msg": "Buzz deleted successfully"') ;
-			res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
-			//res.status(200).send('<script type=\"text/javascript\"> alert("Buzz deleted successfully") ;</script>' ) ;
-			
-			
-		}
-	});
 
 } ;
 
