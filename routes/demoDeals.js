@@ -455,58 +455,121 @@ exports.deleteDeal = function(req, res) {
 	}
 	console.log("SDB Client creation successful") ;
 	
-	var params = {
-	  /*Attributes: [ 
-		
-		{
-		  Name: 'DealStatus' 
-		},
-		{
-		  Name: 'DealStartDate' 
-		},
-		{
-		  Name: 'DealPictureURL' 
-		},
-		{
-		  Name: 'DealName' 
-		},
-		{
-		  Name: 'DealEndDate' 
-		},
-		{
-		  Name: 'CustID' 
-		},
-		{
-		  Name: 'BusinessName' 
-		}
-		
-	],*/
-	  DomainName: 'DemoMyDeals', /* required */
-	  ItemName: req.params.id /* required */
-	  
+	//*** Get dealImageURL of the deal to delete, to first delete the deal from S3 
+	
+	var getParams = {
+		DomainName: 'MyDeals', /* required */
+		ItemName: req.params.id, /* required */
+		AttributeNames: [
+		'DealImageURL'
+		/* more items */
+		],
+		ConsistentRead: true 
 	};
 	
-	console.log("Now deleting a row in DemoMyDeals domain") ;
-	simpleDB.deleteAttributes(params, function(err, data) {
-	     
+	console.log("Now retrieving data set of deal to delete from SDB") ;
+	simpleDB.getAttributes(getParams, function(err, data) {
 		if (err) {
-			console.log("Error deleting Buzz") ;
+			console.log("ERROR calling AWS Simple DB!!!") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
-			/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
 		}
-		else  {
-			console.log("Deal deleted successfully") ;
-			console.log(data);           // successful response
-			//res.status(201).send('"success": true, "msg": "Deal deleted successfully"') ;
-			res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
-			//res.status(200).send('<script type=\"text/javascript\"> alert("Deal deleted successfully") ;</script>' ) ;
+		else {
+			console.log("SUCCESS from AWS!") ;
+			console.log("JSON Stringify is: " + JSON.stringify(data));           // successful response
+			console.log("Now accessing Items element") ;
+			var attributes = data["Attributes"] ;
+			console.log(attributes) ;
 			
+			if(attributes){
+				// we know there is only one attribute in this array and it is DealImageURL
+				attributes.forEach(function(listAttr, index){
+					var attrName = listAttr["Name"] ;
+					console.log("In for loop, attrName is " + attrName) ;
+					var dealImageURL = listAttr["Value"] ;
+					console.log("Deleting image from S3: " + dealImageURL) ;
+					if(dealImageURL != "") {				
+					
+						console.log("Deal image URL is not empty") ;
+						
+						if(s3Client == null) {
+							console.log("S3 Client is null, creating new S3 Client") ;
+							s3Client = new AWS.S3() ;
+						}
+
+						// Extract deal image URL as the "Key" parameter
+						var dealS3Key = dealImageURL.substring(dealImageURL.lastIndexOf("/")+1) ;
+						console.log("Deal S3 Key is " + dealS3Key) ;
+						
+						var s3DeleteParams = {
+							Bucket: 'images.appsonmobile.com/locallink/deals', /* required */
+							Key: dealS3Key, /* required */
+						};
+						s3Client.deleteObject(s3DeleteParams, function(err, data) {
+							if (err)  {
+								console.log(err, err.stack); // an error occurred
+								console.log("Error deleting S3 object"); 
+							}							
+							else     {
+								console.log("Successfully deleted S3 deal image") ;
+								console.log(data);           // successful response
+							}
+						});
+						
+					}
+					else { // active buzz found. Add it to he return value
+ 						console.log("No S3 deal image to delete") ;
+						
+					}
+					
+					console.log("S3 deletion complete, now deleting SDB record") ;
+	
+					var params = {
+					  DomainName: 'MyDeals', /* required */
+					  ItemName: req.params.id /* required */
+					  
+					};
+					
+					console.log("Now deleting a row in MyDeals domain") ;
+					var simpleDB2 = new AWS.SimpleDB() ;
+					simpleDB2.deleteAttributes(params, function(err, data) {
+						 
+						if (err) {
+							console.log("Error deleting Buzz") ;
+							console.log(err, err.stack); // an error occurred
+							res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
+							/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
+						}
+						else  {
+							console.log("Buzz deleted successfully") ;
+							console.log(data);           // successful response
+							//res.status(201).send('"success": true, "msg": "Buzz deleted successfully"') ;
+							res.status(200).send('{ "success": true, "msg": "Buzz Deleted" }') ;
+							//res.status(200).send('<script type=\"text/javascript\"> alert("Buzz deleted successfully") ;</script>' ) ;
+							
+						}
+					});
+
+				});
+			}
 			
 		}
-	});
+	
+	} ) ;
+	
 
 } ;
+
+
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEF0123456789";
+
+    for( var i=0; i < 4; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
+}
 
 exports.uploadDealImage = function(req, res, next) {
 	
@@ -535,7 +598,7 @@ exports.uploadDealImage = function(req, res, next) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
-			cb( null, file.fieldname + '-' + Date.now() + ".jpg" );
+			cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".jpg" );
 			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
 		},
 		bucket      : 'images.appsonmobile.com/locallink/deals',
@@ -579,6 +642,7 @@ exports.uploadDealImage = function(req, res, next) {
 	
 	
 };
+
 
 exports.dealImageURLUpdate = function(req, res) {
 
