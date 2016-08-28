@@ -468,7 +468,7 @@ exports.deleteDeal = function(req, res) {
 	};
 	
 	console.log("Now retrieving data set of deal to delete from SDB") ;
-	simpledb.getAttributes(getParams, function(err, data) {
+	simpleDB.getAttributes(getParams, function(err, data) {
 		if (err) {
 			console.log("ERROR calling AWS Simple DB!!!") ;
 			console.log(err, err.stack); // an error occurred
