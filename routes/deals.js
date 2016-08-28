@@ -600,6 +600,7 @@ exports.uploadDealImage = function(req, res, next) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
+			cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".jpg" );
 			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
 		},
 		bucket      : 'images.appsonmobile.com/locallink/deals',
