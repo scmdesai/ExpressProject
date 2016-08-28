@@ -458,7 +458,7 @@ exports.deleteDeal = function(req, res) {
 	//*** Get dealImageURL of the deal to delete, to first delete the deal from S3 
 	
 	var getParams = {
-		DomainName: 'MyDeals', /* required */
+		DomainName: 'DemoMyDeals', /* required */
 		ItemName: req.params.id, /* required */
 		AttributeNames: [
 		'DealImageURL'
