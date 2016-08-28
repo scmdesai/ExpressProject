@@ -471,20 +471,17 @@ exports.deleteDeal = function(req, res) {
 		}
 		else {
 			console.log("SUCCESS from AWS!") ;
-			//console.log(JSON.stringify(data));           // successful response
+			console.log(JSON.stringify(data));           // successful response
 			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
-			//console.log(items) ;
+			console.log(items) ;
 			
 			if(items){
-				var j=0 ;
-				for(var i=0; i < items.length; i++) {
-					var item = items[i] ;	
-					//console.log(item) ;
-					var itemName = item["Name"] ;
-					//console.log("ItemName is " + itemName) ;
-					var attributes = item["Attributes"] ;
-					console.log("Now constructing deal object") ;
+				items.forEach(function(listItem, index){
+					var itemName = listItem["Name"] ;
+					console.log("In for loop, ItemName is " + itemName) ;
+					var attributes = listItem["Attributes"] ;
+					console.log("Now de-serializing the deal object") ;
 					var tempDeal = new Deal(itemName, attributes) ;
 					var dealImageURL = tempDeal.dealImageURL ;
 					console.log("Deleting image from S3: " + tempDeal.dealImageURL) ;
@@ -497,7 +494,6 @@ exports.deleteDeal = function(req, res) {
 							s3Client = new AWS.S3() ;
 						}
 
-						
 						// Extract deal image URL as the "Key" parameter
 						var dealS3Key = dealImageURL.substring(dealImageURL.lastIndexOf("/")) ;
 						console.log("Deal S3 Key is " + dealS3Key) ;
