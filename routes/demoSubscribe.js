@@ -10,7 +10,7 @@ exports.enableSubscription = function(req, res) {
 		  description: 'Local Buzz Merchant',
 		  source: req.body.stripeToken,// obtained with Stripe.js
 		  email: req.body.stripeEmail,
-		  plan: "BasicPlan"
+		  plan: "StandardPlan"
 		}, function(err, customer) {
 		  // asynchronously called
 		if(err){

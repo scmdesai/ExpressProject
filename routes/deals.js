@@ -9,6 +9,7 @@ var upload = multer({ dest: 'uploads/' }) ;
 
 var dealsList = [] ;
 var simpleDB = null ;
+var s3Client = null ;
 var snsClient = null ;
 
 var dealURL = null;
@@ -450,7 +451,87 @@ exports.deleteDeal = function(req, res) {
 		console.log("SimpleDB is null, creating new connection") ;
 		simpleDB = new AWS.SimpleDB() ;
 	}
+	
+
 	console.log("SDB Client creation successful") ;
+	
+	//*** Get dealImageURL of the deal to delete, to first delete the deal from S3 
+	
+	var	getParams = {
+		SelectExpression: 'select * from MyDeals where ItemName ="' + req.params.id + '"', /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	
+	console.log("Now retrieving data set of deal to delete from SDB") ;
+	simpleDB.select(getParams, function(err, data) {
+	
+	
+		if (err) {
+			console.log("ERROR calling AWS Simple DB!!!") ;
+			console.log(err, err.stack); // an error occurred
+		}
+		else     {
+			console.log("SUCCESS from AWS!") ;
+			//console.log(JSON.stringify(data));           // successful response
+			console.log("Now accessing Items element") ;
+			var items = data["Items"] ;
+			//console.log(items) ;
+			
+			if(items){
+				var j=0 ;
+				for(var i=0; i < items.length; i++) {
+					var item = items[i] ;	
+					//console.log(item) ;
+					var itemName = item["Name"] ;
+					//console.log("ItemName is " + itemName) ;
+					var attributes = item["Attributes"] ;
+					console.log("Now constructing deal object") ;
+					var tempDeal = new Deal(itemName, attributes) ;
+					var dealImageURL = tempDeal.dealImageURL ;
+					console.log("Deleting image from S3: " + tempDeal.dealImageURL) ;
+					if(tempDeal.dealImageURL != "") {				
+					
+						console.log("Deal image URL is not empty") ;
+						
+						if(s3Client == null) {
+							console.log("S3 Client is null, creating new S3 Client") ;
+							s3Client = new AWS.S3() ;
+						}
+
+						
+						// Extract deal image URL as the "Key" parameter
+						var dealS3Key = dealImageURL.substring(dealImageURL.lastIndexOf("/")) ;
+						console.log("Deal S3 Key is " + dealS3Key) ;
+						
+						var s3DeleteParams = {
+							Bucket: 'images.appsonmobile.com/locallink/deals', /* required */
+							Key: dealS3Key, /* required */
+						};
+						s3Client.deleteObject(s3DeleteParams, function(err, data) {
+							if (err)  {
+								console.log(err, err.stack); // an error occurred
+								console.log("Error deleting S3 object"); 
+							}							
+							else     {
+								console.log("Successfully deleted S3 deal image") ;
+								console.log(data);           // successful response
+							}
+						});
+						
+					}
+					else { // active buzz found. Add it to he return value
+ 						console.log("No S3 deal image to delete") ;
+						
+					}
+				}
+			}
+			
+		}
+	
+	} ) ;
+	
+	console.log("S3 deletion complete, now deleting SDB record") ;
 	
 	var params = {
 	  /*Attributes: [ 
