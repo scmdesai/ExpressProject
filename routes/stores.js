@@ -340,7 +340,7 @@ exports.updateOnlyBusinessInfo = function(req, res) {
 		else  {
 			console.log("Record updated successfully") ;
 			console.log(data);           // successful response
-			res.status(200).send('{ "success": true, "msg": "Record updated successfully" }') ;
+			res.status(200).send('{ "success": true, "msg": "Record updated successfully.Please login again to see the changes." }') ;
 		}
 	});
 	
