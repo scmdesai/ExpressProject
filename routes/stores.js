@@ -179,6 +179,7 @@ exports.findByLoginEmail = function(req, res) {
 			
 			// loginEmail is unique
 			//for(var i=0; i < items.length; i++) {
+			if(items){
 				var item = items[0] ;	
                 console.log(item) ;				
 				var attributes = item["Attributes"] ;
@@ -211,7 +212,7 @@ exports.findByLoginEmail = function(req, res) {
 				//console.log(attributes) ;
 			//}
 			
-		}
+			}
 		console.log("Stores List is: " + storeDetails);
 		var storesJsonOutput = JSON.stringify(storeDetails) ;
 	    
