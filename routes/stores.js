@@ -127,7 +127,7 @@ exports.findAllStores = function(req, res) {
 			
 };
 
-exports.findByStoreName = function(req, res) {
+exports.findByLoginEmail = function(req, res) {
 	console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
 
@@ -150,7 +150,7 @@ exports.findByStoreName = function(req, res) {
 	var simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
 	var	params = {
-		SelectExpression: 'select * from MyCustomers where BusinessName = ' + '"' + req.params.storeName + '"', /* required */
+		SelectExpression: 'select * from MyCustomers where loginEmail = ' + '"' + req.params.email + '"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -176,12 +176,12 @@ exports.findByStoreName = function(req, res) {
 			var items = data["Items"] ;
 			//console.log(items) ;
 			
-			
-			for(var i=0; i < items.length; i++) {
-				var item = items[i] ;	
+			// loginEmail is unique
+			//for(var i=0; i < items.length; i++) {
+				var item = items[0] ;	
                 console.log(item) ;				
 				var attributes = item["Attributes"] ;
-				storesList[i] = new Store(attributes) ;
+				storesList[0] = new Store(attributes) ;
 				
 				/*
 				//console.log(attributes) ;
@@ -208,7 +208,7 @@ exports.findByStoreName = function(req, res) {
 				}
 				storesList[i] = store ;*/
 				//console.log(attributes) ;
-			}
+			//}
 			
 		}
 		console.log("Stores List is: " + storesList);
