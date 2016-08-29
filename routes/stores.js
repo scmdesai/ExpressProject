@@ -16,9 +16,9 @@ var storeDetails = null;
   
 exports.findAllStores = function(req, res) {
 
-    //var query = require('url').parse(req.url,true).query;
+    
     var today = new Date();
-	storeDetails = null;
+	
 	
 	
 
@@ -40,86 +40,7 @@ exports.findAllStores = function(req, res) {
 	console.log("Creating SDB Client") ;
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
-	console.log('Query is :'+ req.query.email);
-	if(req.query!= null) {
-	   
-		var	params = {
-		SelectExpression: 'select * from MyCustomers where loginEmail = ' + '"' + req.query + '"', /* required */
-		ConsistentRead: true
-		//NextToken: 'STRING_VALUE'
-	};
-	console.log("params: " + req.query.email) ;
-	var cb = req.query.callback;	
-	console.log("Callback URL is " + cb) ;
 
-	
-	console.log("Now retrieving data set from SDB") ;
-	simpleDB.select(params, function(err, data) {
-		if (err) {
-			console.log("ERROR calling AWS Simple DB!!!") ;
-			console.log(err, err.stack); // an error occurred
-		}
-		else     {
-			console.log("SUCCESS from AWS!") ;
-			console.log(JSON.stringify(data));           // successful response
-			console.log("Objects in the AWS data element:" ) ;
-			for(var name in data) {
-				console.log(name) ;
-			}
-			console.log("Now accessing Items element") ;
-			var items = data["Items"] ;
-			//console.log(items) ;
-			
-			// loginEmail is unique
-			//for(var i=0; i < items.length; i++) {
-			if(items){
-				var item = items[0] ;	
-                console.log(item) ;				
-				var attributes = item["Attributes"] ;
-				storeDetails = new Store(attributes) ;
-				
-				/*
-				//console.log(attributes) ;
-				for(var j in attributes) {
-					var attr = attributes[j];
-					//console.log(attr) ;
-					var nameAttr = attr["Name"];
-					var valueAttr = attr["Value"];
-					//console.log(nameAttr + ": " + valueAttr );
-					var storesJsonOutput;
-					storesJsonOutput = (nameAttr + ": " + valueAttr + "\n" );
-					res.write(storesJsonOutput);
-					
-				
-				}
-			
-				res.end() ;*/	
-				/*var store = new Store() ;
-				for(var j=0; j < attributes.length; j++) {
-					var attribute = attributes[j] ;
-					if(attribute["Name"] == "BusinessName") {
-						store.businessName = attribute["Value"] ;
-					}
-				}
-				storesList[i] = store ;*/
-				//console.log(attributes) ;
-			}
-			
-		}
-		console.log("Stores List is: " + storeDetails);
-		var storesJsonOutput = JSON.stringify(storeDetails) ;
-	    
-		
-		if(cb) {
-			res.send( cb + "(" + storesJsonOutput + ");" );
-		}
-		else {
-			res.send(storesJsonOutput) ;
-		}
-	});
-		
-	}
-	else {
 	var	params = {
 		SelectExpression: 'select * from MyCustomers where SignupStatus="Approved"', /* required */
 		ConsistentRead: true
@@ -210,7 +131,7 @@ exports.findAllStores = function(req, res) {
 			res.send(storesJsonOutput) ;
 		}
 	});
-	}
+	
 			
 };
 
