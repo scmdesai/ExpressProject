@@ -130,7 +130,7 @@ exports.findAllStores = function(req, res) {
 exports.findByLoginEmail = function(req, res) {
 	console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
-	var storeDetails;
+	var storeDetails = null;
 
    //res.send({id:req.params.storeName, businessName: "The Name", description: req.body});
    if(process.env.RUN_LOCAL=="TRUE") {
