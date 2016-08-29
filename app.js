@@ -14,6 +14,7 @@ var express = require('express')
   , demoDeals = require('./routes/demoDeals')
   , demoSubscriptions = require('./routes/demoSubscriptions')
   , demoSubscribe = require('./routes/demoSubscribe')
+  , subscribe = require('./routes/subscribe')
   // *** demo end-points ***
   , devices = require('./routes/devices')
   , demoDevices = require('./routes/demoDevices')
