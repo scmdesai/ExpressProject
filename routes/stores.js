@@ -130,6 +130,7 @@ exports.findAllStores = function(req, res) {
 exports.findByLoginEmail = function(req, res) {
 	console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
+	var storeDetails;
 
    //res.send({id:req.params.storeName, businessName: "The Name", description: req.body});
    if(process.env.RUN_LOCAL=="TRUE") {
@@ -181,7 +182,7 @@ exports.findByLoginEmail = function(req, res) {
 				var item = items[0] ;	
                 console.log(item) ;				
 				var attributes = item["Attributes"] ;
-				storesList[0] = new Store(attributes) ;
+				storeDetails = new Store(attributes) ;
 				
 				/*
 				//console.log(attributes) ;
@@ -211,8 +212,8 @@ exports.findByLoginEmail = function(req, res) {
 			//}
 			
 		}
-		console.log("Stores List is: " + storesList);
-		var storesJsonOutput = JSON.stringify(storesList) ;
+		console.log("Stores List is: " + storeDetails);
+		var storesJsonOutput = JSON.stringify(storeDetails) ;
 	    
 		
 		if(cb) {
