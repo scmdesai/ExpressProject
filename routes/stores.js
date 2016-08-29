@@ -16,7 +16,7 @@ var storeDetails = null;
   
 exports.findAllStores = function(req, res) {
 
-    var query = require('url').parse(req.url,true).query;
+    //var query = require('url').parse(req.url,true).query;
     var today = new Date();
 	storeDetails = null;
 	
@@ -40,11 +40,11 @@ exports.findAllStores = function(req, res) {
 	console.log("Creating SDB Client") ;
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
-	console.log('Query is :'+ query.email);
-	if(query.email != null) {
+	console.log('Query is :'+ req.query);
+	if(query!= null) {
 	   
 		var	params = {
-		SelectExpression: 'select * from MyCustomers where loginEmail = ' + '"' + req.query.email + '"', /* required */
+		SelectExpression: 'select * from MyCustomers where loginEmail = ' + '"' + req.query + '"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
