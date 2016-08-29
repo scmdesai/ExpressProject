@@ -102,7 +102,7 @@ app.get('/analytics_buzz_popularity/v3/:storeId', analytics_buzz_popularity.getD
 app.get('/analytics_user_location/v3/:storeId', analytics_user_location.getData);
 
 app.get('/stores', stores.findAllStores);
-app.get('/stores/:email', stores.findByLoginEmail);
+//app.get('/stores/:email', stores.findByLoginEmail);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
 
