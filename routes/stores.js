@@ -36,8 +36,8 @@ exports.findAllStores = function(req, res) {
 	console.log("Creating SDB Client") ;
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
-	console.log('Query is :'+ req.query.email);
-	if(req.query.email != null) {
+	console.log('Query is :'+ query.email);
+	if(query.email != null) {
 	   
 		var	params = {
 		SelectExpression: 'select * from MyCustomers where loginEmail = ' + '"' + req.query.email + '"', /* required */
