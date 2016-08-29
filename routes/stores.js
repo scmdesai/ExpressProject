@@ -14,7 +14,7 @@ var storeDetails = null;
 
 exports.findAllStores = function(req, res) {
     var today = new Date();
-	
+	storeDetails = null;
 	
 	
 
@@ -38,6 +38,7 @@ exports.findAllStores = function(req, res) {
 	console.log("SDB Client creation successful") ;
 	
 	if(req.query.email != null) {
+	   console.log('Query is :'+ req.query.email);
 		var	params = {
 		SelectExpression: 'select * from MyCustomers where loginEmail = ' + '"' + req.query.email + '"', /* required */
 		ConsistentRead: true
