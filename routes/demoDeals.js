@@ -9,8 +9,9 @@ var upload = multer({ dest: 'uploads/' }) ;
 
 var dealsList = [] ;
 var simpleDB = null ;
-var snsClient = null ;
 var s3Client = null ;
+var snsClient = null ;
+
 var dealURL = null;
 
 
@@ -111,7 +112,7 @@ exports.findAllDeals = function(req, res) {
 								console.log("Error deleting expired buzz") ;
 								console.log(err, err.stack); // an error occurred
 							} else {
-								console.log("Deal deleted successfully") ;
+								console.log("Buzz deleted successfully") ;
 								console.log(data); // successful response
 							}								
 						});
@@ -251,7 +252,7 @@ exports.createNewDeal = function(req, res) {
 			if (err) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
-				res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
+				res.status(500).send('{ "success": false, "msg": "Error adding buzz. Please try again.}') ;
 			}
 			else  {
 				console.log("Record inserted successfully") ;
@@ -277,7 +278,7 @@ exports.createNewDeal = function(req, res) {
 				
 				var params = {
 					Message: JSON.stringify(message),
-					Subject: 'New Deal from ' +  req.body.businessName,
+					Subject: 'New Buzz from ' +  req.body.businessName,
 					MessageStructure: 'json',
 					//TargetArn: 'TopicArn',
 					//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
@@ -389,7 +390,7 @@ exports.editDeal = function(req, res) {
 		if (err) {
 			console.log("Error updating record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating Buzz: "' + err + "}") ;
+			res.status(500).send('{ "success": false, "msg": "Error updating record. Please try again."}') ;
 		}
 		else  {
 			console.log("Record updated successfully") ;
@@ -429,7 +430,7 @@ exports.deleteDeal = function(req, res) {
 	//*** Get dealImageURL of the deal to delete, to first delete the deal from S3 
 	
 	var getParams = {
-		DomainName: 'DemoMyDeals', /* required */
+		DomainName: 'MyDeals', /* required */
 		ItemName: req.params.id, /* required */
 		AttributeNames: [
 		'DealImageURL'
@@ -507,7 +508,7 @@ exports.deleteDeal = function(req, res) {
 						if (err) {
 							console.log("Error deleting Buzz") ;
 							console.log(err, err.stack); // an error occurred
-							res.status(500).send('"success": false, "msg": "Error deleting buzz: " + err') ;
+							res.status(500).send('{"success": false, "msg": "Error deleting buzz. Please try again.}') ;
 							/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
 						}
 						else  {
@@ -589,7 +590,7 @@ exports.uploadDealImage = function(req, res, next) {
 				if(err) {
 					console.log("Error uploading file" + err) ;
 					//next() ;
-					res.status(500).send('{"success": false, "msg": "Error uploading file: "' + err + "}") ;
+					res.status(500).send('{"success": false, "msg": "Error uploading file. Please try again.}') ;
 				}
 				else {
 					
@@ -613,7 +614,6 @@ exports.uploadDealImage = function(req, res, next) {
 	
 	
 };
-
 
 exports.dealImageURLUpdate = function(req, res) {
 
@@ -648,8 +648,6 @@ exports.dealImageURLUpdate = function(req, res) {
 		
 		var uuid1 = uuid.v1();
 		console.log("Generated uuid for itemName " + uuid1) ;
-		
-		
 		
 		var	dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 		
@@ -725,7 +723,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			if (err) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
-				res.status(500).send('{ "success": false, "msg": "Error adding buzz: "' + err + "}") ;
+				res.status(500).send('{ "success": false, "msg": "Error adding buzz. Please try again."}') ;
 			}
 			else  {
 				console.log("Record inserted successfully") ;
@@ -753,7 +751,7 @@ exports.dealImageURLUpdate = function(req, res) {
 				
 				var params = {
 					Message: JSON.stringify(message),
-					Subject: 'New Deal from ' +  req.body.businessName,
+					Subject: 'New Buzz from ' +  req.body.businessName,
 					MessageAttributes: {
 						businessName: {
 							DataType: 'String', /* required */
