@@ -30,7 +30,6 @@ var express = require('express')
   , timeout = require('connect-timeout')
   , request=require('request');
   
-  
 //var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
   
 //add timestamps in front of log messages

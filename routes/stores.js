@@ -11,7 +11,9 @@ var storesList = [] ;
 var pictureURL;
 var snsClient = null ;
 var storeDetails = null;
-
+var query = require('url').parse(req.url,true).query;
+  
+  
 exports.findAllStores = function(req, res) {
     var today = new Date();
 	storeDetails = null;
