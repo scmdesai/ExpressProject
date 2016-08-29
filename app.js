@@ -16,6 +16,7 @@ var express = require('express')
   , demoSubscribe = require('./routes/demoSubscribe')
   // *** demo end-points ***
   , devices = require('./routes/devices')
+  , demoDevices = require('./routes/demoDevices')
   , analytics_buzz_popularity = require('./routes/analytics_buzz_popularity')
   , analytics_user_location = require('./routes/analytics_user_location')
   , http = require('http')
@@ -141,6 +142,8 @@ app.post('/uploadOne', upload.single('fileUpload'), function(req, res){
 app.post('/deals/:id', deals.deleteDeal) ;
 
 app.post('/devices', devices.registerNewDevice) ;
+app.post('/subscribe',subscribe.enableSubscription);
+
 
 //***** List of demo URL end-points : start *********
 app.get('/demoStores', demoStores.findAllStores);
@@ -160,6 +163,7 @@ app.post('/demodeals/:id', demoDeals.deleteDeal) ;
 app.post('/democreateNewStore', demoStores.uploadStoreImage,demoStores.createNewStore) ;
 
 app.post('/demoSubscribe',demoSubscribe.enableSubscription);
+app.post('/demoDevices', demoDevices.registerNewDevice) ;
 
 //***** List of demo URL end-points : end *********
 
