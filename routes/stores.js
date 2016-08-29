@@ -210,9 +210,9 @@ exports.findByLoginEmail = function(req, res) {
 				}
 				storesList[i] = store ;*/
 				//console.log(attributes) ;
-			//}
-			
 			}
+			
+		}
 		console.log("Stores List is: " + storeDetails);
 		var storesJsonOutput = JSON.stringify(storeDetails) ;
 	    
