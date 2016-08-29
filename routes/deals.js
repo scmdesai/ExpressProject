@@ -3,7 +3,7 @@ var uuid = require('node-uuid');
 var Deal = require("./deal");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
-
+var swearjar = require('swearjar');
 
 var upload = multer({ dest: 'uploads/' }) ;
 
@@ -174,7 +174,11 @@ exports.createNewDeal = function(req, res) {
 	
 	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
-	
+	//check for profanity to ensure that offensive content is rejected
+	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
+		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
+		res.status(500).send('{ "success": false, "msg": "Content rejected due to inappropriate words and violation of usage terms}"') ;
+	}
 	
 
 	var params = {
@@ -666,11 +670,16 @@ exports.dealImageURLUpdate = function(req, res) {
 		simpleDB = new AWS.SimpleDB() ;
 	}
 	console.log("SDB Client creation successful") ;
+
+	//check for profanity to ensure that offensive content is rejected
+	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
+		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
+		res.status(500).send('{ "success": false, "msg": "Content rejected due to inappropriate words and violation of usage terms}"') ;
+	}
+
 	
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
-	
-	
 	
 	var	dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 	

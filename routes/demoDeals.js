@@ -3,7 +3,7 @@ var uuid = require('node-uuid');
 var Deal = require("./deal");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
-
+var swearjar = require('swearjar');
 
 var upload = multer({ dest: 'uploads/' }) ;
 
@@ -173,7 +173,11 @@ exports.createNewDeal = function(req, res) {
 	
 	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
 	
-	
+	//check for profanity to ensure that offensive content is rejected
+	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
+		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
+		res.status(500).send('{ "success": false, "msg": "Content rejected due to inappropriate words and violation of usage terms}"') ;
+	}
 	
 
 	var params = {
@@ -260,42 +264,6 @@ exports.createNewDeal = function(req, res) {
 				snsClient = new AWS.SNS() ;
 			}
 			console.log("SNS Client creation successful") ;
-			
-			/*var cityName = (req.body.city).toString();
-			console.log('Place Name is ' + cityName); 
-			var tmpArray = [];
-			var city ;
-			var stateName = (req.body.state).toString();
-			console.log('Place Name is ' + stateName); 
-			var state ;
-			var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
-			if (regexp.test(cityName)) {
-				// at least 2 words consisting of letters
-				tmpArray = cityName.split(' ');
-				city = tmpArray[0]+tmpArray[1];
-				
-			}
-			else
-			city=cityName;
-			
-			if (regexp.test(stateName)) {
-				// at least 2 words consisting of letters
-				tmpArray = stateName.split(' ');
-				state = tmpArray[0]+tmpArray[1];
-				
-			}
-			else
-			state = stateName;
-			var place = city + state ;
-			console.log('City Name is ' + city); 
-			console.log('State Name is ' + state); 
-			console.log('Place Name is ' + place); 
-			 
-			
-			var topicName = 'LocalBuzz' + place ;
-			var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;*/
-			
-			
 			
 			
 			var message = {
@@ -669,6 +637,13 @@ exports.dealImageURLUpdate = function(req, res) {
 		simpleDB = new AWS.SimpleDB() ;
 	}
 	console.log("SDB Client creation successful") ;
+
+	//check for profanity to ensure that offensive content is rejected
+	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
+		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
+		res.status(500).send('{ "success": false, "msg": "Content rejected due to inappropriate words and violation of usage terms}"') ;
+	}
+
 	
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;

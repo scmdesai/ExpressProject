@@ -8,6 +8,7 @@
   "dependencies": {
     "aws-sdk": ">= 2.0.9",
     "body-parser": "^1.14.2",
+    "connect-timeout": "1.7.0",
     "console-stamp": "^0.2.0",
     "ejs": "~2.4.1",
     "errorhandler": "^1.4.3",
@@ -20,9 +21,9 @@
     "multer": "^1.1.0",
     "multer-storage-s3": "1.1.1",
     "node-uuid": ">= 1.4.1",
+    "request": "2.74.0",
     "serve-favicon": "^2.3.0",
-	"connect-timeout": "1.7.0",
-	"request":"2.74.0",
-	"stripe": "4.9.0"
+    "stripe": "4.9.0",
+    "swearjar": "^0.1.3"
   }
 }
