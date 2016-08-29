@@ -108,11 +108,11 @@ exports.registerNewDevice = function(req, res) {
 			snsClient.subscribe(params, function(err, data) {
 				if (err) {
 					console.log(err, err.stack); // an error occurred
-					res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+					//res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
 				}	
 				else {
 					console.log(data);           // successful response
-					res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
+					//res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 				}
 					
 			});
