@@ -154,7 +154,7 @@ exports.findByLoginEmail = function(req, res) {
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
-	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
+	console.log("params: " + req.params.email) ;
 	var cb = req.query.callback;	
 	console.log("Callback URL is " + cb) ;
 
