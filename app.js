@@ -104,6 +104,7 @@ app.get('/stores', stores.findAllStores);
 app.get('/stores/:email', stores.findByLoginEmail);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
+app.get('/deals/:id',deals.findDealsByCustomerId);
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + 'Analytics.html');

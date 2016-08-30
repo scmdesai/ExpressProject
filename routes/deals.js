@@ -143,7 +143,133 @@ exports.findAllDeals = function(req, res) {
 			
 };
 
+exports.findDealsByCustomerId = function(req, res) {
+	//console.log("GET STORES") ;
+	var today = new Date();
+	/*var dateString = datetime.toString();
+	var date = datetime.getDate();
+	var month = datetime.getMonth()+ 1;
+	var year = datetime.getFullYear();
+	var dateFormat = "'" + month + "/" + date + "/" + year + "'";
+	
+	
+	console.log(datetime.toLocaleString());
+	*/
+	
+	var dealsList=[];
 
+	// switch to either use local file or AWS credentials depending on where the program is running
+	var customerId = req.params.id;
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	
+	console.log("SDB Client creation successful") ;
+	
+	
+	var	params = {
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" and customerId ="'+ customerId+'"intersection DealEndDate is not null order by DealEndDate', /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
+	var cb = req.query.callback;	
+	console.log("Callback URL is " + cb) ;
+
+	//var customerId = req.query.customerId;	
+	//console.log("Customer ID is " + customerId) ;
+
+	//res.send("End of deals") ;
+	
+	console.log("Now retrieving data set from SDB") ;
+	simpleDB.select(params, function(err, data) {
+	
+	
+		if (err) {
+			console.log("ERROR calling AWS Simple DB!!!") ;
+			console.log(err, err.stack); // an error occurred
+		}
+		else     {
+			console.log("SUCCESS from AWS!") ;
+			//console.log(JSON.stringify(data));           // successful response
+			console.log("Objects in the AWS data element:" ) ;
+			for(var name in data) {
+				console.log(name) ;
+			}
+			console.log("Now accessing Items element") ;
+			var items = data["Items"] ;
+			//console.log(items) ;
+			
+			
+			if(items){
+				var j=0 ;
+				for(var i=0; i < items.length; i++) {
+					var item = items[i] ;	
+					//console.log(item) ;
+					var itemName = item["Name"] ;
+					//console.log("ItemName is " + itemName) ;
+					var attributes = item["Attributes"] ;
+					
+					var tempDeal = new Deal(itemName, attributes) ;
+					if(tempDeal.dealStatus == "Expired") {
+						console.log("Expired buzz found:" + tempDeal.dealName) ;
+						console.log("Updating its status in AWS SDB so that it does not show up next time") ;
+						
+						var deleteParams = {
+							DomainName: 'MyDeals', /* required */
+							ItemName: tempDeal.itemName, /* required */
+						};
+						simpleDB.deleteAttributes(deleteParams, function(err, data) {
+							if (err) {
+								console.log("Error deleting expired buzz") ;
+								console.log(err, err.stack); // an error occurred
+							} else {
+								console.log("Buzz deleted successfully") ;
+								console.log(data); // successful response
+							}								
+						});
+						
+						continue ;
+					}
+					else { // active buzz found. Add it to he return value
+ 						dealsList[j] = tempDeal ;
+						j++ ;
+					}
+				}
+			}
+			
+		}
+		
+		console.log("Deals List is: " + dealsList);
+		var dealsJsonOutput = JSON.stringify(dealsList) ;
+	    
+		
+		if(cb) {
+			res.send( cb + "(" + dealsJsonOutput + ");" );
+		}
+		else {
+			res.send(dealsJsonOutput) ;
+		}
+	});
+	
+			
+};
 
 exports.createNewDeal = function(req, res) {
 
