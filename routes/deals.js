@@ -303,7 +303,7 @@ exports.createNewDeal = function(req, res) {
 	//check for profanity to ensure that offensive content is rejected
 	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
 		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
-		res.status(403).send("Content rejected due to inappropriate words and violation of usage terms") ;
+		res.send('{"msg":"Content rejected due to inappropriate words and violation of usage terms"}') ;
 	}
 	else {
 
