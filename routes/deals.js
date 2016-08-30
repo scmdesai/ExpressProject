@@ -378,7 +378,7 @@ exports.createNewDeal = function(req, res) {
 			if (err) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
-				res.status(500).send('{ "success": false, "msg": "Error adding buzz. Please try again.}') ;
+				res.send('{"msg": "Error adding buzz. Please try again"}') ;
 			}
 			else  {
 				console.log("Record inserted successfully") ;
@@ -547,7 +547,7 @@ exports.editDeal = function(req, res) {
 		if (err) {
 			console.log("Error updating record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating record. Please try again."}') ;
+			res.send('{"msg": "Error updating record. Please try again"}') ;
 		}
 		else  {
 			console.log("Record updated successfully") ;
@@ -667,7 +667,7 @@ exports.deleteDeal = function(req, res) {
 						if (err) {
 							console.log("Error deleting Buzz") ;
 							console.log(err, err.stack); // an error occurred
-							res.status(500).send('{"success": false, "msg": "Error deleting buzz. Please try again.}') ;
+							res.send('{"msg": "Error deleting buzz. Please try again"}') ;
 							/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
 						}
 						else  {
@@ -749,7 +749,7 @@ exports.uploadDealImage = function(req, res, next) {
 				if(err) {
 					console.log("Error uploading file" + err) ;
 					//next() ;
-					res.status(500).send('{"success": false, "msg": "Error uploading file. Please try again.}') ;
+					res.send('{"msg": "Error uploading file. Please try again"}') ;
 				}
 				else {
 					
@@ -882,7 +882,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			if (err) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
-				res.status(500).send('{ "success": false, "msg": "Error adding buzz. Please try again."}') ;
+				res.send('{"msg": "Error adding buzz. Please try again"}') ;
 			}
 			else  {
 				console.log("Record inserted successfully") ;
