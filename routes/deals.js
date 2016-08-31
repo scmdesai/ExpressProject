@@ -161,7 +161,7 @@ exports.findDealsByCustomerId = function(req, res) {
 	var date = datetime.getDate();
 	var month = datetime.getMonth()+ 1;
 	var year = datetime.getFullYear();
-	var dateFormat = "'" + month + "/" + date + "/" + year + "'";
+	var dateFormat = "'" + month +  "/" + date + "/" + year + "'";
 	
 	
 	console.log(datetime.toLocaleString());
@@ -730,7 +730,7 @@ exports.uploadDealImage = function(req, res, next) {
 	
 	
 	//upload.single('fileUpload') ;
-	console.log("Upload complete...") ;
+	console.log("Request is : " + req.body) ;
 	
 	//if(req.file) {
 	
