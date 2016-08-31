@@ -70,7 +70,7 @@ exports.findAllDeals = function(req, res) {
 	if(req.query.customerId){
 		var customerId = req.query.customerId;
 		params = {
-		SelectExpression: 'select * from MyDeals where DealStatus ="Active" and customerId in {"' + customerIdStr + '"} intersection DealEndDate is not null order by DealEndDate', /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" and customerId in ("' + customerIdStr + '") intersection DealEndDate is not null order by DealEndDate', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
