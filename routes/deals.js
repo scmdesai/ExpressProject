@@ -33,7 +33,7 @@ exports.findAllDeals = function(req, res) {
 	console.log('Query is ' + req.query.customerId);
 
 	// switch to either use local file or AWS credentials depending on where the program is running
-	var customerId = req.params.id;
+	
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
 		AWS.config.loadFromPath('./config.json');
@@ -55,13 +55,22 @@ exports.findAllDeals = function(req, res) {
 	}
 	
 	console.log("SDB Client creation successful") ;
-	
-	
-	var	params = {
+	var	params;
+	if(req.query.customerId){
+		var customerId = req.query.customerId;
+		params = {
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" and customerId ="'+ customerId+'"intersection DealEndDate is not null order by DealEndDate', /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	}
+	else {
+		params = {
 		SelectExpression: 'select * from MyDeals where DealStatus ="Active" intersection DealEndDate is not null order by DealEndDate', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
+	}
 	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
 	var cb = req.query.callback;	
 	console.log("Callback URL is " + cb) ;
