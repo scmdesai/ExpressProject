@@ -730,7 +730,7 @@ exports.uploadDealImage = function(req, res, next) {
 	
 	
 	//upload.single('fileUpload') ;
-	console.log("Request is : " + JSON.stringify(req.body)) ;
+	console.log("Request is : " + JSON.parse(req.body)) ;
 	
 	//if(req.file) {
 	
