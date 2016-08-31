@@ -54,12 +54,23 @@ exports.findAllDeals = function(req, res) {
 		simpleDB = new AWS.SimpleDB() ;
 	}
 	
+	// Split the customer id
+	var customerIdList = req.query.customerId.split(",") ;
+	var customerIdStr = "" ;
+	for (i = 0; i < customerIdList.length; i++) {
+		if(i != customerIdList.length -1) 
+			customerIdStr += "'" + customerIdList[i] + "',";
+		else
+			customerIdStr += "'" + customerIdList[i] + "'";
+	}
+	console.log("Customer ID list is: " + customerIdStr) ;
+	
 	console.log("SDB Client creation successful") ;
 	var	params;
 	if(req.query.customerId){
 		var customerId = req.query.customerId;
 		params = {
-		SelectExpression: 'select * from MyDeals where DealStatus ="Active" and customerId ="'+ customerId+'"intersection DealEndDate is not null order by DealEndDate', /* required */
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" and customerId in {"' + customerIdStr + '"} intersection DealEndDate is not null order by DealEndDate', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -729,8 +740,7 @@ exports.uploadDealImage = function(req, res, next) {
 	}
 	
 	
-	//upload.single('fileUpload') ;
-	console.log("Request is : " + req.body.toString()) ;
+	
 	
 	//if(req.file) {
 	
@@ -818,6 +828,7 @@ exports.dealImageURLUpdate = function(req, res) {
 		
 		var uuid1 = uuid.v1();
 		console.log("Generated uuid for itemName " + uuid1) ;
+		
 		
 		var	dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 		
