@@ -593,7 +593,8 @@ exports.invalidateCloudFront = function(req, res,next) {
 
 	var cloudfront = new AWS.CloudFront();
 	
-	var	pathToInvalidate = "/locallink/stores/" + req.file.path ;
+	var	pathToInvalidate = encodeURI("/locallink/stores/" + req.file.path) ;
+	console.log("Invalidation path is:" + pathToInvalidate) ;
 	
 	var params = {
 	  DistributionId: 'E1V537HGTIZIKJ', /* required */
