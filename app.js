@@ -116,7 +116,7 @@ app.get('/', function(req, res) {
 //app.post('/stores/:storeName',stores.updateProfilePicture,stores.updateBusinessInfo);
 //app.post('/stores/:id',stores.updateBusinessInfo);
 
-app.post('/stores/:id',stores.uploadStoreImage,stores.updateBusinessInfo);
+app.post('/stores/:id',stores.uploadStoreImage, stores.invalidateCloudFront, stores.updateBusinessInfo);
 //app.post('/stores/:storeName',stores.updateOnlyBusinessInfo);
 app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 //app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore,subscriptions.createNewSubscription) ;

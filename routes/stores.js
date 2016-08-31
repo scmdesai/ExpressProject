@@ -588,6 +588,47 @@ exports.uploadStoreImage = function(req, res,next) {
 	
 	
 };
+
+exports.invalidateCloudFront = function(req, res,next) {
+
+	var cloudfront = new AWS.CloudFront();
+	
+	var	pathToInvalidate = "/locallink/stores/" + req.file.path ;
+	
+	var params = {
+	  DistributionId: 'E1V537HGTIZIKJ', /* required */
+	  InvalidationBatch: { /* required */
+		CallerReference: 'LocalBuzz', /* required */
+		Paths: { /* required */
+		  Quantity: 1, /* required */
+		  Items: [
+			pathToInvalidate
+			/* more items */
+		  ]
+		}
+	  }
+	};
+	cloudfront.createInvalidation(params, function(err, data) {
+		if (err) {
+			console.log("Cloudfront invalidation failed") ;
+			console.log(err, err.stack);
+			next() ;
+		}		// an error occurred
+		else {
+			console.log(data);           // successful response
+			console.log("Location is:" + data['Location']) ;
+			
+			var invalidationMap = data['Invalidation'] ;
+			console.log("Invalidation ID is:" + invalidationMap['Id']) ;
+			console.log("Invalidation Status is:" + invalidationMap['Status']) ;
+			console.log("Invalidation CreateTime is:" + invalidationMap['CreateTime']) ;
+			next();
+		}
+	});
+
+};
+
+
 exports.createNewStore = function(req, res) {
 
 	var startDate = new Date();
