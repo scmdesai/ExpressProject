@@ -29,6 +29,8 @@ exports.findAllDeals = function(req, res) {
 	*/
 	
 	dealsList=[];
+	
+	console.log('Query is ' + req.query.customerId);
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	var customerId = req.params.id;
