@@ -3,7 +3,11 @@ var uuid = require('node-uuid');
 var Store = require("./store");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
+var distance = require('google-distance');
+distance.apiKey = 'AIzaSyDHFtBdpwHNSJ2Pu0HpRK1ce5uHCSGHKXM';
+
 var upload = multer({ dest: 'uploads/' }) ;
+
 
 var simpleDB = null ;
 var storesListTmp = [] ;
@@ -12,16 +16,12 @@ var pictureURL;
 var snsClient = null ;
 var storeDetails = null;
 
-  
-  
-exports.findAllStores = function(req, res) {
 
-    
+  
+  
+exports.findAllStores = function(req, res, next) {
     var today = new Date();
 	
-	
-	
-
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
@@ -121,19 +121,76 @@ exports.findAllStores = function(req, res) {
 		}
 		}
 		//console.log("Stores List is: " + storesList);
-		var storesJsonOutput = JSON.stringify(storesList) ;
+		//var storesJsonOutput = JSON.stringify(storesList) ;
 	    
-		
+		req.storesList = storesList ;
+		next() ;
+		/*
 		if(cb) {
 			res.send( cb + "(" + storesJsonOutput + ");" );
 		}
 		else {
 			res.send(storesJsonOutput) ;
-		}
+		}*/
+		
 	});
 	
 			
 };
+
+exports.filterByLocation = function(req, res) {
+
+// Check for URL Query parameters latitude and longitude
+// If present, then iterate through the response JSON, create the address string
+// use the Google Distance API to only return those stores which are in the 30 mile radius
+	var cb = req.query.callback;	
+	
+	var storesList = req.storesList ;
+	var filteredStoreList = [] ;
+	var count = 0 ;
+	var storesJsonOutput = "" ;
+	
+	if(req.query.latitude && req.query.longitude) {
+		// start a for loop and iterate to see if the store is within the radius
+		storesList.forEach(function(store, index){
+			var storeAddress = store.address ;
+			distance.get(
+			{
+				index: 1,
+				origin: "'" + req.query.latitude +","+req.query.longitude+"'",
+				destination: storeAddress 
+			},
+			function(err, data) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log(data);
+					var distanceValue = data.distanceValue ;
+					if(distanceValue < req.query.distance) {
+						filteredStoreList[count++] = store ;
+					}
+				}
+			});
+		
+		});
+		// at the end of this for loop, we will get a filtered store list to be returned back 
+		storesJsonOutput = JSON.stringify(filteredStoreList) ; 
+	}
+	else {
+		console.log("No latitude and longitude filters to apply.") ;
+		storesJsonOutput = JSON.stringify(storesList) ; 
+	}
+
+	// return back the JSON result set
+	if(cb) {
+		res.send( cb + "(" + storesJsonOutput + ");" );
+	}
+	else {
+		res.send(storesJsonOutput) ;
+	}
+	
+};
+
 
 exports.findByLoginEmail = function(req, res) {
 	console.log("GET STORE BY NAME") ;

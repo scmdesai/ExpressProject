@@ -14,6 +14,7 @@
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
     "express-session": "^1.13.0",
+    "google-distance": "^1.0.1",
     "googleapis": "^4.0.0",
     "jade": "^1.11.0",
     "method-override": "^2.3.5",
