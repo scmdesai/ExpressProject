@@ -282,96 +282,7 @@ exports.findDealsByCustomerId = function(req, res) {
 			
 };
 
-exports.profanityCheck = function(req, res, next) {
-	console.log("Checking for profanity") ;
-	
-	//check for profanity to ensure that offensive content is rejected
-	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
-		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
-		res.send('{"msg":"Content rejected due to inappropriate words and violation of usage terms"}') ;
-	}
-	else {
-		console.log("Profanity check passed") ;
-		next() ;
-	}
-
-};
-
-exports.sendBuzzNotification = function(req, res) {
-
-	// Create an SNS client
-	console.log("Creating SNS Client to notify customers about the new buzz") ;
-	if(snsClient == null) {
-		console.log("SNS is null, creating new connection") ;
-		snsClient = new AWS.SNS() ;
-	}
-	console.log("SNS Client creation successful") ;
-	
-	
-	var message = {
-		"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
-		"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
-		"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
-	};
-	var cityName = (req.body.city).toString();
-	console.log('Place Name is ' + cityName); 
-	var tmpArray = [];
-	var city ;
-	var stateName = (req.body.state).toString();
-	console.log('Place Name is ' + stateName); 
-	var state ;
-	var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
-	if (regexp.test(cityName)) {
-		// at least 2 words consisting of letters
-		tmpArray = cityName.split(' ');
-		city = tmpArray[0]+tmpArray[1];
-		
-	}
-	else
-	city=cityName;
-	
-	if (regexp.test(stateName)) {
-		// at least 2 words consisting of letters
-		tmpArray = stateName.split(' ');
-		state = tmpArray[0]+tmpArray[1];
-		
-	}
-	else
-	state = stateName;
-	var place = city + state ;
-	console.log('City Name is ' + city); 
-	console.log('State Name is ' + state); 
-	console.log('Place Name is ' + place); 
-	 
-	
-	var topicName = 'LocalBuzz' + place ;
-	var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
-	//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
-	
-	var params = {
-		Message: JSON.stringify(message),
-		Subject: 'New Buzz from ' +  req.body.businessName,
-		MessageStructure: 'json',
-		//TargetArn: 'TopicArn',
-		//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
-		TopicArn: topicArn
-	};
-	snsClient.publish(params, function(err, data) {
-		if (err) {
-			console.log("Error sending notification on buzz") ;
-			console.log(err, err.stack); // an error occurred
-		}				
-		else {
-			console.log("Notification sent to topic subscribers") ;
-			console.log(data);           // successful response
-		}
-	});
-	
-	res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
-
-};
-
-exports.createNewDeal = function(req, res, next) {
+exports.createNewDeal = function(req, res) {
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -399,88 +310,167 @@ exports.createNewDeal = function(req, res, next) {
 	console.log("Generated uuid for itemName " + uuid1) ;
 	
 	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
-
-	var params = {
-	  Attributes: [ /* required */
-		{
-		  Name: 'DealStatus', /* required */
-		  Value: req.body.DealStatus, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealStartDate', /* required */
-		  Value: req.body.DealStartDate, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealPictureURL', /* required */
-		  Value: req.body.DealPictureURL, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealName', /* required */
-		  Value: req.body.DealName, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealEndDate', /* required */
-		  Value: req.body.DealEndDate, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'customerId', /* required */
-		  Value: req.body.customerId, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'businessName', /* required */
-		  Value: req.body.businessName, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealDescription', /* required */
-		  Value: req.body.DealDescription, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealImageURL', /* required */
-		  Value: req.body.DealImageURL, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'city', /* required */
-		  Value: req.body.city, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'state', /* required */
-		  Value: req.body.state, /* required */
-		  Replace: false
-		}
-	],
-	  DomainName: 'MyDeals', /* required */
-	  ItemName: uuid1, /* required */
-	  Expected: {
-		Exists: false,
-		Name: 'DealName'
-	  }
-	};
 	
-	console.log("Now inserting new row into MyDeals domain") ;
-	simpleDB.putAttributes(params, function(err, data) {
-		if (err) {
-			console.log("Error inserting record") ;
-			console.log(err, err.stack); // an error occurred
-			res.send('{"msg": "Error adding buzz. Please try again"}') ;
-		}
-		else  {
-			console.log("Record inserted successfully") ;
-			console.log(data);           // successful response
+	//check for profanity to ensure that offensive content is rejected
+	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
+		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
+		res.send('{"msg":"Content rejected due to inappropriate words and violation of usage terms"}') ;
+	}
+	else {
 
-			next();
-			
-		}
-	});
+		var params = {
+		  Attributes: [ /* required */
+			{
+			  Name: 'DealStatus', /* required */
+			  Value: req.body.DealStatus, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealStartDate', /* required */
+			  Value: req.body.DealStartDate, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealPictureURL', /* required */
+			  Value: req.body.DealPictureURL, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealName', /* required */
+			  Value: req.body.DealName, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealEndDate', /* required */
+			  Value: req.body.DealEndDate, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'customerId', /* required */
+			  Value: req.body.customerId, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'businessName', /* required */
+			  Value: req.body.businessName, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealDescription', /* required */
+			  Value: req.body.DealDescription, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealImageURL', /* required */
+			  Value: req.body.DealImageURL, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'city', /* required */
+			  Value: req.body.city, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'state', /* required */
+			  Value: req.body.state, /* required */
+			  Replace: false
+			}
+		],
+		  DomainName: 'MyDeals', /* required */
+		  ItemName: uuid1, /* required */
+		  Expected: {
+			Exists: false,
+			Name: 'DealName'
+		  }
+		};
+		
+		console.log("Now inserting new row into MyDeals domain") ;
+		simpleDB.putAttributes(params, function(err, data) {
+			if (err) {
+				console.log("Error inserting record") ;
+				console.log(err, err.stack); // an error occurred
+				res.send('{"msg": "Error adding buzz. Please try again"}') ;
+			}
+			else  {
+				console.log("Record inserted successfully") ;
+				console.log(data);           // successful response
+
+				// Create an SNS client
+				console.log("Creating SNS Client to notify customers about the new buzz") ;
+				if(snsClient == null) {
+					console.log("SNS is null, creating new connection") ;
+					snsClient = new AWS.SNS() ;
+				}
+				console.log("SNS Client creation successful") ;
+				
+				
+				var message = {
+					"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
+					"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+					"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+				};
+				var cityName = (req.body.city).toString();
+				console.log('Place Name is ' + cityName); 
+				var tmpArray = [];
+				var city ;
+				var stateName = (req.body.state).toString();
+				console.log('Place Name is ' + stateName); 
+				var state ;
+				var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
+				if (regexp.test(cityName)) {
+					// at least 2 words consisting of letters
+					tmpArray = cityName.split(' ');
+					city = tmpArray[0]+tmpArray[1];
+					
+				}
+				else
+				city=cityName;
+				
+				if (regexp.test(stateName)) {
+					// at least 2 words consisting of letters
+					tmpArray = stateName.split(' ');
+					state = tmpArray[0]+tmpArray[1];
+					
+				}
+				else
+				state = stateName;
+				var place = city + state ;
+				console.log('City Name is ' + city); 
+				console.log('State Name is ' + state); 
+				console.log('Place Name is ' + place); 
+				 
+				
+				var topicName = 'LocalBuzz' + place ;
+				var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
+				//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
+				
+				var params = {
+					Message: JSON.stringify(message),
+					Subject: 'New Buzz from ' +  req.body.businessName,
+					MessageStructure: 'json',
+					//TargetArn: 'TopicArn',
+					//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+					TopicArn: topicArn
+				};
+				snsClient.publish(params, function(err, data) {
+					if (err) {
+						console.log("Error sending notification on buzz") ;
+						console.log(err, err.stack); // an error occurred
+					}				
+					else {
+						console.log("Notification sent to topic subscribers") ;
+						console.log(data);           // successful response
+					}
+				});
+				
+				
+				res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
+				
+				
+				
+			}
+		});
+	}
 };
 
 exports.editDeal = function(req, res) {
@@ -790,9 +780,12 @@ exports.uploadDealImage = function(req, res, next) {
 	}*/
 	
 	
+	
+	
+	
 };
 
-exports.dealImageURLUpdate = function(req, res, next) {
+exports.dealImageURLUpdate = function(req, res) {
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
@@ -816,90 +809,176 @@ exports.dealImageURLUpdate = function(req, res, next) {
 	}
 	console.log("SDB Client creation successful") ;
 
+	//check for profanity to ensure that offensive content is rejected
+	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
+		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
+		res.send('{"msg":"Content rejected due to inappropriate words and violation of usage terms"}') ;
+	}
+	else {
 		
-	var uuid1 = uuid.v1();
-	console.log("Generated uuid for itemName " + uuid1) ;
-	
-	var	dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
+		var uuid1 = uuid.v1();
+		console.log("Generated uuid for itemName " + uuid1) ;
+		
+		var	dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
+		
 
-	var params = {
-	  Attributes: [ /* required */
-		{
-		  Name: 'DealStatus', /* required */
-		  Value: req.body.DealStatus, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealStartDate', /* required */
-		  Value: req.body.DealStartDate, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealPictureURL', /* required */
-		  Value: req.body.DealPictureURL, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealName', /* required */
-		  Value: req.body.DealName, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealEndDate', /* required */
-		  Value: req.body.DealEndDate, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'customerId', /* required */
-		  Value: req.body.customerId, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'businessName', /* required */
-		  Value: req.body.businessName, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealDescription', /* required */
-		  Value: req.body.DealDescription, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'DealImageURL', /* required */
-		  Value: dealURL, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'city', /* required */
-		  Value: req.body.city, /* required */
-		  Replace: false
-		},
-		{
-		  Name: 'state', /* required */
-		  Value: req.body.state, /* required */
-		  Replace: false
-		}
-	],
-	  DomainName: 'MyDeals', /* required */
-	  ItemName: uuid1, /* required */
-	  Expected: {
-		Exists: false,
-		Name: 'DealName'
-	  }
-	};
-	
-	console.log("Now inserting new row into MyDeals domain") ;
-	simpleDB.putAttributes(params, function(err, data) {
-		if (err) {
-			console.log("Error inserting record") ;
-			console.log(err, err.stack); // an error occurred
-			res.send('{"msg": "Error adding buzz. Please try again"}') ;
-		}
-		else  {
-			console.log("Record inserted successfully") ;
-			console.log(data);           // successful response
-			next() ;
-			
-		}
-	});
+		var params = {
+		  Attributes: [ /* required */
+			{
+			  Name: 'DealStatus', /* required */
+			  Value: req.body.DealStatus, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealStartDate', /* required */
+			  Value: req.body.DealStartDate, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealPictureURL', /* required */
+			  Value: req.body.DealPictureURL, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealName', /* required */
+			  Value: req.body.DealName, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealEndDate', /* required */
+			  Value: req.body.DealEndDate, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'customerId', /* required */
+			  Value: req.body.customerId, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'businessName', /* required */
+			  Value: req.body.businessName, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealDescription', /* required */
+			  Value: req.body.DealDescription, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealImageURL', /* required */
+			  Value: dealURL, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'city', /* required */
+			  Value: req.body.city, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'state', /* required */
+			  Value: req.body.state, /* required */
+			  Replace: false
+			}
+		],
+		  DomainName: 'MyDeals', /* required */
+		  ItemName: uuid1, /* required */
+		  Expected: {
+			Exists: false,
+			Name: 'DealName'
+		  }
+		};
+		
+		console.log("Now inserting new row into MyDeals domain") ;
+		simpleDB.putAttributes(params, function(err, data) {
+			if (err) {
+				console.log("Error inserting record") ;
+				console.log(err, err.stack); // an error occurred
+				res.send('{"msg": "Error adding buzz. Please try again"}') ;
+			}
+			else  {
+				console.log("Record inserted successfully") ;
+				console.log(data);           // successful response
+
+				// Create an SNS client
+				console.log("Creating SNS Client to notify customers about the new buzz") ;
+				if(snsClient == null) {
+					console.log("SNS is null, creating new connection") ;
+					snsClient = new AWS.SNS() ;
+				}
+				console.log("SNS Client creation successful") ;
+				
+				var cityName = (req.body.city).toString();
+				var tmpArray = [];
+				var city ;
+				var stateName = (req.body.state).toString();
+				var state ;
+				var regexp = /[a-zA-Z]+\s+[a-zA-Z]+/g;
+				if (regexp.test(cityName)) {
+					// at least 2 words consisting of letters
+					tmpArray = cityName.split(' ');
+					city = tmpArray[0]+tmpArray[1];
+					
+				}
+				else
+				city=cityName;
+				
+				if (regexp.test(stateName)) {
+					// at least 2 words consisting of letters
+					tmpArray = stateName.split(' ');
+					state = tmpArray[0]+tmpArray[1];
+					
+				}
+				else
+				state = stateName;
+				var place = city + state ;
+				console.log(place); 
+				 
+				
+				var topicName = 'LocalBuzz' + place ;
+				var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
+				
+				//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
+				
+				
+				
+				var message = {
+					"default": "New buzz from "+ req.body.businessName +" : " + req.body.DealName,
+					"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
+					"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
+				};
+				
+				var params = {
+					Message: JSON.stringify(message),
+					Subject: 'New Buzz from ' +  req.body.businessName,
+					MessageAttributes: {
+						businessName: {
+							DataType: 'String', /* required */
+							StringValue: req.body.businessName
+						}
+					},
+					MessageStructure: 'json',
+					//TargetArn: 'TopicArn',
+					//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+					//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
+					TopicArn: topicArn
+				};
+				snsClient.publish(params, function(err, data) {
+					if (err) {
+						console.log("Error sending notification on buzz") ;
+						console.log(err, err.stack); // an error occurred
+					}				
+					else {
+						console.log("Notification sent to topic subscribers") ;
+						console.log(data);           // successful response
+					}
+				});
+				
+				
+				res.status(200).send('{"success":true,"msg":"Buzz created!"}') ;
+				
+				
+				
+			}
+		});
+	}
 };
