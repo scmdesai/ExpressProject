@@ -122,8 +122,8 @@ app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 //app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore,subscriptions.createNewSubscription) ;
 app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore) ;
 
-app.post('/createNewBuzzNoImage', deals.createNewDeal) ;
-app.post('/createNewBuzzWithImage',deals.uploadDealImage, deals.dealImageURLUpdate) ;
+app.post('/createNewBuzzNoImage', deals.profanityCheck, deals.createNewDeal, deals.sendBuzzNotification) ;
+app.post('/createNewBuzzWithImage',deals.profanityCheck, deals.uploadDealImage, deals.dealImageURLUpdate) ;
 app.post('/deals/editDeal/:id', deals.editDeal);
 // accept one file where the name of the form field is named fileUpload
 /*app.post('/upload', upload.fields([{name:'fileUpload',maxCount:1}]), function(req, res){
