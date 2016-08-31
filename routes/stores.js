@@ -139,7 +139,7 @@ exports.findAllStores = function(req, res, next) {
 };
 
 exports.filterByLocation = function(req, res) {
-
+	console.log("Now filtering store data based on location") ;
 // Check for URL Query parameters latitude and longitude
 // If present, then iterate through the response JSON, create the address string
 // use the Google Distance API to only return those stores which are in the 30 mile radius
@@ -152,19 +152,21 @@ exports.filterByLocation = function(req, res) {
 	
 	if(req.query.latitude && req.query.longitude) {
 		// start a for loop and iterate to see if the store is within the radius
+		var originStr = req.query.latitude +","+req.query.longitude ;
+		console.log("Origin is: " + originStr) ;
 		storesList.forEach(function(store, index){
 			var storeAddress = store.address ;
+			console.log("Store Address is: " + storeAddress) ;
 			distance.get(
 			{
-				index: 1,
-				origin: "'" + req.query.latitude +","+req.query.longitude+"'",
-				destination: storeAddress 
+				origin: originStr ,
+				destination: storeAddress
 			},
 			function(err, data) {
 				if (err) {
-					console.log(err);
+					console.log("Error finding distance:" + err);
 				} else {
-					console.log(data);
+					console.log("Success finding distance:" + data);
 					var distanceValue = data.distanceValue ;
 					if(distanceValue < req.query.distance) {
 						filteredStoreList[count++] = store ;
