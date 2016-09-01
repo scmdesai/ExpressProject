@@ -196,6 +196,48 @@ exports.filterByLocation = function(req, res) {
 				
 		});
 	}
+	else if(req.query.zipcode){
+			// start a for loop and iterate to see if the store is within the radius
+		var originStr = req.query.req.query.zipcode;
+		console.log("Origin is: " + originStr) ;
+		var lengthStoreList = storesList.length;
+		console.log("Origin is: " + lengthStoreList) ;
+		
+		var loopCounter = storesList.length ;
+		storesList.forEach(function(store, index){
+		
+			var storeAddress = store.address ;
+			console.log("Store Address is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
+			
+			
+			distance.get(
+			{
+				origin: originStr ,
+				destination: storeAddress
+			},
+			function(err, data) {
+				if (err) {
+					console.log("Error finding distance:" + err);
+				} else {
+					console.log("Success finding distance:" + data.distanceValue);
+					var distanceValue = data.distanceValue ;
+					if(distanceValue < req.query.distance) {
+						filteredStoreList[count++] = store ;
+						
+						//storesList.splice(index,1) ;
+					}
+					loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
+						filterComplete(req, res, filteredStoreList) ;
+					}
+				}			
+			});				
+				
+		});
+	}
 	else {
 		console.log("No latitude and longitude filters to apply.") ;
 		storesJsonOutput = JSON.stringify(storesList) ;
