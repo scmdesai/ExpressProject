@@ -170,7 +170,7 @@ exports.filterByLocation = function(req, res) {
 					console.log("Success finding distance:" + data.distanceValue);
 					var distanceValue = data.distanceValue ;
 					if(distanceValue < req.query.distance) {
-						filteredStoreList[count++] = store ;
+						filteredStoreList[count++] = storesList[i] ;
 						
 						//storesList.splice(index,1) ;
 					}
