@@ -198,7 +198,7 @@ exports.filterByLocation = function(req, res) {
 	}
 	else if(req.query.zipcode){
 			// start a for loop and iterate to see if the store is within the radius
-		var originStr = req.query.req.query.zipcode;
+		var originStr = req.query.zipcode;
 		console.log("Origin is: " + originStr) ;
 		var lengthStoreList = storesList.length;
 		console.log("Origin is: " + lengthStoreList) ;
