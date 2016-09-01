@@ -154,8 +154,9 @@ exports.filterByLocation = function(req, res) {
 		// start a for loop and iterate to see if the store is within the radius
 		var originStr = req.query.latitude +","+req.query.longitude ;
 		console.log("Origin is: " + originStr) ;
-		storesList.forEach(function(store, index){
-			var storeAddress = store.address ;
+		//storesList.forEach(function(store, index){
+		for(var i=0,j=0; i < storesList.length; i++) {
+			var storeAddress = storesList[i].address ;
 			console.log("Store Address is: " + storeAddress) ;
 			distance.get(
 			{
@@ -175,11 +176,12 @@ exports.filterByLocation = function(req, res) {
 					}
 				}
 			});
-			console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
-			// at the end of this for loop, we will get a filtered store list to be returned back 
-			storesJsonOutput = JSON.stringify(filteredStoreList) ; 
 			
-		});
+		}	
+		//});
+		console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
+			// at the end of this for loop, we will get a filtered store list to be returned back 
+		storesJsonOutput = JSON.stringify(filteredStoreList) ; 
 		
 	}
 	else {
