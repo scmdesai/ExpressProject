@@ -42,7 +42,79 @@ exports.findAllStores = function(req, res, next) {
 	console.log("Creating SDB Client") ;
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
+    if(req.query.customerId){
+		console.log('Getting store info for customerId: '+req.query.customerId);
+		var	params = {
+		SelectExpression: 'select * from MyCustomers where customerId='+ req.query.customerId +' and SignupStatus="Approved"', /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
+	var cb = req.query.callback;	
+	//console.log("Callback URL is " + cb) ;
 
+	
+	console.log("Now retrieving data set from SDB") ;
+	simpleDB.select(params, function(err, data) {
+		if (err) {
+			console.log("ERROR calling AWS Simple DB!!!") ;
+			console.log(err, err.stack); // an error occurred
+		}
+		else     {
+			console.log("SUCCESS from AWS!") ;
+			//console.log(JSON.stringify(data));           // successful response
+			console.log("Objects in the AWS data element:" ) ;
+			/*for(var name in data) {
+				console.log(name) ;
+			}*/
+			console.log("Now accessing Items element") ;
+			var items = data["Items"] ;
+			
+			
+			if(items){
+			//for(var i=0,j=0; i < items.length; i++) {
+				var item = items[0] ;
+                
+                var endDate;				
+                				
+				var attributes = item["Attributes"] ;
+				
+				    
+				
+					storesList[0] = new Store(attributes) ;
+				/**** Commenting out this logic of filtering merchants who are no longer in trial period or paid customers. 
+					For such customers will not be able to post new deals. 
+					storesListTmp[i] = new Store(attributes) ;
+					endDate = new Date(storesListTmp[i]["endDate"]);
+					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
+						storesList[j] = new Store(attributes) ;
+						j++;
+					}
+					 
+				*/
+					 
+				
+				
+			//}
+			
+		}
+		}
+		//console.log("Stores List is: " + storesList);
+		var storesJsonOutput = JSON.stringify(storesList) ;
+	    
+		//req.storesList = storesList ;
+		
+		
+		if(cb) {
+			res.send( cb + "(" + storesJsonOutput + ");" );
+		}
+		else {
+			res.send(storesJsonOutput) ;
+		}
+		
+	});
+	}
+	else {
 	var	params = {
 		SelectExpression: 'select * from MyCustomers where SignupStatus="Approved"', /* required */
 		ConsistentRead: true
@@ -136,7 +208,8 @@ exports.findAllStores = function(req, res, next) {
 		}*/
 		
 	});
-	
+	}
+
 			
 };
 
