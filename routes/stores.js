@@ -44,8 +44,9 @@ exports.findAllStores = function(req, res, next) {
 	console.log("SDB Client creation successful") ;
     if(req.query.customerId){
 		console.log('Getting store info for customerId: '+req.query.customerId);
+		var customerId = req.query.customerId;
 		var	params = {
-		SelectExpression: 'select * from MyCustomers where customerId='+ req.query.customerId +' and SignupStatus="Approved"', /* required */
+		SelectExpression: 'select * from MyCustomers where customerId="'+ customerId +'" and SignupStatus="Approved"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
