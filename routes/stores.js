@@ -46,7 +46,7 @@ exports.findAllStores = function(req, res, next) {
 		console.log('Getting store info for customerId: '+req.query.customerId);
 		var customerId = req.query.customerId;
 		var	params = {
-		SelectExpression: 'select * from MyCustomers where customerId="'+ customerId +'" and SignupStatus="Approved"', /* required */
+		SelectExpression: 'select * from MyCustomers where CustomerId="'+ customerId +'" and SignupStatus="Approved"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
