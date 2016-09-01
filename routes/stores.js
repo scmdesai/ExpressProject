@@ -154,9 +154,9 @@ exports.filterByLocation = function(req, res) {
 		// start a for loop and iterate to see if the store is within the radius
 		var originStr = req.query.latitude +","+req.query.longitude ;
 		console.log("Origin is: " + originStr) ;
-		//storesList.forEach(function(store, index){
-		for(var i=0,j=0; i < storesList.length; i++) {
-			var storeAddress = storesList[i].address ;
+		storesList.forEach(function(store, index){
+		
+			var storeAddress = store.address ;
 			console.log("Store Address is: " + storeAddress) ;
 			distance.get(
 			{
@@ -170,24 +170,36 @@ exports.filterByLocation = function(req, res) {
 					console.log("Success finding distance:" + data.distanceValue);
 					var distanceValue = data.distanceValue ;
 					if(distanceValue < req.query.distance) {
-						filteredStoreList[count++] = storesList[i] ;
+						filteredStoreList[count++] = store ;
 						
 						//storesList.splice(index,1) ;
 					}
+					if(index >= storesList.length)
+						exitLoop(filteredStoreList,count,cb);
 				}
 			});
 			
-		}	
-		//});
-		console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
-			// at the end of this for loop, we will get a filtered store list to be returned back 
-		storesJsonOutput = JSON.stringify(filteredStoreList) ; 
-		
+			
+		});
 	}
 	else {
 		console.log("No latitude and longitude filters to apply.") ;
 		storesJsonOutput = JSON.stringify(storesList) ; 
 	}
+	
+	
+		
+	
+};
+
+exitLoop = function(filteredStoredList[],count,cb){
+	var storesJsonOutput = "" ;
+	console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
+			// at the end of this for loop, we will get a filtered store list to be returned back 
+		storesJsonOutput = JSON.stringify(filteredStoreList) ; 
+		
+	
+	
 
 	// return back the JSON result set
 	if(cb) {
@@ -198,8 +210,6 @@ exports.filterByLocation = function(req, res) {
 	}
 	
 };
-
-
 exports.findByLoginEmail = function(req, res) {
 	console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
