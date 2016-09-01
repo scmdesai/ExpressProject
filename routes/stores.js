@@ -168,15 +168,17 @@ exports.filterByLocation = function(req, res) {
 				} else {
 					console.log("Success finding distance:" + data.distanceValue);
 					var distanceValue = data.distanceValue ;
-					if(distanceValue < req.query.distance) {
-						filteredStoreList[count++] = store ;
+					if(distanceValue > req.query.distance) {
+						//filteredStoreList[count++] = store ;
+						storesList.splice(index,1) ;
 					}
 				}
 			});
 		
 		});
+		console.log("Found number of stores:" + count + ":" + storesList.length) ; 
 		// at the end of this for loop, we will get a filtered store list to be returned back 
-		storesJsonOutput = JSON.stringify(filteredStoreList) ; 
+		storesJsonOutput = JSON.stringify(storesList) ; 
 	}
 	else {
 		console.log("No latitude and longitude filters to apply.") ;
