@@ -211,7 +211,7 @@ exports.filterByLocation = function(req, res) {
 
 function filterComplete(req, res, filteredStoreList) {
 	var cb = req.query.callback;	
-	console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
+	console.log("Found number of stores:" + filteredStoreList.length) ; 
 	// at the end of this for loop, we will get a filtered store list to be returned back 
 	storesJsonOutput = JSON.stringify(filteredStoreList) ; 
 	if(cb) {
