@@ -186,13 +186,7 @@ exports.filterByLocation = function(req, res) {
 					
 	
 
-					// return back the JSON result set
-					if(cb) {
-						res.send( cb + "(" + storesJsonOutput + ");" );
-					}
-					else {
-						res.send(storesJsonOutput) ;
-					}
+					
 				}
 			}
 		});					
@@ -205,7 +199,13 @@ exports.filterByLocation = function(req, res) {
 	}
 	
 	
-		
+	// return back the JSON result set
+					if(cb) {
+						res.send( cb + "(" + storesJsonOutput + ");" );
+					}
+					else {
+						res.send(storesJsonOutput) ;
+					}	
 	
 };
 
