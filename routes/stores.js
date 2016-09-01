@@ -192,7 +192,7 @@ exports.filterByLocation = function(req, res) {
 	
 };
 
-exitLoop = function(filteredStoredList[],count,cb){
+exitLoop = function(filteredStoredList,count,cb){
 	var storesJsonOutput = "" ;
 	console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
 			// at the end of this for loop, we will get a filtered store list to be returned back 
