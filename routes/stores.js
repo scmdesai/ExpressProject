@@ -178,16 +178,7 @@ exports.filterByLocation = function(req, res) {
 						
 						//storesList.splice(index,1) ;
 					}
-					if(index >= lengthStoreList) {
-						console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
-						// at the end of this for loop, we will get a filtered store list to be returned back 
-						storesJsonOutput = JSON.stringify(filteredStoreList) ; 
-		
 					
-	
-
-					
-				}
 			}
 		});					
 				
@@ -197,7 +188,9 @@ exports.filterByLocation = function(req, res) {
 		console.log("No latitude and longitude filters to apply.") ;
 		storesJsonOutput = JSON.stringify(storesList) ; 
 	}
-	
+	console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
+	// at the end of this for loop, we will get a filtered store list to be returned back 
+	storesJsonOutput = JSON.stringify(filteredStoreList) ; 
 	
 	// return back the JSON result set
 					if(cb) {
