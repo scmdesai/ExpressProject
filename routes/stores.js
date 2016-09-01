@@ -5,6 +5,7 @@ var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
 var distance = require('google-distance');
 distance.apiKey = 'AIzaSyDHFtBdpwHNSJ2Pu0HpRK1ce5uHCSGHKXM';
+var request = require('request');
 
 var upload = multer({ dest: 'uploads/' }) ;
 
@@ -15,6 +16,7 @@ var storesList = [] ;
 var pictureURL;
 var snsClient = null ;
 var storeDetails = null;
+
 
 
   
@@ -146,9 +148,11 @@ exports.filterByLocation = function(req, res) {
 	var cb = req.query.callback;	
 	
 	var storesList = req.storesList ;
-	var filteredStoreList = [] ;
+
 	var count = 0 ;
 	var storesJsonOutput = "" ;
+	var filteredStoreList = [] ;
+	
 	
 	if(req.query.latitude && req.query.longitude) {
 		// start a for loop and iterate to see if the store is within the radius
@@ -156,11 +160,14 @@ exports.filterByLocation = function(req, res) {
 		console.log("Origin is: " + originStr) ;
 		var lengthStoreList = storesList.length;
 		console.log("Origin is: " + lengthStoreList) ;
+		
+		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
 		
 			var storeAddress = store.address ;
 			console.log("Store Address is: " + storeAddress) ;
 			console.log("Index Address is: " + index) ;
+			
 			
 			distance.get(
 			{
@@ -178,29 +185,42 @@ exports.filterByLocation = function(req, res) {
 						
 						//storesList.splice(index,1) ;
 					}
-					
-			}
-		});					
+					loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
+						filterComplete(req, res, filteredStoreList) ;
+					}
+				}			
+			});				
 				
-	});
+		});
 	}
 	else {
 		console.log("No latitude and longitude filters to apply.") ;
-		storesJsonOutput = JSON.stringify(storesList) ; 
+		storesJsonOutput = JSON.stringify(storesList) ;
+		if(cb) {
+			res.send( cb + "(" + storesJsonOutput + ");" );
+		}
+		else {
+			res.send(storesJsonOutput) ;
+		}	
 	}
+	
+};
+
+function filterComplete(req, res, filteredStoreList) {
+	var cb = req.query.callback;	
 	console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
 	// at the end of this for loop, we will get a filtered store list to be returned back 
 	storesJsonOutput = JSON.stringify(filteredStoreList) ; 
-	
-	// return back the JSON result set
-					if(cb) {
-						res.send( cb + "(" + storesJsonOutput + ");" );
-					}
-					else {
-						res.send(storesJsonOutput) ;
-					}	
-	
-};
+	if(cb) {
+		res.send( cb + "(" + storesJsonOutput + ");" );
+	}
+	else {
+		res.send(storesJsonOutput) ;
+	}	
+}
 
 
 exports.findByLoginEmail = function(req, res) {
