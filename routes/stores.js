@@ -158,6 +158,8 @@ exports.filterByLocation = function(req, res) {
 		
 			var storeAddress = store.address ;
 			console.log("Store Address is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
+			
 			distance.get(
 			{
 				origin: originStr ,
@@ -174,13 +176,26 @@ exports.filterByLocation = function(req, res) {
 						
 						//storesList.splice(index,1) ;
 					}
-					if(index >= storesList.length)
-						exitLoop(filteredStoreList,count,cb);
+					if(index >= storesList.length) {
+						console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
+						// at the end of this for loop, we will get a filtered store list to be returned back 
+						storesJsonOutput = JSON.stringify(filteredStoreList) ; 
+		
+					
+	
+
+					// return back the JSON result set
+					if(cb) {
+						res.send( cb + "(" + storesJsonOutput + ");" );
+					}
+					else {
+						res.send(storesJsonOutput) ;
+					}
 				}
-			});
-			
-			
-		});
+			}
+		});					
+				
+	});
 	}
 	else {
 		console.log("No latitude and longitude filters to apply.") ;
@@ -192,24 +207,7 @@ exports.filterByLocation = function(req, res) {
 	
 };
 
-exitLoop = function(filteredStoredList,count,cb){
-	var storesJsonOutput = "" ;
-	console.log("Found number of stores:" + count + ":" + filteredStoreList.length) ; 
-			// at the end of this for loop, we will get a filtered store list to be returned back 
-		storesJsonOutput = JSON.stringify(filteredStoreList) ; 
-		
-	
-	
 
-	// return back the JSON result set
-	if(cb) {
-		res.send( cb + "(" + storesJsonOutput + ");" );
-	}
-	else {
-		res.send(storesJsonOutput) ;
-	}
-	
-};
 exports.findByLoginEmail = function(req, res) {
 	console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
