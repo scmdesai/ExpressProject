@@ -79,8 +79,8 @@ exports.findAllDeals = function(req, res) {
 	}
 	else {
 		params = {
-		//SelectExpression: 'select * from MyDeals where DealStatus ="Active" and DealEndDate is not null order by DealEndDate', /* required */
-		//ConsistentRead: true
+		SelectExpression: 'select * from MyDeals where DealStatus ="Active" and DealEndDate is not null order by DealEndDate', /* required */
+		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
 	}
