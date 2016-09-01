@@ -166,7 +166,7 @@ exports.filterByLocation = function(req, res) {
 				if (err) {
 					console.log("Error finding distance:" + err);
 				} else {
-					console.log("Success finding distance:" + data);
+					console.log("Success finding distance:" + data.distanceValue);
 					var distanceValue = data.distanceValue ;
 					if(distanceValue < req.query.distance) {
 						filteredStoreList[count++] = store ;
