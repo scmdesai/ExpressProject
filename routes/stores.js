@@ -1021,13 +1021,11 @@ exports.createNewStore = function(req, res) {
 		  Name: 'TopicName', /* required */
 		  Value: topicName,
 		  Replace: true
-		}
 		},
 		{
 		  Name: 'latitude', /* required */
 		  Value: latitude,
 		  Replace: true
-		}
 		},
 		{
 		  Name: 'longitude', /* required */
