@@ -264,7 +264,12 @@ exports.filterByLocation = function(req, res) {
 							}
 						  }
 						}
+						loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
 						filterComplete(req, res, filteredStoreList) ;
+					}
 						
 					}
 					else {
@@ -334,7 +339,12 @@ exports.filterByLocation = function(req, res) {
 							}
 						  }
 						}
+						loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
 						filterComplete(req, res, filteredStoreList) ;
+					}
 						
 					}
 					else {
