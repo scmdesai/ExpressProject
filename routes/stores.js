@@ -230,20 +230,49 @@ exports.filterByLocation = function(req, res) {
 	
 	if(req.query.latitude && req.query.longitude) {
 		// start a for loop and iterate to see if the store is within the radius
+		//use geonames api instead of google distance matrix
 		var originStr = req.query.latitude +","+req.query.longitude ;
 		console.log("Origin is: " + originStr) ;
 		var lengthStoreList = storesList.length;
 		console.log("Origin is: " + lengthStoreList) ;
+		var latitude = req.query.latitude;
+		var longitude = req.query.longitude;
+		var storeListZipcodes = [];
+		storesList.forEach(function(store,index){
+			storeListZipcodes.push(store.zipcode);
+		});
 		
 		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
 		
-			var storeAddress = store.address ;
-			console.log("Store Address is: " + storeAddress) ;
-			console.log("Index Address is: " + index) ;
+			//var storeAddress = store.address ;
 			
+			//console.log("Store Address is: " + storeAddress) ;
+			//console.log("Index Address is: " + index) ;
 			
-			distance.get(
+		request("http://api.geonames.org/findNearbyPostalCodesJSON?lat="+latitude+"&lng="+longitude+"&country=US&radius=30&maxRows=500&username=1234_5678", 
+				function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+					
+						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
+						for(var i=0;i<500;i++){
+						  if(jsonArea.postalCodes[i]){
+							var zipcode = jsonArea.postalCodes[i].postalCode;
+							if(storeListZipcodes.indexOf(zipcode)>=0){
+								filteredStoreList[count++] = store ;
+								
+							}
+						  }
+						}
+						filterComplete(req, res, filteredStoreList) ;
+						
+					}
+					else {
+						console.log("Error finding stores");
+					}
+				});
+			
+			/*distance.get(
 			{
 				origin: originStr ,
 				destination: storeAddress
@@ -266,7 +295,8 @@ exports.filterByLocation = function(req, res) {
 						filterComplete(req, res, filteredStoreList) ;
 					}
 				}			
-			});				
+			});	*/	
+					
 				
 		});
 	}
@@ -277,15 +307,43 @@ exports.filterByLocation = function(req, res) {
 		var lengthStoreList = storesList.length;
 		console.log("Origin is: " + lengthStoreList) ;
 		
+		var storeListZipcodes = [];
+		storesList.forEach(function(store,index){
+			storeListZipcodes.push(store.zipcode);
+		});
+		
 		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
 		
-			var storeAddress = store.address ;
-			console.log("Store Address is: " + storeAddress) ;
-			console.log("Index Address is: " + index) ;
+			//var storeAddress = store.address ;
+			//console.log("Store Address is: " + storeAddress) ;
+			//console.log("Index Address is: " + index) ;
+			
+			//use geonames api instead of google distance api
+		request("http://api.geonames.org/findNearbyPostalCodesJSON?postalCode="+originStr+"&country=US&radius=30&maxRows=500&username=1234_5678", 
+				function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+					
+						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
+						for(var i=0;i<500;i++){
+						  if(jsonArea.postalCodes[i]){
+							var zipcode = jsonArea.postalCodes[i].postalCode;
+							if(storeListZipcodes.indexOf(zipcode)>=0){
+								filteredStoreList[count++] = store ;
+								
+							}
+						  }
+						}
+						filterComplete(req, res, filteredStoreList) ;
+						
+					}
+					else {
+						console.log("Error finding stores");
+					}
+				});
 			
 			
-			distance.get(
+			/*distance.get(
 			{
 				origin: originStr ,
 				destination: storeAddress
@@ -308,7 +366,7 @@ exports.filterByLocation = function(req, res) {
 						filterComplete(req, res, filteredStoreList) ;
 					}
 				}			
-			});				
+			});	*/			
 				
 		});
 	}
