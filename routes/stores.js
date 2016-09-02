@@ -333,11 +333,14 @@ exports.filterByLocation = function(req, res) {
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
 						for(var i=0;i<500;i++){
 						  if(jsonArea.postalCodes[i]){
-							var zipcode = jsonArea.postalCodes[i].postalCode;
+							var zipcode1 = jsonArea.postalCodes[i].postalCode;
 							//console.log(zipcode);
 							    for(var j =0 ;j < storeListZipcodes.length ;j++) {
-									if(storeListZipcodes[j] == zipcode)
-									filteredStoreList[count++] = store ;
+									
+									if(storeListZipcodes[j] == zipcode1){
+									    console.log(store.businessName +" " +zipcode1);
+										filteredStoreList[count++] = store ;
+									}
 								}
 								
 								
