@@ -237,10 +237,7 @@ exports.filterByLocation = function(req, res) {
 		console.log("Origin is: " + lengthStoreList) ;
 		var latitude = req.query.latitude;
 		var longitude = req.query.longitude;
-		var storeListZipcodes = [];
-		storesList.forEach(function(store,index){
-			storeListZipcodes.push(store.zipcode);
-		});
+		
 		
 		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
@@ -258,10 +255,15 @@ exports.filterByLocation = function(req, res) {
 						for(var i=0;i<500;i++){
 						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
-							if(storeListZipcodes.indexOf(zipcode)>=0){
-								filteredStoreList[count++] = store ;
+
+									if(zipcode == store.zipcode){
+									    
+										filteredStoreList[count++] = store ;
+									}
 								
-							}
+								
+								
+							
 						  }
 						}
 						loopCounter-- ;
@@ -333,15 +335,13 @@ exports.filterByLocation = function(req, res) {
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
 						for(var i=0;i<500;i++){
 						  if(jsonArea.postalCodes[i]){
-							var zipcode1 = jsonArea.postalCodes[i].postalCode;
-							//console.log(zipcode);
-							    //for(var j =0 ;j < storeListZipcodes.length ;j++) {
-									
-									if(zipcode1 == store.zipcode){
+							var zipcode = jsonArea.postalCodes[i].postalCode;
+
+									if(zipcode == store.zipcode){
 									    
 										filteredStoreList[count++] = store ;
 									}
-								//}
+								
 								
 								
 							
