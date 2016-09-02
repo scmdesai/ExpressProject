@@ -315,6 +315,7 @@ exports.filterByLocation = function(req, res) {
 		var storeListZipcodes = [];
 		storesList.forEach(function(store,index){
 			storeListZipcodes.push(store.zipcode);
+			console.log(store.zipcode);
 		});
 		
 		var loopCounter = storesList.length ;
