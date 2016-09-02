@@ -334,9 +334,11 @@ exports.filterByLocation = function(req, res) {
 						for(var i=0;i<500;i++){
 						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
-							console.log(zipcode);
+							//console.log(zipcode);
 							if(storeListZipcodes.indexOf(zipcode)>=0){
-								console.log(store.businessName +": " +storeListZipcodes.indexOf(zipcode));
+							    var j =storeListZipcodes.indexOf(zipcode);
+								console.log(store.businessName + ": " + zipcode);
+								console.log(storeListZipcodes[j]);
 								filteredStoreList[count++] = store ;
 								
 							}
