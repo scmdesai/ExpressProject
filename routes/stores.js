@@ -3,8 +3,8 @@ var uuid = require('node-uuid');
 var Store = require("./store");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
-var distance = require('google-distance');
-distance.apiKey = 'AIzaSyDHFtBdpwHNSJ2Pu0HpRK1ce5uHCSGHKXM';
+//var distance = require('google-distance');
+//distance.apiKey = 'AIzaSyDHFtBdpwHNSJ2Pu0HpRK1ce5uHCSGHKXM';
 var request = require('request');
 
 var upload = multer({ dest: 'uploads/' }) ;
@@ -320,7 +320,7 @@ exports.filterByLocation = function(req, res) {
 			//console.log("Index Address is: " + index) ;
 			
 			//use geonames api instead of google distance api
-		request("http://api.geonames.org/findNearbyPostalCodesJSON?postalCode="+originStr+"&country=US&radius=30&maxRows=500&username=1234_5678", 
+		request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+originStr+"&country=US&radius=30&maxRows=500&username=1234_5678", 
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
 					
