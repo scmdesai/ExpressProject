@@ -882,7 +882,17 @@ exports.createNewStore = function(req, res) {
 		pictureURL = "http://images.appsonmobile.com/locallink/stores/DefaultStoreImage.jpg";  
 	}
 	
-	var cityName = req.body.city;
+	//get co-ords of the store based on zipcode
+	var zipcode = req.body.zipcode;
+	request("http://api.geonames.org/postalCodeSearchJSON?postalcode=" + zipcode +"&country=US&username=1234_5678",
+	function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+					
+					var jsonArea = JSON.parse(body); 
+					
+					var latitude = jsonArea.postalCodes[0].lat;
+					var longitude = jsonArea.postalCodes[0].lng;
+					var cityName = req.body.city;
 	var tmpArray = [];
 	var city ;
 	var stateName = req.body.state;
@@ -1012,6 +1022,18 @@ exports.createNewStore = function(req, res) {
 		  Value: topicName,
 		  Replace: true
 		}
+		},
+		{
+		  Name: 'latitude', /* required */
+		  Value: latitude,
+		  Replace: true
+		}
+		},
+		{
+		  Name: 'longitude', /* required */
+		  Value: longitude,
+		  Replace: true
+		}
 	],
 	  DomainName: 'MyCustomers', /* required */
 	  ItemName: uuid1, /* required */
@@ -1083,6 +1105,11 @@ exports.createNewStore = function(req, res) {
 			
 		}
 	});
+					
+						});
+	
+	
+	
 	
 };
 
