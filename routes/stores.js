@@ -890,8 +890,8 @@ exports.createNewStore = function(req, res) {
 					
 					var jsonArea = JSON.parse(body); 
 					
-					var latitude = jsonArea.postalCodes[0].lat;
-					var longitude = jsonArea.postalCodes[0].lng;
+					var latitude = (jsonArea.postalCodes[0].lat).toString();
+					var longitude = (jsonArea.postalCodes[0].lng).toString();
 					var cityName = req.body.city;
 	var tmpArray = [];
 	var city ;
