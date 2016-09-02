@@ -335,13 +335,13 @@ exports.filterByLocation = function(req, res) {
 						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 							//console.log(zipcode);
-							if(storeListZipcodes.indexOf(zipcode)>=0){
-							    var j =storeListZipcodes.indexOf(zipcode);
-								console.log(store.businessName + ": " + zipcode);
-								console.log(storeListZipcodes[j]);
-								filteredStoreList[count++] = store ;
+							    for(var j =0 ;j < storeListZipcodes.length ;j++) {
+									if(storeListZipcodes[i] == zipcode)
+									filteredStoreList[count++] = store ;
+								}
 								
-							}
+								
+							
 						  }
 						}
 						loopCounter-- ;
