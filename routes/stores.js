@@ -336,7 +336,7 @@ exports.filterByLocation = function(req, res) {
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 							//console.log(zipcode);
 							    for(var j =0 ;j < storeListZipcodes.length ;j++) {
-									if(storeListZipcodes[i].toString() == zipcode.toString())
+									if(storeListZipcodes[j] == zipcode)
 									filteredStoreList[count++] = store ;
 								}
 								
