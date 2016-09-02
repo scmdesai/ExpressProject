@@ -252,8 +252,8 @@ exports.filterByLocation = function(req, res) {
 					if (!error && response.statusCode == 200) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
-						console.log('Length of Json object is : ' +jsonArea.postalCodes[i].length);
-						for(var i=0;i<jsonArea.postalCodes[i].length;i++){
+						console.log('Length of Json object is : ' +jsonArea.length);
+						for(var i=0;i<jsonArea.length;i++){
 						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 
@@ -334,8 +334,8 @@ exports.filterByLocation = function(req, res) {
 					if (!error && response.statusCode == 200) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
-						console.log('Length of Json object is : ' +jsonArea.postalCodes[i].length);
-						for(var i=0;i<jsonArea.postalCodes[i].length;i++){
+						console.log('Length of Json object is : ' +jsonArea.length);
+						for(var i=0;i<jsonArea.length;i++){
 						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 
