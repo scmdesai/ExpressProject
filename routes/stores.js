@@ -1104,7 +1104,8 @@ exports.createNewStore = function(req, res) {
 		}
 	});
 					
-						});
+	}
+	});
 	
 	
 	
