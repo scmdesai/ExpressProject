@@ -82,13 +82,6 @@ function Store(attributes) {
 			this.topicName = valueAttr ;
 			break ;
 			
-		case "latitude":
-			this.latitude = valueAttr ;
-			break ;
-			
-		case "longitude":
-			this.longitude = valueAttr ;
-			break ;
 		
 			
 			

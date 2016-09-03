@@ -252,8 +252,8 @@ exports.filterByLocation = function(req, res) {
 					if (!error && response.statusCode == 200) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
-						console.log('Length of Json object is : ' +jsonArea.length);
-						for(var i=0;i<500;i++){
+						console.log('Length of Json object is : ' + jsonArea.postalCodes.length);
+						for(var i=0;i<jsonArea.postalCodes.length;i++){
 						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 
@@ -336,7 +336,7 @@ exports.filterByLocation = function(req, res) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
 						console.log('Length of Json object is : ' +jsonArea.postalCodes.length);
-						for(var i=0;i<500;i++){
+						for(var i=0;i<jsonArea.postalCodes.length;i++){
 						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 
@@ -962,16 +962,7 @@ exports.createNewStore = function(req, res) {
 		pictureURL = "http://images.appsonmobile.com/locallink/stores/DefaultStoreImage.jpg";  
 	}
 	
-	//get co-ords of the store based on zipcode
-	var zipcode = req.body.zipcode;
-	request("http://api.geonames.org/postalCodeSearchJSON?postalcode=" + zipcode +"&country=US&username=1234_5678",
-	function (error, response, body) {
-					if (!error && response.statusCode == 200) {
-					
-					var jsonArea = JSON.parse(body); 
-					
-					var latitude = (jsonArea.postalCodes[0].lat).toString();
-					var longitude = (jsonArea.postalCodes[0].lng).toString();
+	
 					var cityName = req.body.city;
 	var tmpArray = [];
 	var city ;
@@ -1101,16 +1092,6 @@ exports.createNewStore = function(req, res) {
 		  Name: 'TopicName', /* required */
 		  Value: topicName,
 		  Replace: true
-		},
-		{
-		  Name: 'latitude', /* required */
-		  Value: latitude,
-		  Replace: true
-		},
-		{
-		  Name: 'longitude', /* required */
-		  Value: longitude,
-		  Replace: true
 		}
 	],
 	  DomainName: 'MyCustomers', /* required */
@@ -1182,9 +1163,7 @@ exports.createNewStore = function(req, res) {
 			
 			
 		}
-	});
-					
-	}
+	
 	});
 	
 	
