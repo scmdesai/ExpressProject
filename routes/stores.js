@@ -331,9 +331,9 @@ exports.filterByLocation = function(req, res) {
 		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
 		
-			//var storeAddress = store.address ;
-			//console.log("Store Address is: " + storeAddress) ;
-			//console.log("Index Address is: " + index) ;
+			var storeAddress = store.zipcode ;
+			console.log("Store zipcode is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
 			
 			//use geonames api instead of google distance api
 		request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+originStr+"&country=US&radius=30&maxRows=500&username=1234_5678", 
@@ -341,7 +341,7 @@ exports.filterByLocation = function(req, res) {
 					if (!error && response.statusCode == 200) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
-						console.log('Length of Json object is : ' +jsonArea.postalCodes.length);
+						//console.log('Length of Json object is : ' +jsonArea.postalCodes.length);
 						
 						for(var i=0;i<jsonArea.postalCodes.length;i++){
 						  if(jsonArea.postalCodes[i].postalCode){
