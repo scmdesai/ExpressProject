@@ -255,7 +255,7 @@ exports.filterByLocation = function(req, res) {
 						//console.log('Length of Json object is : ' + jsonArea.postalCodes.length);
 						for(var i=0;i<500;i++){
 						  
-						  if(jsonArea.postalCodes[i]){
+						  if(jsonArea.postalCodes[i].postalCode){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 							
 									if(zipcode == store.zipcode){
