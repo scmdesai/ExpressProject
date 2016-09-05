@@ -242,23 +242,23 @@ exports.filterByLocation = function(req, res) {
 		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
 		
-			//var storeAddress = store.address ;
+			var storeAddress = store.zipcode ;
 			
-			//console.log("Store Address is: " + storeAddress) ;
-			//console.log("Index Address is: " + index) ;
+			console.log("Store zipcode is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
 			
 		request("http://api.geonames.org/findNearbyPostalCodesJSON?lat="+latitude+"&lng="+longitude+"&country=US&radius=30&maxRows=500&username=1234_5678", 
 				function (error, response, body) {
 					if (!error && response.statusCode == 200) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
-						console.log('Length of Json object is : ' + jsonArea.postalCodes.length);
+						//console.log('Length of Json object is : ' + jsonArea.postalCodes.length);
 						for(var i=0;i<500;i++){
 						  
-						  if(jsonArea.postalCodes[i]){
+						  if(jsonArea.postalCodes[i].postalCode){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 							if(loopCounter==1){
-								console.log(zipcode);
+								console.log('Zipc is :' + zipcode);
 								
 							
 						  }
@@ -266,7 +266,7 @@ exports.filterByLocation = function(req, res) {
 									if(zipcode == store.zipcode){
 									    
 										filteredStoreList[count++] = store ;
-										//break;
+										break;
 									}
 								
 								
