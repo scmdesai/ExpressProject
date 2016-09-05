@@ -257,7 +257,12 @@ exports.filterByLocation = function(req, res) {
 						  
 						  if(jsonArea.postalCodes[i].postalCode){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
+							if(loopCounter==1){
+								console.log('Zipc is :' + zipcode);
+								
 							
+						  }
+
 									if(zipcode == store.zipcode){
 									    
 										filteredStoreList[count++] = store ;
@@ -278,7 +283,7 @@ exports.filterByLocation = function(req, res) {
 						
 					}
 					else {
-						console.log("Error finding stores " + error);
+						console.log("Error finding stores");
 					}
 				});
 			
