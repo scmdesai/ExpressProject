@@ -342,9 +342,8 @@ exports.filterByLocation = function(req, res) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
 						console.log('Length of Json object is : ' +jsonArea.postalCodes.length);
-						
-						for(var i=0;i<jsonArea.postalCodes.length;i++){
-						  if(jsonArea.postalCodes[i].postalCode){
+						for(var i=0;i<500;i++){
+						  if(jsonArea.postalCodes[i]){
 							var zipcode = jsonArea.postalCodes[i].postalCode;
 
 									if(zipcode == store.zipcode){
