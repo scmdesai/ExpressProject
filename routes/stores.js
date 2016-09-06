@@ -932,7 +932,7 @@ exports.invalidateCloudFront = function(req, res,next) {
 	var params = {
 	  DistributionId: 'E1V537HGTIZIKJ', /* required */
 	  InvalidationBatch: { /* required */
-		CallerReference: 'LocalBuzz', /* required */
+		CallerReference: 'LocalBuzz' + '-' + Date.now(), /* required */
 		Paths: { /* required */
 		  Quantity: 1, /* required */
 		  Items: [
