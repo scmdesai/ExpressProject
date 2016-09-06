@@ -3,8 +3,8 @@ var uuid = require('node-uuid');
 var Store = require("./store");
 var multer = require( 'multer' );
 var s3 = require( 'multer-storage-s3' );
-//var distance = require('google-distance');
-//distance.apiKey = 'AIzaSyDHFtBdpwHNSJ2Pu0HpRK1ce5uHCSGHKXM';
+var distance = require('google-distance');
+distance.apiKey = 'AIzaSyDHFtBdpwHNSJ2Pu0HpRK1ce5uHCSGHKXM';
 var request = require('request');
 
 var upload = multer({ dest: 'uploads/' }) ;
@@ -242,10 +242,10 @@ exports.filterByLocation = function(req, res) {
 		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
 		
-			//var storeAddress = store.address ;
+			var storeAddress = store.address ;
 			
-			//console.log("Store Address is: " + storeAddress) ;
-			//console.log("Index Address is: " + index) ;
+			console.log("Store Address is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
 			
 		request("http://api.geonames.org/findNearbyPostalCodesJSON?lat="+latitude+"&lng="+longitude+"&country=US&radius=30&maxRows=500&username=1234_5678", 
 				function (error, response, body) {
@@ -268,7 +268,7 @@ exports.filterByLocation = function(req, res) {
 							
 						  }
 						}
-						loopCounter-- ;
+					loopCounter-- ;
 					console.log("Loop Counter is: " + loopCounter) ;
 					if(loopCounter == 0) {
 						console.log("Loop Counter is zero, now sending back consolidated result") ;
@@ -277,7 +277,32 @@ exports.filterByLocation = function(req, res) {
 						
 					}
 					else {
-						console.log("Error finding stores");
+						console.log("Error finding stores: " + error);
+						//Using google distance api matrix 
+						distance.get(
+						{
+							origin: originStr ,
+							destination: storeAddress
+						},
+						function(err, data) {
+							if (err) {
+								console.log("Error finding distance:" + err);
+							} else {
+								console.log("Success finding distance:" + data.distanceValue);
+								var distanceValue = data.distanceValue ;
+								if(distanceValue < req.query.distance) {
+									filteredStoreList[count++] = store ;
+									
+									//storesList.splice(index,1) ;
+								}
+								loopCounter-- ;
+								console.log("Loop Counter is: " + loopCounter) ;
+								if(loopCounter == 0) {
+									console.log("Loop Counter is zero, now sending back consolidated result") ;
+									filterComplete(req, res, filteredStoreList) ;
+								}
+							}			
+						});
 					}
 				});
 			
@@ -325,9 +350,9 @@ exports.filterByLocation = function(req, res) {
 		var loopCounter = storesList.length ;
 		storesList.forEach(function(store, index){
 		
-			//var storeAddress = store.address ;
-			//console.log("Store Address is: " + storeAddress) ;
-			//console.log("Index Address is: " + index) ;
+			var storeAddress = store.address ;
+			console.log("Store Address is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
 			
 			//use geonames api instead of google distance api
 		request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+originStr+"&country=US&radius=30&maxRows=500&username=1234_5678", 
@@ -360,7 +385,31 @@ exports.filterByLocation = function(req, res) {
 						
 					}
 					else {
-						console.log("Error finding stores");
+						console.log("Error finding stores: "+ error);
+						distance.get(
+						{
+							origin: originStr ,
+							destination: storeAddress
+						},
+						function(err, data) {
+							if (err) {
+								console.log("Error finding distance:" + err);
+							} else {
+								console.log("Success finding distance:" + data.distanceValue);
+								var distanceValue = data.distanceValue ;
+								if(distanceValue < req.query.distance) {
+									filteredStoreList[count++] = store ;
+									
+									//storesList.splice(index,1) ;
+								}
+								loopCounter-- ;
+								console.log("Loop Counter is: " + loopCounter) ;
+								if(loopCounter == 0) {
+									console.log("Loop Counter is zero, now sending back consolidated result") ;
+									filterComplete(req, res, filteredStoreList) ;
+								}
+							}			
+						});
 					}
 				});
 			
