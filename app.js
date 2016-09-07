@@ -152,7 +152,7 @@ app.get('/demoStores/:storeName', demoStores.findByStoreName);
 app.get('/demoDeals', demoDeals.findAllDeals);
 app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus);
 
-app.post('/demoStores/:id',demoStores.uploadStoreImage,demoStores.updateBusinessInfo);
+app.post('/demoStores/:id',demoStores.uploadStoreImage,demoStores.invalidateCloudFront,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
 
 app.post('/democreateNewBuzzNoImage', demoDeals.createNewDeal) ;
