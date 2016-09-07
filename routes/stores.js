@@ -278,6 +278,7 @@ exports.filterByLocation = function(req, res) {
 					}
 					else {
 						console.log("Error finding stores: " + error);
+						console.log('Calling google distance matrix api');
 						//Using google distance api matrix 
 						distance.get(
 						{
