@@ -29,6 +29,158 @@ exports.findAllDeals = function(req, res) {
 	*/
 	
 	dealsList=[];
+	
+	console.log('Query is ' + req.query.customerId);
+
+	// switch to either use local file or AWS credentials depending on where the program is running
+	
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	if(simpleDB == null) {
+		console.log("SimpleDB is null, creating new connection") ;
+		simpleDB = new AWS.SimpleDB() ;
+	}
+	
+	// Split the customer id
+	if(req.query.customerId){
+		var customerIdList = req.query.customerId.split(",") ;
+		var customerIdStr = "" ;
+		for (i = 0; i < customerIdList.length; i++) {
+			if(i != customerIdList.length -1) 
+				customerIdStr += "'" + customerIdList[i] + "',";
+			else
+				customerIdStr += "'" + customerIdList[i] + "'";
+		}
+		console.log("Customer ID list is: " + customerIdStr) ;
+	}
+	
+	console.log("SDB Client creation successful") ;
+	var	params;
+	if(req.query.customerId){
+		var customerId = req.query.customerId;
+		params = {
+		SelectExpression: "select * from DemoMyDeals where DealStatus ='Active' and customerId in (" + customerIdStr + ") and DealEndDate is not null order by DealEndDate", /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	}
+	else {
+		params = {
+		SelectExpression: 'select * from DemoMyDeals where DealStatus ="Active" and DealEndDate is not null order by DealEndDate', /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	}
+	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
+	var cb = req.query.callback;	
+	console.log("Callback URL is " + cb) ;
+
+	//var customerId = req.query.customerId;	
+	//console.log("Customer ID is " + customerId) ;
+
+	//res.send("End of deals") ;
+	
+	console.log("Now retrieving data set from SDB") ;
+	simpleDB.select(params, function(err, data) {
+	
+	
+		if (err) {
+			console.log("ERROR calling AWS Simple DB!!!") ;
+			console.log(err, err.stack); // an error occurred
+		}
+		else     {
+			console.log("SUCCESS from AWS!") ;
+			//console.log(JSON.stringify(data));           // successful response
+			console.log("Objects in the AWS data element:" ) ;
+			for(var name in data) {
+				console.log(name) ;
+			}
+			console.log("Now accessing Items element") ;
+			var items = data["Items"] ;
+			//console.log(items) ;
+			
+			
+			if(items){
+				var j=0 ;
+				for(var i=0; i < items.length; i++) {
+					var item = items[i] ;	
+					//console.log(item) ;
+					var itemName = item["Name"] ;
+					//console.log("ItemName is " + itemName) ;
+					var attributes = item["Attributes"] ;
+					
+					var tempDeal = new Deal(itemName, attributes) ;
+					if(tempDeal.dealStatus == "Expired") {
+						console.log("Expired buzz found:" + tempDeal.dealName) ;
+						console.log("Updating its status in AWS SDB so that it does not show up next time") ;
+						
+						var deleteParams = {
+							DomainName: 'DemoMyDeals', /* required */
+							ItemName: tempDeal.itemName, /* required */
+						};
+						simpleDB.deleteAttributes(deleteParams, function(err, data) {
+							if (err) {
+								console.log("Error deleting expired buzz") ;
+								console.log(err, err.stack); // an error occurred
+							} else {
+								console.log("Buzz deleted successfully") ;
+								console.log(data); // successful response
+							}								
+						});
+						
+						continue ;
+					}
+					else { // active buzz found. Add it to he return value
+ 						dealsList[j] = tempDeal ;
+						j++ ;
+					}
+				}
+			}
+			
+		}
+		
+		console.log("Deals List is: " + dealsList);
+		var dealsJsonOutput = JSON.stringify(dealsList) ;
+	    
+		
+		if(cb) {
+			res.send( cb + "(" + dealsJsonOutput + ");" );
+		}
+		else {
+			res.send(dealsJsonOutput) ;
+		}
+	});
+	
+			
+};
+
+exports.findDealsByCustomerId = function(req, res) {
+	//console.log("GET STORES") ;
+	var today = new Date();
+	/*var dateString = datetime.toString();
+	var date = datetime.getDate();
+	var month = datetime.getMonth()+ 1;
+	var year = datetime.getFullYear();
+	var dateFormat = "'" + month +  "/" + date + "/" + year + "'";
+	
+	
+	console.log(datetime.toLocaleString());
+	*/
+	
+	var dealsList=[];
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	var customerId = req.params.id;
@@ -56,7 +208,7 @@ exports.findAllDeals = function(req, res) {
 	
 	
 	var	params = {
-		SelectExpression: 'select * from DemoMyDeals where DealStatus ="Active" intersection DealEndDate is not null order by DealEndDate', /* required */
+		SelectExpression: 'select * from DemoMyDeals where DealStatus ="Active" and customerId ="'+ customerId+'"intersection DealEndDate is not null order by DealEndDate', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -143,8 +295,6 @@ exports.findAllDeals = function(req, res) {
 			
 };
 
-
-
 exports.createNewDeal = function(req, res) {
 
 	// switch to either use local file or AWS credentials depending on where the program is running
@@ -177,7 +327,7 @@ exports.createNewDeal = function(req, res) {
 	//check for profanity to ensure that offensive content is rejected
 	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
 		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
-		res.status(500).send('{ "success": false, "msg": "Content rejected due to inappropriate words and violation of usage terms}"') ;
+		res.send('{"msg":"Content rejected due to inappropriate words and violation of usage terms"}') ;
 	}
 	else {
 
@@ -252,7 +402,7 @@ exports.createNewDeal = function(req, res) {
 			if (err) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
-				res.status(500).send('{ "success": false, "msg": "Error adding buzz. Please try again.}') ;
+				res.send('{"msg": "Error adding buzz. Please try again"}') ;
 			}
 			else  {
 				console.log("Record inserted successfully") ;
@@ -272,9 +422,8 @@ exports.createNewDeal = function(req, res) {
 					"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New buzz from " + req.body.businessName + " : " + req.body.DealName + "\"}}", 
 					"GCM": "{ \"data\": { \"message\": \"New buzz from "  + req.body.businessName + " : " + req.body.DealName + "\"} }"
 				};
+				var topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzDemoStoresTopic' ;
 				//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
-				
-				var topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzDemoStoresTopic';
 				
 				var params = {
 					Message: JSON.stringify(message),
@@ -390,7 +539,7 @@ exports.editDeal = function(req, res) {
 		if (err) {
 			console.log("Error updating record") ;
 			console.log(err, err.stack); // an error occurred
-			res.status(500).send('{ "success": false, "msg": "Error updating record. Please try again."}') ;
+			res.send('{"msg": "Error updating record. Please try again"}') ;
 		}
 		else  {
 			console.log("Record updated successfully") ;
@@ -425,12 +574,14 @@ exports.deleteDeal = function(req, res) {
 		console.log("SimpleDB is null, creating new connection") ;
 		simpleDB = new AWS.SimpleDB() ;
 	}
+	
+
 	console.log("SDB Client creation successful") ;
 	
 	//*** Get dealImageURL of the deal to delete, to first delete the deal from S3 
 	
 	var getParams = {
-		DomainName: 'MyDeals', /* required */
+		DomainName: 'DemoMyDeals', /* required */
 		ItemName: req.params.id, /* required */
 		AttributeNames: [
 		'DealImageURL'
@@ -508,7 +659,7 @@ exports.deleteDeal = function(req, res) {
 						if (err) {
 							console.log("Error deleting Buzz") ;
 							console.log(err, err.stack); // an error occurred
-							res.status(500).send('{"success": false, "msg": "Error deleting buzz. Please try again.}') ;
+							res.send('{"msg": "Error deleting buzz. Please try again"}') ;
 							/*res.status(500).send('<script type=\"text/javascript\"> alert( "Error deleting buzz:" + err );</script>');*/
 						}
 						else  {
@@ -559,8 +710,7 @@ exports.uploadDealImage = function(req, res, next) {
 	}
 	
 	
-	//upload.single('fileUpload') ;
-	console.log("Upload complete...") ;
+	
 	
 	//if(req.file) {
 	
@@ -590,7 +740,7 @@ exports.uploadDealImage = function(req, res, next) {
 				if(err) {
 					console.log("Error uploading file" + err) ;
 					//next() ;
-					res.status(500).send('{"success": false, "msg": "Error uploading file. Please try again.}') ;
+					res.send('{"msg": "Error uploading file. Please try again"}') ;
 				}
 				else {
 					
@@ -642,12 +792,13 @@ exports.dealImageURLUpdate = function(req, res) {
 	//check for profanity to ensure that offensive content is rejected
 	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
 		console.log("Offensive words found in Deal Name or Description: " + req.body.DealName + " or " + req.body.DealDescription) ;
-		res.status(500).send('{ "success": false, "msg": "Content rejected due to inappropriate words and violation of usage terms}"') ;
+		res.send('{"msg":"Content rejected due to inappropriate words and violation of usage terms"}') ;
 	}
 	else {
 		
 		var uuid1 = uuid.v1();
 		console.log("Generated uuid for itemName " + uuid1) ;
+		
 		
 		var	dealURL = "http://images.appsonmobile.com/locallink/deals/" + req.file.path ;
 		
@@ -723,7 +874,7 @@ exports.dealImageURLUpdate = function(req, res) {
 			if (err) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
-				res.status(500).send('{ "success": false, "msg": "Error adding buzz. Please try again."}') ;
+				res.send('{"msg": "Error adding buzz. Please try again"}') ;
 			}
 			else  {
 				console.log("Record inserted successfully") ;
