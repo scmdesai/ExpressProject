@@ -1189,9 +1189,9 @@ exports.createNewStore = function(req, res) {
 				   },
 				   Body: {
 					   Html: {
-						   Data: 'Dear <b>' + req.body.businessName + '</b> <br>' 
-						   + 'Thank you for registering with us!<br> We will send out a confirmation email in the next two business days,once we validate and verify your business. In the meantime, if you have any questions, please feel free to write to us at info@appsonmobile.com or leave us a note <a href="http://www.appsonmobile.com/contact-us">here</a>. <br><br>' 
-						   + 'Best Regards,<br> Local Buzz Team <br> Visit us at http://www.appsonmobile.com <br>'	
+						   Data: 'Dear <b>' + req.body.businessName + '</b> ,<br>' 
+						   + 'Thank you for registering with us!<br> We will send out an email confirmation in the next two business days,once we validate and verify your business. In the meantime, if you have any questions, please feel free to write to us at info@appsonmobile.com or leave us a note <a href="http://www.appsonmobile.com/contact-us">here</a>. <br><br>' 
+						   + 'Best Regards,<br> Local Buzz Team <br> Visit us at http://www.appsonmobile.com <br>'						   
 					   }
 					}
 			   }
