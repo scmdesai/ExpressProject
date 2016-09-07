@@ -23,6 +23,7 @@ var storeDetails = null;
   
 exports.findAllStores = function(req, res, next) {
     var today = new Date();
+	storesList = [] ;
 	
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
