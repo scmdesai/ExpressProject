@@ -11,11 +11,9 @@ var storesList = [] ;
 var pictureURL;
 var snsClient = null ;
 
-exports.findAllStores = function(req, res) {
+exports.findAllStores = function(req, res, next) {
     var today = new Date();
 	
-	
-
 	// switch to either use local file or AWS credentials depending on where the program is running
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
@@ -34,6 +32,80 @@ exports.findAllStores = function(req, res) {
 	console.log("Creating SDB Client") ;
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
+    if(req.query.customerId){
+		console.log('Getting store info for customerId: '+req.query.customerId);
+		var customerId = req.query.customerId;
+		var	params = {
+		SelectExpression: 'select * from MyCustomers where CustomerId="'+ customerId +'" and SignupStatus="Approved"', /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
+	var cb = req.query.callback;	
+	//console.log("Callback URL is " + cb) ;
+
+	
+	console.log("Now retrieving data set from SDB") ;
+	simpleDB.select(params, function(err, data) {
+		if (err) {
+			console.log("ERROR calling AWS Simple DB!!!") ;
+			console.log(err, err.stack); // an error occurred
+		}
+		else     {
+			console.log("SUCCESS from AWS!") ;
+			//console.log(JSON.stringify(data));           // successful response
+			console.log("Objects in the AWS data element:" ) ;
+			/*for(var name in data) {
+				console.log(name) ;
+			}*/
+			console.log("Now accessing Items element") ;
+			var items = data["Items"] ;
+			
+			
+			if(items){
+			//for(var i=0,j=0; i < items.length; i++) {
+				var item = items[0] ;
+                
+                var endDate;				
+                				
+				var attributes = item["Attributes"] ;
+				
+				    
+				
+					storesList[0] = new Store(attributes) ;
+				/**** Commenting out this logic of filtering merchants who are no longer in trial period or paid customers. 
+					For such customers will not be able to post new deals. 
+					storesListTmp[i] = new Store(attributes) ;
+					endDate = new Date(storesListTmp[i]["endDate"]);
+					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
+						storesList[j] = new Store(attributes) ;
+						j++;
+					}
+					 
+				*/
+					 
+				
+				
+			//}
+			
+		}
+		}
+		//console.log("Stores List is: " + storesList);
+		var storesJsonOutput = JSON.stringify(storesList) ;
+	    
+		//req.storesList = storesList ;
+		
+		
+		if(cb) {
+			res.send( cb + "(" + storesJsonOutput + ");" );
+		}
+		else {
+			res.send(storesJsonOutput) ;
+		}
+		
+	});
+	}
+	else {
 	var	params = {
 		SelectExpression: 'select * from DemoMyCustomers where SignupStatus="Approved"', /* required */
 		ConsistentRead: true
@@ -68,8 +140,10 @@ exports.findAllStores = function(req, res) {
                 var endDate;				
                 				
 				var attributes = item["Attributes"] ;
-					
-				storesList[i] = new Store(attributes) ;
+				
+				    
+				
+					storesList[i] = new Store(attributes) ;
 				/**** Commenting out this logic of filtering merchants who are no longer in trial period or paid customers. 
 					For such customers will not be able to post new deals. 
 					storesListTmp[i] = new Store(attributes) ;
@@ -80,7 +154,7 @@ exports.findAllStores = function(req, res) {
 					}
 					 
 				*/
-				
+					 
 				
 				/*
 				//console.log(attributes) ;
@@ -112,18 +186,276 @@ exports.findAllStores = function(req, res) {
 		}
 		}
 		//console.log("Stores List is: " + storesList);
-		var storesJsonOutput = JSON.stringify(storesList) ;
+		//var storesJsonOutput = JSON.stringify(storesList) ;
 	    
-		
+		req.storesList = storesList ;
+		next() ;
+		/*
 		if(cb) {
 			res.send( cb + "(" + storesJsonOutput + ");" );
 		}
 		else {
 			res.send(storesJsonOutput) ;
-		}
+		}*/
+		
 	});
+	}
+
 			
 };
+
+exports.filterByLocation = function(req, res) {
+	console.log("Now filtering store data based on location") ;
+// Check for URL Query parameters latitude and longitude
+// If present, then iterate through the response JSON, create the address string
+// use the Google Distance API to only return those stores which are in the 30 mile radius
+	var cb = req.query.callback;	
+	
+	var storesList = req.storesList ;
+
+	var count = 0 ;
+	var storesJsonOutput = "" ;
+	var filteredStoreList = [] ;
+	
+	
+	if(req.query.latitude && req.query.longitude) {
+		// start a for loop and iterate to see if the store is within the radius
+		//use geonames api instead of google distance matrix
+		var originStr = req.query.latitude +","+req.query.longitude ;
+		console.log("Origin is: " + originStr) ;
+		var lengthStoreList = storesList.length;
+		console.log("Origin is: " + lengthStoreList) ;
+		var latitude = req.query.latitude;
+		var longitude = req.query.longitude;
+		
+		
+		var loopCounter = storesList.length ;
+		storesList.forEach(function(store, index){
+		
+			var storeAddress = store.address ;
+			
+			console.log("Store Address is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
+			
+		request("http://api.geonames.org/findNearbyPostalCodesJSON?lat="+latitude+"&lng="+longitude+"&country=US&radius=30&maxRows=500&username=1234_5678", 
+				function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+					
+						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
+						console.log('Length of Json object is : ' + jsonArea.postalCodes.length);
+						for(var i=0;i<jsonArea.postalCodes.length;i++){
+						  if(jsonArea.postalCodes[i]){
+							var zipcode = jsonArea.postalCodes[i].postalCode;
+
+									if(zipcode == store.zipcode){
+									    
+										filteredStoreList[count++] = store ;
+										break;
+									}
+								
+								
+								
+							
+						  }
+						}
+					loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
+						filterComplete(req, res, filteredStoreList) ;
+					}
+						
+					}
+					else {
+						console.log("Error finding stores: " + error);
+						//Using google distance api matrix 
+						distance.get(
+						{
+							origin: originStr ,
+							destination: storeAddress
+						},
+						function(err, data) {
+							if (err) {
+								console.log("Error finding distance:" + err);
+							} else {
+								console.log("Success finding distance:" + data.distanceValue);
+								var distanceValue = data.distanceValue ;
+								if(distanceValue < req.query.distance) {
+									filteredStoreList[count++] = store ;
+									
+									//storesList.splice(index,1) ;
+								}
+								loopCounter-- ;
+								console.log("Loop Counter is: " + loopCounter) ;
+								if(loopCounter == 0) {
+									console.log("Loop Counter is zero, now sending back consolidated result") ;
+									filterComplete(req, res, filteredStoreList) ;
+								}
+							}			
+						});
+					}
+				});
+			
+			/*distance.get(
+			{
+				origin: originStr ,
+				destination: storeAddress
+			},
+			function(err, data) {
+				if (err) {
+					console.log("Error finding distance:" + err);
+				} else {
+					console.log("Success finding distance:" + data.distanceValue);
+					var distanceValue = data.distanceValue ;
+					if(distanceValue < req.query.distance) {
+						filteredStoreList[count++] = store ;
+						
+						//storesList.splice(index,1) ;
+					}
+					loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
+						filterComplete(req, res, filteredStoreList) ;
+					}
+				}			
+			});	*/	
+					
+				
+		});
+	}
+	else if(req.query.zipcode){
+			// start a for loop and iterate to see if the store is within the radius
+		var originStr = req.query.zipcode;
+		console.log("Origin is: " + originStr) ;
+		var lengthStoreList = storesList.length;
+		console.log("Origin is: " + lengthStoreList) ;
+		
+		var storeListZipcodes = [];
+		storesList.forEach(function(store,index){
+			storeListZipcodes.push(store.zipcode);
+			console.log(store.zipcode);
+		});
+		
+		var loopCounter = storesList.length ;
+		storesList.forEach(function(store, index){
+		
+			var storeAddress = store.address ;
+			console.log("Store Address is: " + storeAddress) ;
+			console.log("Index Address is: " + index) ;
+			
+			//use geonames api instead of google distance api
+		request("http://api.geonames.org/findNearbyPostalCodesJSON?postalcode="+originStr+"&country=US&radius=30&maxRows=500&username=1234_5678", 
+				function (error, response, body) {
+					if (!error && response.statusCode == 200) {
+					
+						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
+						console.log('Length of Json object is : ' +jsonArea.postalCodes.length);
+						for(var i=0;i<jsonArea.postalCodes.length;i++){
+						  if(jsonArea.postalCodes[i]){
+							var zipcode = jsonArea.postalCodes[i].postalCode;
+
+									if(zipcode == store.zipcode){
+									    
+										filteredStoreList[count++] = store ;
+										break;
+									}
+								
+								
+								
+							
+						  }
+						}
+						loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
+						filterComplete(req, res, filteredStoreList) ;
+					}
+						
+					}
+					else {
+						console.log("Error finding stores: "+ error);
+						distance.get(
+						{
+							origin: originStr ,
+							destination: storeAddress
+						},
+						function(err, data) {
+							if (err) {
+								console.log("Error finding distance:" + err);
+							} else {
+								console.log("Success finding distance:" + data.distanceValue);
+								var distanceValue = data.distanceValue ;
+								if(distanceValue < req.query.distance) {
+									filteredStoreList[count++] = store ;
+									
+									//storesList.splice(index,1) ;
+								}
+								loopCounter-- ;
+								console.log("Loop Counter is: " + loopCounter) ;
+								if(loopCounter == 0) {
+									console.log("Loop Counter is zero, now sending back consolidated result") ;
+									filterComplete(req, res, filteredStoreList) ;
+								}
+							}			
+						});
+					}
+				});
+			
+			
+			/*distance.get(
+			{
+				origin: originStr ,
+				destination: storeAddress
+			},
+			function(err, data) {
+				if (err) {
+					console.log("Error finding distance:" + err);
+				} else {
+					console.log("Success finding distance:" + data.distanceValue);
+					var distanceValue = data.distanceValue ;
+					if(distanceValue < req.query.distance) {
+						filteredStoreList[count++] = store ;
+						
+						//storesList.splice(index,1) ;
+					}
+					loopCounter-- ;
+					console.log("Loop Counter is: " + loopCounter) ;
+					if(loopCounter == 0) {
+						console.log("Loop Counter is zero, now sending back consolidated result") ;
+						filterComplete(req, res, filteredStoreList) ;
+					}
+				}			
+			});	*/			
+				
+		});
+	}
+	else {
+		console.log("No latitude and longitude filters to apply.") ;
+		storesJsonOutput = JSON.stringify(storesList) ;
+		if(cb) {
+			res.send( cb + "(" + storesJsonOutput + ");" );
+		}
+		else {
+			res.send(storesJsonOutput) ;
+		}	
+	}
+	
+};
+
+function filterComplete(req, res, filteredStoreList) {
+	var cb = req.query.callback;	
+	console.log("Found number of stores:" + filteredStoreList.length) ; 
+	// at the end of this for loop, we will get a filtered store list to be returned back 
+	storesJsonOutput = JSON.stringify(filteredStoreList) ; 
+	if(cb) {
+		res.send( cb + "(" + storesJsonOutput + ");" );
+	}
+	else {
+		res.send(storesJsonOutput) ;
+	}	
+}
 
 exports.findByStoreName = function(req, res) {
 	console.log("GET STORE BY NAME") ;
@@ -576,6 +908,48 @@ exports.uploadStoreImage = function(req, res,next) {
 	
 	
 };
+
+
+exports.invalidateCloudFront = function(req, res,next) {
+
+	var cloudfront = new AWS.CloudFront();
+	
+	var	pathToInvalidate = encodeURI("/locallink/stores/" + req.file.path) ;
+	console.log("Invalidation path is:" + pathToInvalidate) ;
+	
+	var params = {
+	  DistributionId: 'E1V537HGTIZIKJ', /* required */
+	  InvalidationBatch: { /* required */
+		CallerReference: 'LocalBuzz' + '-' + Date.now(), /* required */
+		Paths: { /* required */
+		  Quantity: 1, /* required */
+		  Items: [
+			pathToInvalidate
+			/* more items */
+		  ]
+		}
+	  }
+	};
+	cloudfront.createInvalidation(params, function(err, data) {
+		if (err) {
+			console.log("Cloudfront invalidation failed") ;
+			console.log(err, err.stack);
+			next() ;
+		}		// an error occurred
+		else {
+			console.log(data);           // successful response
+			console.log("Location is:" + data['Location']) ;
+			
+			var invalidationMap = data['Invalidation'] ;
+			console.log("Invalidation ID is:" + invalidationMap['Id']) ;
+			console.log("Invalidation Status is:" + invalidationMap['Status']) ;
+			console.log("Invalidation CreateTime is:" + invalidationMap['CreateTime']) ;
+			next();
+		}
+	});
+
+};
+
 exports.createNewStore = function(req, res) {
 
 	var startDate = new Date();
