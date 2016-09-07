@@ -147,7 +147,7 @@ app.post('/subscribe',subscribe.enableSubscription);
 
 
 //***** List of demo URL end-points : start *********
-app.get('/demoStores', demoStores.findAllStores);
+aapp.get('/demoStores', demoStores.findAllStores, demoStores.filterByLocation);
 app.get('/demoStores/:storeName', demoStores.findByStoreName);
 app.get('/demoDeals', demoDeals.findAllDeals);
 app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus);
