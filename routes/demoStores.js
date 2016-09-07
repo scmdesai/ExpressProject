@@ -509,7 +509,7 @@ exports.findByStoreName = function(req, res) {
 			var items = data["Items"] ;
 			//console.log(items) ;
 			
-			
+			if(items){
 			for(var i=0; i < items.length; i++) {
 				var item = items[i] ;	
                 console.log(item) ;				
@@ -543,6 +543,7 @@ exports.findByStoreName = function(req, res) {
 				//console.log(attributes) ;
 			}
 			
+		}
 		}
 		console.log("Stores List is: " + storesList);
 		var storesJsonOutput = JSON.stringify(storesList) ;
