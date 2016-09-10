@@ -55,7 +55,7 @@ exports.registerNewDevice = function(req, res) {
    /*  createPlatformEndpoint */
 	var platformAppARN = "" ;
 	if(json.deviceType=="iOS") {
-		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS_SANDBOX/LocalLink-iOS-Dev' ;
+		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS/LocalBuzz-iOS-Prod' ;
 	}
 	else if(json.deviceType=="Android") {
 		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/GCM/LocalLink_GCM' ;
