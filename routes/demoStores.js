@@ -807,7 +807,7 @@ exports.updateBusinessInfo = function(req, res) {
 	}
 	console.log("SDB Client creation successful") ;
 	
-	console.log('category is:' + req.body.category);
+	
 	
 	pictureURL = "http://images.appsonmobile.com/locallink/stores/" + req.file.path ;
 	
@@ -824,11 +824,6 @@ exports.updateBusinessInfo = function(req, res) {
 		  Name: 'BusinessName', /* required */
 		  Value: req.body.businessName, /* required */
 		  Replace: true
-		},
-		{
-		  Name: 'Category', /* required */
-		  Value: req.body.category, /* required */
-		  Replace: false
 		},
 		{
 		  Name: 'phoneNumber', /* required */
