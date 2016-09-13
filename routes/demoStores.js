@@ -597,11 +597,6 @@ exports.updateOnlyBusinessInfo = function(req, res) {
 		  Replace: true
 		},
 		{
-		  Name: 'Category', /* required */
-		  Value: req.body.category, /* required */
-		  Replace: false
-		},
-		{
 		  Name: 'phoneNumber', /* required */
 		  Value: req.body.phoneNumber, /* required */
 		  Replace: true
