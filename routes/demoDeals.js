@@ -720,6 +720,7 @@ exports.uploadDealImage = function(req, res, next) {
 			cb( null, '' );
 		},
 		filename    : function( req, file, cb ) {
+		    console.log('File mimetype is : ' + file.mimetype);
 			cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".jpg" );
 			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
 		},
