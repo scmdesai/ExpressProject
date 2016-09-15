@@ -721,7 +721,12 @@ exports.uploadDealImage = function(req, res, next) {
 		},
 		filename    : function( req, file, cb ) {
 		    console.log('File mimetype is : ' + file.mimetype);
-			cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".jpg" );
+			if(file.mimetype=='image/jpeg){
+				cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".jpg" );
+			}
+			else if(file.mimetype=='video/mp4) {
+			    cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".mp4" );
+			}
 			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
 		},
 		bucket      : 'images.appsonmobile.com/locallink/deals',
