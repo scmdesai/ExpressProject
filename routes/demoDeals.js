@@ -724,7 +724,7 @@ exports.uploadDealImage = function(req, res, next) {
 			if(file.mimetype=='image/jpeg){
 				cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".jpg" );
 			}
-			else if(file.mimetype=='video/mp4) {
+			else  {
 			    cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".mp4" );
 			}
 			//cb( null, req.params.id + '-' + Date.now() + ".jpg" );
