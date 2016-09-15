@@ -721,7 +721,7 @@ exports.uploadDealImage = function(req, res, next) {
 		},
 		filename    : function( req, file, cb ) {
 		    console.log('File mimetype is : ' + file.mimetype);
-			if(file.mimetype=='image/jpeg){
+			if(file.mimetype=='image/jpeg'){
 				cb( null, makeid() + '-' + file.fieldname + '-' + Date.now() + ".jpg" );
 			}
 			else  {
