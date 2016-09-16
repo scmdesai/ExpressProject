@@ -15,7 +15,7 @@ var storesListTmp = [] ;
 var storesList = [] ;
 var pictureURL;
 var snsClient = null ;
-var storeDetails = null;
+var storeDetails = [];
 
 
 
