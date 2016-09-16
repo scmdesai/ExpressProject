@@ -472,7 +472,7 @@ function filterComplete(req, res, filteredStoreList) {
 exports.findByLoginEmail = function(req, res) {
 
     //storesList = [] ;
-	storeDetails = null;
+	storeDetails = [];
 	console.log("GET STORE BY NAME") ;
 	console.log(req.body) ;
 	
