@@ -82,6 +82,10 @@ function Store(attributes) {
 			this.topicName = valueAttr ;
 			break ;
 			
+		case "businessInfo":
+			this.businessInfo = valueAttr ;
+			break ;
+			
 		
 			
 			
