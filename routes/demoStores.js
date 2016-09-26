@@ -222,6 +222,8 @@ exports.filterByLocation = function(req, res) {
 	
 	
 	if(req.query.latitude && req.query.longitude) {
+	
+	
 		// start a for loop and iterate to see if the store is within the radius
 		//use geonames api instead of google distance matrix
 		var originStr = req.query.latitude +","+req.query.longitude ;
@@ -239,10 +241,11 @@ exports.filterByLocation = function(req, res) {
 			
 			console.log("Store Address is: " + storeAddress) ;
 			console.log("Index Address is: " + index) ;
-			
+		
+		try{	
 		request("http://api.geonames.org/findNearbyPostalCodesJSON?lat="+latitude+"&lng="+longitude+"&country=US&radius=30&maxRows=500&username=1234_5678", 
 				function (error, response, body) {
-					if (!error && response.statusCode == 200) {
+					//if (!error && response.statusCode == 200) {
 					
 						var jsonArea = JSON.parse(body); // Show the HTML for the Google homepage.
 						console.log('Length of Json object is : ' + jsonArea.postalCodes.length);
@@ -268,8 +271,8 @@ exports.filterByLocation = function(req, res) {
 						filterComplete(req, res, filteredStoreList) ;
 					}
 						
-					}
-					else {
+					//}
+					/*else {
 						console.log("Error finding stores: " + error);
 						//Using google distance api matrix 
 						distance.get(
@@ -296,8 +299,37 @@ exports.filterByLocation = function(req, res) {
 								}
 							}			
 						});
-					}
+					}*/
 				});
+			}
+			catch {
+				console.log("Error finding stores: " + error);
+				//Using google distance api matrix 
+				distance.get(
+						{
+							origin: originStr ,
+							destination: storeAddress
+						},
+						function(err, data) {
+							if (err) {
+								console.log("Error finding distance:" + err);
+							} else {
+								console.log("Success finding distance:" + data.distanceValue);
+								var distanceValue = data.distanceValue ;
+								if(distanceValue < req.query.distance) {
+									filteredStoreList[count++] = store ;
+									
+									//storesList.splice(index,1) ;
+								}
+								loopCounter-- ;
+								console.log("Loop Counter is: " + loopCounter) ;
+								if(loopCounter == 0) {
+									console.log("Loop Counter is zero, now sending back consolidated result") ;
+									filterComplete(req, res, filteredStoreList) ;
+								}
+							}			
+						});
+			}
 			
 			/*distance.get(
 			{
