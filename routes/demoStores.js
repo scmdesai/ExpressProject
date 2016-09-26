@@ -302,7 +302,7 @@ exports.filterByLocation = function(req, res) {
 					}*/
 				});
 			}
-			catch(error) {
+			catch {
 				console.log("Error finding stores: " + error);
 				//Using google distance api matrix 
 				distance.get(
