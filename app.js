@@ -151,6 +151,7 @@ app.get('/demoStores', demoStores.findAllStores, demoStores.filterByLocation);
 app.get('/demoStores/:email', demoStores.findByLoginEmail);
 //app.get('/demoStores/:storeName', demoStores.findByStoreName);
 app.get('/demoDeals', demoDeals.findAllDeals);
+app.get('/demoDeals/:id',demoDeals.findDealsByCustomerId);
 app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus);
 
 app.post('/demoStores/:id',demoStores.uploadStoreImage, demoStores.invalidateCloudFront,demoStores.updateBusinessInfo);
