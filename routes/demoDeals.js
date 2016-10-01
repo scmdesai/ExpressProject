@@ -277,9 +277,9 @@ exports.findDealsByCustomerId = function(req, res) {
 						j++ ;
 					}
 				}
-			}
+			}*/
 			
-		}*/
+		}
 		
 		/*console.log("Deals List is: " + dealsList);
 		var dealsJsonOutput = JSON.stringify(dealsList) ;
