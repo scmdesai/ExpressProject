@@ -181,6 +181,7 @@ exports.findDealsByCustomerId = function(req, res) {
 	*/
 	
 	var dealsList=[];
+	var count=0;
 
 	// switch to either use local file or AWS credentials depending on where the program is running
 	var customerId = req.params.id;
@@ -240,8 +241,8 @@ exports.findDealsByCustomerId = function(req, res) {
 			var items = data["Items"] ;
 			//console.log(items) ;
 			
-			
-			if(items){
+			res.status(200).send('{"success":true,"msg":"'+ items.length +'"}') ;
+			/*if(items){
 				var j=0 ;
 				for(var i=0; i < items.length; i++) {
 					var item = items[i] ;	
@@ -256,8 +257,8 @@ exports.findDealsByCustomerId = function(req, res) {
 						console.log("Updating its status in AWS SDB so that it does not show up next time") ;
 						
 						var deleteParams = {
-							DomainName: 'DemoMyDeals', /* required */
-							ItemName: tempDeal.itemName, /* required */
+							DomainName: 'DemoMyDeals', 
+							ItemName: tempDeal.itemName, 
 						};
 						simpleDB.deleteAttributes(deleteParams, function(err, data) {
 							if (err) {
@@ -278,9 +279,9 @@ exports.findDealsByCustomerId = function(req, res) {
 				}
 			}
 			
-		}
+		}*/
 		
-		console.log("Deals List is: " + dealsList);
+		/*console.log("Deals List is: " + dealsList);
 		var dealsJsonOutput = JSON.stringify(dealsList) ;
 	    
 		
@@ -289,7 +290,7 @@ exports.findDealsByCustomerId = function(req, res) {
 		}
 		else {
 			res.send(dealsJsonOutput) ;
-		}
+		}*/
 	});
 	
 			
