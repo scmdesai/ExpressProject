@@ -1144,6 +1144,11 @@ exports.createNewStore = function(req, res) {
 		  Replace: true
 		},
 		{
+		  Name: 'BusinessInfo', /* required */
+		  Value: req.body.businessInfo, /* required */
+		  Replace: true
+		},
+		{
 		  Name: 'Category', /* required */
 		  Value: req.body.category, /* required */
 		  Replace: false
