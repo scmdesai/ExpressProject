@@ -1302,7 +1302,8 @@ exports.approveStore = function(req, res) {
 };
 
 exports.filterBySignupStatus = function(req, res) {
-    var today = new Date();
+    
+    
 	storesList = [] ;
 	
 	// switch to either use local file or AWS credentials depending on where the program is running
@@ -1323,9 +1324,10 @@ exports.filterBySignupStatus = function(req, res) {
 	console.log("Creating SDB Client") ;
 	simpleDB = new AWS.SimpleDB() ;
 	console.log("SDB Client creation successful") ;
-    
+   
+	//else {
 	var	params = {
-		SelectExpression: 'select * from MyCustomers where SignupStatus= "Pending"', /* required */
+		SelectExpression: 'select * from MyCustomers where SignupStatus="Pending"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -1352,6 +1354,7 @@ exports.filterBySignupStatus = function(req, res) {
 			
 			
 			if(items){
+			console.log(items.length);
 			for(var i=0,j=0; i < items.length; i++) {
 				var item = items[i] ;
                 
@@ -1363,23 +1366,26 @@ exports.filterBySignupStatus = function(req, res) {
 				
 					storesList[i] = new Store(attributes) ;
 				
-				
 			}
 			
 		}
-		console.log("Stores List is: " + JSON.stringify(storesList));
-		var storesJsonOutput = JSON.stringify(storesList) ;
+		}
+		//console.log("Stores List is: " + storesList);
+		//var storesJsonOutput = JSON.stringify(storesList) ;
 	    
+		//req.storesList = storesList ;
+		//next() ;
 		
 		if(cb) {
-			res.send( cb + "(" + storesJsonOutput + ");" );
+			res.send( cb + "(" + JSON.stringify(storesList) + ");" );
 		}
 		else {
-			res.send(storesJsonOutput) ;
+			res.send(JSON.stringify(storesList)) ;
 		}
-	}
-	
+		
 	});
+	//}
+
 			
 
 			

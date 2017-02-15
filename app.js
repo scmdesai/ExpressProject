@@ -27,7 +27,7 @@ var express = require('express')
   , methodOverride = require('method-override')
   , errorHandler = require('errorhandler')
   , multer  = require('multer')
-  , timeout = require('connect-timeout')
+  , timeout = require('connect')
   , request=require('request');
   
 //var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
@@ -102,6 +102,7 @@ app.get('/analytics_user_location/v3/:storeId', analytics_user_location.getData)
 
 app.get('/stores', stores.findAllStores, stores.filterByLocation);
 app.get('/stores/:email', stores.findByLoginEmail);
+app.get('/stores/filterBySignupStatus/pending', stores.filterBySignupStatus);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
 app.get('/deals/:id',deals.findDealsByCustomerId);
