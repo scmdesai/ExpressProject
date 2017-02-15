@@ -1325,7 +1325,7 @@ exports.filterBySignupStatus = function(req, res) {
 	console.log("SDB Client creation successful") ;
     
 	var	params = {
-		SelectExpression: 'select * from MyCustomers where SignupStatus="Pending"', /* required */
+		SelectExpression: 'select * from MyCustomers where SignupStatus= "Approved"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
