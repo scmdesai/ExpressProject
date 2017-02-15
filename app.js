@@ -146,6 +146,8 @@ app.post('/devices', devices.registerNewDevice) ;
 app.post('/subscribe',subscribe.enableSubscription);
 
 
+
+
 //***** List of demo URL end-points : start *********
 app.get('/demoStores', demoStores.findAllStores, demoStores.filterByLocation);
 app.get('/demoStores/:email', demoStores.findByLoginEmail);
@@ -156,6 +158,8 @@ app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus
 
 app.post('/demoStores/:id',demoStores.uploadStoreImage, demoStores.invalidateCloudFront,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
+app.post('/approveStore/:id', demoStores.approveStore);
+
 
 app.post('/democreateNewBuzzNoImage', demoDeals.createNewDeal) ;
 app.post('/democreateNewBuzzWithImage',demoDeals.uploadDealImage, demoDeals.dealImageURLUpdate) ;
