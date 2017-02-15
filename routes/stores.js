@@ -1405,7 +1405,7 @@ exports.filterBySignupStatus = function(req, res) {
 		}
 		
 		var storesJsonOutput = JSON.stringify(storesList) ;
-		console.log("Stores List is: " + storesJsonOutput);
+		console.log("Stores List is: " + items.length);
 	    
 		//req.storesList = storesList ;
 		//next() ;
