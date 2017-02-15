@@ -1403,7 +1403,7 @@ exports.filterBySignupStatus = function(req, res) {
 			
 		}
 		}
-		//console.log("Stores List is: " + storesList);
+		console.log("Stores List is: " + storesList);
 		var storesJsonOutput = JSON.stringify(storesList) ;
 	    
 		//req.storesList = storesList ;
