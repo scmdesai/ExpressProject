@@ -1384,7 +1384,7 @@ exports.filterBySignupStatus = function(req, res) {
 				//console.log(attributes) ;
 			}
 			
-		
+		}
 		console.log("Stores List is: " + storeDetails);
 		var storesJsonOutput = JSON.stringify(storeDetails) ;
 	    
