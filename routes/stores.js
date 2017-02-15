@@ -1218,7 +1218,7 @@ exports.createNewStore = function(req, res) {
 	
 	
 };
-exports.approveDemoStore = function(req, res) {
+exports.approveStore = function(req, res) {
 
 	//var startDate = new Date();
 	//var endDate = new Date(startDate);
