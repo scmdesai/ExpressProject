@@ -1352,27 +1352,10 @@ exports.filterBySignupStatus = function(req, res) {
 			
 			
 			if(items){
-			for(var i=0,j=0; i < items.length; i++) {
-				var item = items[i] ;
-                
-                var endDate;				
-                				
+			var item = items[0] ;	
+                console.log(item) ;				
 				var attributes = item["Attributes"] ;
-				
-				    
-				
-					storesList[i] = new Store(attributes) ;
-				/**** Commenting out this logic of filtering merchants who are no longer in trial period or paid customers. 
-					For such customers will not be able to post new deals. 
-					storesListTmp[i] = new Store(attributes) ;
-					endDate = new Date(storesListTmp[i]["endDate"]);
-					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
-						storesList[j] = new Store(attributes) ;
-						j++;
-					}
-					 
-				*/
-					 
+				storeDetails = new Store(attributes) ;
 				
 				/*
 				//console.log(attributes) ;
@@ -1401,14 +1384,10 @@ exports.filterBySignupStatus = function(req, res) {
 				//console.log(attributes) ;
 			}
 			
-		}
-		}
 		
-		var storesJsonOutput = JSON.stringify(storesList) ;
-		console.log("Stores List is: " + items.length);
+		console.log("Stores List is: " + storeDetails);
+		var storesJsonOutput = JSON.stringify(storeDetails) ;
 	    
-		//req.storesList = storesList ;
-		//next() ;
 		
 		if(cb) {
 			res.send( cb + "(" + storesJsonOutput + ");" );
@@ -1416,9 +1395,8 @@ exports.filterBySignupStatus = function(req, res) {
 		else {
 			res.send(storesJsonOutput) ;
 		}
-		
 	});
-	
+			
 
 			
 };
