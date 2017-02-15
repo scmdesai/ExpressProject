@@ -158,7 +158,7 @@ app.get('/demoGetSubscriptionStatus/:id',demoSubscriptions.getSubscriptionStatus
 
 app.post('/demoStores/:id',demoStores.uploadStoreImage, demoStores.invalidateCloudFront,demoStores.updateBusinessInfo);
 app.post('/demoUpdateStoreInfo/:id',demoStores.updateOnlyBusinessInfo);
-app.post('/approveStore/:id', demoStores.approveStore);
+app.post('/approveDemoStore/:id', demoStores.approveDemoStore);
 
 
 app.post('/democreateNewBuzzNoImage', demoDeals.createNewDeal) ;
