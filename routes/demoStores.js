@@ -1354,12 +1354,10 @@ exports.approveDemoStore = function(req, res) {
 		}
 	],
 	  DomainName: 'DemoMyCustomers', /* required */
-	  ItemName: req.params.id,/* required */
+	  ItemName: req.params.CustomerId, /* required */
 	  Expected: {
-		Exists: true,
-		Name: 'CustomerId',
-		Value: req.params.id
-		
+		Exists: false,
+		Name: 'BusinessName'
 	  }
 	};
 	
