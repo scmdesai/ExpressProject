@@ -1301,5 +1301,127 @@ exports.approveStore = function(req, res) {
 	
 };
 
+exports.filterBySignupStatus = function(req, res, next) {
+    var today = new Date();
+	storesList = [] ;
+	
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SDB client
+	console.log("Creating SDB Client") ;
+	simpleDB = new AWS.SimpleDB() ;
+	console.log("SDB Client creation successful") ;
+    
+	var	params = {
+		SelectExpression: 'select * from MyCustomers where SignupStatus="Pending"', /* required */
+		ConsistentRead: true
+		//NextToken: 'STRING_VALUE'
+	};
+	//console.log("Headers received:" + JSON.stringify(req.headers)) ;
+	var cb = req.query.callback;	
+	//console.log("Callback URL is " + cb) ;
+
+	
+	console.log("Now retrieving data set from SDB") ;
+	simpleDB.select(params, function(err, data) {
+		if (err) {
+			console.log("ERROR calling AWS Simple DB!!!") ;
+			console.log(err, err.stack); // an error occurred
+		}
+		else     {
+			console.log("SUCCESS from AWS!") ;
+			//console.log(JSON.stringify(data));           // successful response
+			console.log("Objects in the AWS data element:" ) ;
+			/*for(var name in data) {
+				console.log(name) ;
+			}*/
+			console.log("Now accessing Items element") ;
+			var items = data["Items"] ;
+			
+			
+			if(items){
+			for(var i=0,j=0; i < items.length; i++) {
+				var item = items[i] ;
+                
+                var endDate;				
+                				
+				var attributes = item["Attributes"] ;
+				
+				    
+				
+					storesList[i] = new Store(attributes) ;
+				/**** Commenting out this logic of filtering merchants who are no longer in trial period or paid customers. 
+					For such customers will not be able to post new deals. 
+					storesListTmp[i] = new Store(attributes) ;
+					endDate = new Date(storesListTmp[i]["endDate"]);
+					 if(storesListTmp[i]["planType"]=="Paid" ||(storesListTmp[i]["planType"]=="Free"&& endDate >= today)){
+						storesList[j] = new Store(attributes) ;
+						j++;
+					}
+					 
+				*/
+					 
+				
+				/*
+				//console.log(attributes) ;
+				for(var j in attributes) {
+					var attr = attributes[j];
+					//console.log(attr) ;
+					var nameAttr = attr["Name"];
+					var valueAttr = attr["Value"];
+					//console.log(nameAttr + ": " + valueAttr );
+					var storesJsonOutput;
+					storesJsonOutput = (nameAttr + ": " + valueAttr + "\n" );
+					res.write(storesJsonOutput);
+					
+				
+				}
+			
+				res.end() ;*/	
+				/*var store = new Store() ;
+				for(var j=0; j < attributes.length; j++) {
+					var attribute = attributes[j] ;
+					if(attribute["Name"] == "BusinessName") {
+						store.businessName = attribute["Value"] ;
+					}
+				}
+				storesList[i] = store ;*/
+				//console.log(attributes) ;
+			}
+			
+		}
+		}
+		//console.log("Stores List is: " + storesList);
+		//var storesJsonOutput = JSON.stringify(storesList) ;
+	    
+		req.storesList = storesList ;
+		next() ;
+		/*
+		if(cb) {
+			res.send( cb + "(" + storesJsonOutput + ");" );
+		}
+		else {
+			res.send(storesJsonOutput) ;
+		}*/
+		
+	});
+	
+
+			
+};
+
+
 
 
