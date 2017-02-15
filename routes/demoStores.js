@@ -1341,6 +1341,11 @@ exports.approveDemoStore = function(req, res) {
 	
 	var params = {
 	  Attributes: [ /* required */
+	  {
+		  Name: 'CustomerId', /* required */
+		  Value: req.body.customerId, /* required */
+		  Replace: false
+		},
 		
 		{
 		  Name: 'SignupStatus', /* required */
