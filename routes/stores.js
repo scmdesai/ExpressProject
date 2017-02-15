@@ -1301,7 +1301,7 @@ exports.approveStore = function(req, res) {
 	
 };
 
-exports.filterBySignupStatus = function(req, res, next) {
+exports.filterBySignupStatus = function(req, res) {
     var today = new Date();
 	storesList = [] ;
 	
@@ -1404,17 +1404,17 @@ exports.filterBySignupStatus = function(req, res, next) {
 		}
 		}
 		//console.log("Stores List is: " + storesList);
-		//var storesJsonOutput = JSON.stringify(storesList) ;
+		var storesJsonOutput = JSON.stringify(storesList) ;
 	    
-		req.storesList = storesList ;
-		next() ;
-		/*
+		//req.storesList = storesList ;
+		//next() ;
+		
 		if(cb) {
 			res.send( cb + "(" + storesJsonOutput + ");" );
 		}
 		else {
 			res.send(storesJsonOutput) ;
-		}*/
+		}
 		
 	});
 	
