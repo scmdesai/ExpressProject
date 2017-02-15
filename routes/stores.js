@@ -1325,7 +1325,7 @@ exports.filterBySignupStatus = function(req, res) {
 	console.log("SDB Client creation successful") ;
     
 	var	params = {
-		SelectExpression: 'select * from MyCustomers where SignupStatus= "Approved"', /* required */
+		SelectExpression: 'select * from MyCustomers where SignupStatus= "Pending"', /* required */
 		ConsistentRead: true
 		//NextToken: 'STRING_VALUE'
 	};
@@ -1352,10 +1352,16 @@ exports.filterBySignupStatus = function(req, res) {
 			
 			
 			if(items){
-			var item = items[0] ;	
-                console.log(item) ;				
+			for(var i=0,j=0; i < items.length; i++) {
+				var item = items[i] ;
+                
+                var endDate;				
+                				
 				var attributes = item["Attributes"] ;
-				storeDetails = new Store(attributes) ;
+				
+				    
+				
+					storesList[i] = new Store(attributes) ;
 				
 				/*
 				//console.log(attributes) ;
@@ -1385,8 +1391,8 @@ exports.filterBySignupStatus = function(req, res) {
 			}
 			
 		}
-		console.log("Stores List is: " + storeDetails);
-		var storesJsonOutput = JSON.stringify(storeDetails) ;
+		console.log("Stores List is: " + JSON.stringify(storesList));
+		var storesJsonOutput = JSON.stringify(storesList) ;
 	    
 		
 		if(cb) {
