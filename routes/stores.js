@@ -1363,31 +1363,7 @@ exports.filterBySignupStatus = function(req, res) {
 				
 					storesList[i] = new Store(attributes) ;
 				
-				/*
-				//console.log(attributes) ;
-				for(var j in attributes) {
-					var attr = attributes[j];
-					//console.log(attr) ;
-					var nameAttr = attr["Name"];
-					var valueAttr = attr["Value"];
-					//console.log(nameAttr + ": " + valueAttr );
-					var storesJsonOutput;
-					storesJsonOutput = (nameAttr + ": " + valueAttr + "\n" );
-					res.write(storesJsonOutput);
-					
 				
-				}
-			
-				res.end() ;*/	
-				/*var store = new Store() ;
-				for(var j=0; j < attributes.length; j++) {
-					var attribute = attributes[j] ;
-					if(attribute["Name"] == "BusinessName") {
-						store.businessName = attribute["Value"] ;
-					}
-				}
-				storesList[i] = store ;*/
-				//console.log(attributes) ;
 			}
 			
 		}
@@ -1401,6 +1377,8 @@ exports.filterBySignupStatus = function(req, res) {
 		else {
 			res.send(storesJsonOutput) ;
 		}
+	}
+	
 	});
 			
 
