@@ -121,6 +121,7 @@ app.post('/stores/:id',stores.uploadStoreImage, stores.invalidateCloudFront, sto
 app.post('/updateStoreInfo/:id',stores.updateOnlyBusinessInfo);
 //app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore,subscriptions.createNewSubscription) ;
 app.post('/createNewStore', stores.uploadStoreImage,stores.createNewStore) ;
+app.post('/approveStore/:id', demoStores.approveStore);
 
 app.post('/createNewBuzzNoImage', deals.createNewDeal) ;
 app.post('/createNewBuzzWithImage',deals.uploadDealImage, deals.dealImageURLUpdate) ;
