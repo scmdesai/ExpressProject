@@ -1349,13 +1349,7 @@ exports.approveDemoStore = function(req, res) {
 		}
 	],
 	  DomainName: 'DemoMyCustomers', /* required */
-	  ItemName: req.params.id,/* required */
-	  Expected: {
-		Exists: true,
-		Name: 'CustomerId',
-		Value: req.params.id
-		
-	  }
+	  ItemName: req.params.id
 	};
 	
 	console.log("Now inserting new row into DemoMyCustomers domain") ;
