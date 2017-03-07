@@ -27,8 +27,9 @@ var express = require('express')
   , methodOverride = require('method-override')
   , errorHandler = require('errorhandler')
   , multer  = require('multer')
-  , timeout = require('connect-timeout')
-  , request=require('request');
+  , timeout = require('connect')
+  , request=require('request')
+  , cc=require('coupon-code');
   
 //var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
   
@@ -106,6 +107,7 @@ app.get('/stores/filterBySignupStatus/pending', stores.filterBySignupStatus);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
 app.get('/deals/:id',deals.findDealsByCustomerId);
+app.get('/deals/getOfferCode/:id',deals.createOfferCode);
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + 'Analytics.html');
