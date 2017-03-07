@@ -28,8 +28,8 @@ var express = require('express')
   , errorHandler = require('errorhandler')
   , multer  = require('multer')
   , timeout = require('connect-timeout')
-  , request=require('request')
-  , cc=require('coupon-code');
+  , request=require('request');
+  
   
 //var upload = multer({ dest: './uploads/',limits: { fileSize: maxSize } }) ;
   
