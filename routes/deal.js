@@ -70,7 +70,9 @@ function Deal(itemName,attributes) {
         case "state":
 			this.state = valueAttr ;
 			break ;				
-		}			
+		
+        }
+     		
 	}
 }
 

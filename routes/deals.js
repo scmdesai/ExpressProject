@@ -1023,12 +1023,51 @@ exports.createOfferCode = function(req, res) {
 	}
 	console.log("SDB Client creation successful") ;
 	
-	var code = cc.generate();
+	var code = cc.generate().toString();
 	console.log("Generated offer code   " + code) ;
+	var date = (new Date()).toString();
 	
+	var params = {
+		  Attributes: [ /* required */
+			
+			
+			{
+			  Name: 'CouponCode', /* required */
+			  Value: code, /* required */
+			  Replace: true
+			},
+			{
+			  Name: 'TimeStamp', /* required */
+			  Value: date, /* required */
+			  Replace: true
+			},
+			{
+		      Name: 'CustomerId',
+			  Value: req.body.CustomerId,
+			  Replace: true
+			  
+			}
+			
+		],
+		  DomainName: 'CouponCodesForLocalBuzz', /* required */
+		  ItemName: req.params.id
+		  
+		};
+		
+		console.log("Now inserting new row into MyDeals domain") ;
+		simpleDB.putAttributes(params, function(err, data) {
+			if (err) {
+				console.log("Error inserting record") ;
+				console.log(err, err.stack); // an error occurred
+				res.send('{"msg": "Error! Please try again"}') ;
+			}
+			else  {
+				
 	
 				
 				res.status(200).send('{"success":true,"msg":'+code+'}') ;
+				}
+			});
 				
 				
 				

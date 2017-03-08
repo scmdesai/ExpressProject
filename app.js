@@ -107,7 +107,7 @@ app.get('/stores/filterBySignupStatus/pending', stores.filterBySignupStatus);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
 app.get('/deals/:id',deals.findDealsByCustomerId);
-app.get('/deals/getOfferCode/:id',deals.createOfferCode);
+app.post('/deals/getOfferCode/:id',deals.createOfferCode);
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + 'Analytics.html');
