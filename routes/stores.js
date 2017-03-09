@@ -1032,28 +1032,28 @@ exports.createNewStore = function(req, res) {
 	var place = city + state ;
 	console.log(place); 
 	
-	//var topicName = 'LocalBuzz' + place ;
-	//var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
-	
-	var topicName = 'LocalBuzzMerchant' + uuid1 ;
+	var topicName = 'LocalBuzz' + place ;
 	var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
+	
+	var topicName1 = 'LocalBuzzMerchant' + uuid1 ;
+	var topicArn1 = 'arn:aws:sns:us-west-2:861942316283:' + topicName1 ;
 	
 	var paramsTopic = {
 		Name: topicName /* required */
 	};
 	
-	//var paramsTopic1 = {
-	//	Name: topicName1 /* required */
-	//};
+	var paramsTopic1 = {
+		Name: topicName1 /* required */
+	};
 	snsClient.createTopic(paramsTopic, function(err, data) {
 	  if (err) console.log(err, err.stack); // an error occurred
 	  else     console.log(data);           // successful response
 	});
 	
-	/*snsClient.createTopic(paramsTopic1, function(err, data) {
+	snsClient.createTopic(paramsTopic1, function(err, data) {
 	  if (err) console.log(err, err.stack); // an error occurred
 	  else     console.log(data);           // successful response
-	});*/
+	});
 	
 
 	var params = {
