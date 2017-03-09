@@ -1151,7 +1151,13 @@ exports.createNewStore = function(req, res) {
 		{
 		  Name: 'TopicName', /* required */
 		  Value: topicName,
-		  Replace: true
+		  Replace: false
+		},
+		
+		{
+		  Name: 'TopicName', /* required */
+		  Value: topicName1,
+		  Replace: false
 		}
 	],
 	  DomainName: 'MyCustomers', /* required */
