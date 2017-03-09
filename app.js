@@ -27,7 +27,7 @@ var express = require('express')
   , methodOverride = require('method-override')
   , errorHandler = require('errorhandler')
   , multer  = require('multer')
-  , timeout = require('connect-timeout')
+  , timeout = require('connect')
   , request=require('request');
   
   
