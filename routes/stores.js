@@ -1035,7 +1035,7 @@ exports.createNewStore = function(req, res) {
 	//var topicName = 'LocalBuzz' + place ;
 	//var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
 	
-	var topicName = 'LocalBuzzMerchant' + req.body.customerId ;
+	var topicName = 'LocalBuzzMerchant' + req.body.CustomerId ;
 	var topicArn = 'arn:aws:sns:us-west-2:861942316283:' + topicName ;
 	
 	var paramsTopic = {
