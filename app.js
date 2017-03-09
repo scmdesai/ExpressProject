@@ -147,6 +147,8 @@ app.post('/uploadOne', upload.single('fileUpload'), function(req, res){
 app.post('/deals/:id', deals.deleteDeal) ;
 
 app.post('/devices', devices.registerNewDevice) ;
+app.post('/merchantDevices', devices.registerNewMerchantDevice) ;
+
 app.post('/subscribe',subscribe.enableSubscription);
 
 
