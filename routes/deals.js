@@ -1023,7 +1023,9 @@ exports.createOfferCode = function(req, res) {
 	}
 	console.log("SDB Client creation successful") ;
 	
-	var code = cc.generate().toString();
+	var code_test = cc.generate();
+	var code = code_test.toString();
+	
 	console.log("Generated offer code   " + code) ;
 	var date = (new Date()).toString();
 	
@@ -1065,7 +1067,7 @@ exports.createOfferCode = function(req, res) {
 				
 	
 				
-				res.status(200).send('{"success":true,"msg":'+code+'}') ;
+				res.status(200).send('{"success":true,"msg":'+code_test+'}') ;
 				}
 			});
 				
