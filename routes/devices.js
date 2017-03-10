@@ -402,15 +402,15 @@ exports.registerNewMerchantDevice = function(req, res) {
    /*  createPlatformEndpoint */
 	var platformAppARN = "" ;
 	if(json.deviceType=="iOS") {
-		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS/LocalBuzz-iOS-Prod' ;
+		//platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS/LocalBuzz-iOS-Prod' ;
 	}
 	else if(json.deviceType=="Android") {
-		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/GCM/LocalLink_GCM' ;
+		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/GCM/LocalBuzzMerchant_GCM' ;
 	}
 	var params = {
 		PlatformApplicationArn: platformAppARN, /* required */
 		Token: json.registrationID , /* required */
-		CustomUserData: json.userLocation
+		
 	};
 	var endPointARN = '' ;
 	snsClient.createPlatformEndpoint(params, function(err, data) 
@@ -441,13 +441,14 @@ exports.registerNewMerchantDevice = function(req, res) {
 		{
 			console.log("Device registered successfully") ;
 			console.log(data);           // successful response
-			endPointARN = data.EndpointArn  ;
-			topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+req.params.customerId ;
+			res.status(200).send('{"success":true,"msg":"Endpoint created Successfully"}') ;
+			/*endPointARN = data.EndpointArn  ;
+			topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzMerchant'+req.params.customerId ;
 			var params1 = {
 				Protocol: 'application', /* required */
-				TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
-				Endpoint: data.EndpointArn
-				};
+				/*TopicArn: topicArn,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
+				/*Endpoint: data.EndpointArn
+				/*};
 			console.log('Subscribing to: ' + topicArn);
 			snsClient.subscribe(params1, function(err, data)
 			{
@@ -461,7 +462,7 @@ exports.registerNewMerchantDevice = function(req, res) {
 			console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
 			res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 			}
-			});
+			});*/
 	
 	    }
 	});
