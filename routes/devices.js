@@ -441,7 +441,7 @@ exports.registerNewMerchantDevice = function(req, res) {
 		{
 			console.log("Device registered successfully") ;
 			console.log(data);           // successful response
-			res.status(200).send('{"success":true,"msg":"Endpoint created Successfully"}') ;
+			res.status(200).send('{"success":true,"msg":"Endpoint created Successfully","endpointARN":"'+data.EndpointArn+'"}') ;
 			/*endPointARN = data.EndpointArn  ;
 			topicArn = 'arn:aws:sns:us-west-2:861942316283:LocalBuzzMerchant'+req.params.customerId ;
 			var params1 = {
