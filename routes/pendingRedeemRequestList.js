@@ -76,7 +76,7 @@ exports.getPendingRedeemRequestList = function(req, res) {
 			}
 			console.log("Now accessing Items element") ;
 			var items = data["Items"] ;
-			console.log(items.length) ;
+			//console.log(items.length) ;
 			
 			
 			if(items){
