@@ -20,7 +20,7 @@ exports.getPendingRedeemRequestList = function(req, res) {
 	var redeemRequestList=[];
 
 	// switch to either use local file or AWS credentials depending on where the program is running
-	var customerId = req.params.id;
+	var customerId = req.query.customerId;
 	if(process.env.RUN_LOCAL=="TRUE") {
 		console.log("Loading local config credentials for accessing AWS");
 		AWS.config.loadFromPath('./config.json');

@@ -109,7 +109,7 @@ app.get('/stores/filterBySignupStatus/pending', stores.filterBySignupStatus);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
 
-app.get('/pendingRedeemRequestList/:id', pendingRedeemRequestList.getPendingRedeemRequestList);
+app.get('/pendingRedeemRequestList', pendingRedeemRequestList.getPendingRedeemRequestList);
 app.get('/deals/:id',deals.findDealsByCustomerId);
 app.post('/deals/getOfferCode/:id',deals.createOfferCode);
 
