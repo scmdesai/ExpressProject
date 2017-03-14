@@ -1065,7 +1065,51 @@ exports.createOfferCode = function(req, res) {
 			}
 			else  {
 				
-	
+				if(snsClient == null) {
+					console.log("SNS is null, creating new connection") ;
+					snsClient = new AWS.SNS() ;
+				}
+				console.log("SNS Client creation successful") ;
+				
+				var topicArn = req.params.topicArn ;
+				
+				//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
+				
+				
+				
+				var message = {
+					"default": "New redeem request for : "+ req.params.dealName,
+					"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New redeem request for :  "+ req.params.dealName + "\"}}", 
+					"GCM": "{ \"data\": { \"message\": \"New redeem request for :  " + req.params.dealName + "\"} }"
+				};
+				
+				var params = {
+					Message: JSON.stringify(message),
+					Subject: 'New redeem request for '+ req.params.dealName,
+					MessageAttributes: {
+						dealName: {
+							DataType: 'String', /* required */
+							StringValue: req.params.dealName
+						}
+					},
+					MessageStructure: 'json',
+					//TargetArn: 'TopicArn',
+					//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification'
+					//TopicArn: 'arn:aws:sns:us-west-2:861942316283:LocalBuzzGeoFencing'
+					TopicArn: topicArn
+				};
+				snsClient.publish(params, function(err, data) {
+					if (err) {
+						console.log("Error sending notification on buzz") ;
+						console.log(err, err.stack); // an error occurred
+					}				
+					else {
+						console.log("Notification sent to topic subscribers") ;
+						console.log(data);           // successful response
+					}
+				});
+				
+				
 				
 				res.status(200).send('{"success":true,"msg":'+code_test+'}') ;
 				}
