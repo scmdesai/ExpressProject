@@ -509,7 +509,7 @@ exports.subscribeMerchantTopic = function(req, res) {
 		TopicArn: topic,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
 		Endpoint: endpoint
 	};
-	console.log('Subscribing to: ' + topicArn);
+	console.log('Subscribing to: ' + topic);
 	snsClient.subscribe(params, function(err, data)
 	{
 		if (err) 
