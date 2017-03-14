@@ -9,6 +9,8 @@ var express = require('express')
   , stores = require('./routes/stores')
   , deals = require('./routes/deals')
   , subscriptions = require('./routes/subscriptions')
+  , pendingRedeemRequestList = require('./routes/pendingRedeemRequestList')
+  //, pendingRequestListItem = require('./routes/pendingRequestListItem')
   // *** demo end-points ***
   , demoStores = require('./routes/demoStores')
   , demoDeals = require('./routes/demoDeals')
@@ -106,6 +108,8 @@ app.get('/stores/:email', stores.findByLoginEmail);
 app.get('/stores/filterBySignupStatus/pending', stores.filterBySignupStatus);
 //app.get('/deals', deals.findAllDeals);
 app.get('/deals', deals.findAllDeals);
+
+app.get('/pendingRedeemRequestList/:id', pendingRedeemRequestList.getPendingRedeemRequestList);
 app.get('/deals/:id',deals.findDealsByCustomerId);
 app.post('/deals/getOfferCode/:id',deals.createOfferCode);
 
