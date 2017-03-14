@@ -521,6 +521,7 @@ exports.subscribeMerchantTopic = function(req, res) {
 		else 
 		{
 			console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
+			res.status(200).send('{"success":true,"msg":"Subscribed to Topic Successfully"}') ;
 		}
 	});
 };	
