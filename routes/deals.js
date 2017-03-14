@@ -1071,25 +1071,25 @@ exports.createOfferCode = function(req, res) {
 				}
 				console.log("SNS Client creation successful") ;
 				
-				var topicArn = req.params.topicArn ;
+				var topicArn = req.body.topicArn ;
 				
 				//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
 				
 				
 				
 				var message = {
-					"default": "New redeem request for : "+ req.params.dealName,
-					"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New redeem request for :  "+ req.params.dealName + "\"}}", 
-					"GCM": "{ \"data\": { \"message\": \"New redeem request for :  " + req.params.dealName + "\"} }"
+					"default": "New redeem request for : "+ req.body.dealName,
+					"APNS_SANDBOX":"{\"aps\":{\"alert\":\"New redeem request for :  "+ req.body.dealName + "\"}}", 
+					"GCM": "{ \"data\": { \"message\": \"New redeem request for :  " + req.body.dealName + "\"} }"
 				};
 				
 				var params = {
 					Message: JSON.stringify(message),
-					Subject: 'New redeem request for '+ req.params.dealName,
+					Subject: 'New redeem request for '+ req.body.dealName,
 					MessageAttributes: {
 						dealName: {
 							DataType: 'String', /* required */
-							StringValue: req.params.dealName
+							StringValue: req.body.dealName
 						}
 					},
 					MessageStructure: 'json',
