@@ -466,5 +466,62 @@ exports.registerNewMerchantDevice = function(req, res) {
 	
 	    }
 	});
+};
+exports.subscribeMerchantTopic = function(req, res) {
+
+	console.log("Subscribing Merchant  AWS SNS") ;
+	
+	console.log("Incoming request is") ;
+	
+	console.log(req.body);
+	
+	var json = req.body;
+	var endpoint = json.endpointARN;
+	var topic = json.topicARN;
+	
+	
+	console.log("EndpointARN is:" + json.endpointARN) ;
+	
+	// Invoke AWS SNS call to create platform endpoint
+	// switch to either use local file or AWS credentials depending on where the program is running
+	if(process.env.RUN_LOCAL=="TRUE") {
+		console.log("Loading local config credentials for accessing AWS");
+		AWS.config.loadFromPath('./config.json');
+	}
+	else {
+		console.log("Running on AWS platform. Using EC2 Metadata credentials.");
+		AWS.config.credentials = new AWS.EC2MetadataCredentials({
+			  httpOptions: { timeout: 10000 } // 10 second timeout
+		}); 
+		AWS.config.region = "us-west-2" ;
+	}
+
+	console.log("Credentials retrieval successful") ;
+	// Create an SNS client
+	console.log("Creating SNS Client") ;
+	if(snsClient == null) {
+		console.log("SNS is null, creating new connection") ;
+		snsClient = new AWS.SNS() ;
+	}
+	console.log("SNS Client creation successful") ;
+	var params = {
+		Protocol: 'application', /* required */
+		TopicArn: topic,//'arn:aws:sns:us-west-2:861942316283:LocalLinkNotification', /* required */
+		Endpoint: endpoint
+	};
+	console.log('Subscribing to: ' + topicArn);
+	snsClient.subscribe(params, function(err, data)
+	{
+		if (err) 
+		{
+			console.log(err, err.stack); // an error occurred
+			res.status(500).send('{"success":false,"msg":"Suscription to Topic Failed"}') ;
+											
+		}	
+		else 
+		{
+			console.log('Subscription ARN is : ' + data.SubscriptionArn);           // successful response
+		}
+	});
 };	
 

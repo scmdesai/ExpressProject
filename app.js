@@ -148,6 +148,7 @@ app.post('/deals/:id', deals.deleteDeal) ;
 
 app.post('/devices', devices.registerNewDevice) ;
 app.post('/merchantDevices', devices.registerNewMerchantDevice) ;
+app.post('/subscribeMerchantTopic',devices.subscribeMerchantTopic);
 
 app.post('/subscribe',subscribe.enableSubscription);
 
