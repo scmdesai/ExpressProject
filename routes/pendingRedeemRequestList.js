@@ -161,7 +161,7 @@ exports.approveRedeemRequest = function(req, res) {
 		}
 	],
 	  DomainName: 'CouponCodesForLocalBuzz', /* required */
-	  ItemName: req.params.id/* required */
+	  ItemName: req.body.itemName/* required */
 	  
 	};
 	
