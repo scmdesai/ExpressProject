@@ -1054,6 +1054,12 @@ exports.createOfferCode = function(req, res) {
 			  Value: 'Pending',
 			  Replace: true
 			  
+			},
+			{
+		      Name: 'itemName',
+			  Value: req.params.id,
+			  Replace: true
+			  
 			}
 			
 		],
