@@ -112,6 +112,7 @@ app.get('/deals', deals.findAllDeals);
 app.get('/pendingRedeemRequestList', pendingRedeemRequestList.getPendingRedeemRequestList);
 app.get('/deals/:id',deals.findDealsByCustomerId);
 app.post('/deals/getOfferCode/:id',deals.createOfferCode);
+app.post('/approveRedeemRequest/:id',pendingRedeemRequestList.approveRedeemRequest);
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + 'Analytics.html');

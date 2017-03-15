@@ -1048,6 +1048,12 @@ exports.createOfferCode = function(req, res) {
 			  Value: req.body.CustomerId,
 			  Replace: true
 			  
+			},
+			{
+		      Name: 'Status',
+			  Value: 'Pending',
+			  Replace: true
+			  
 			}
 			
 		],
