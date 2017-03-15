@@ -1084,6 +1084,7 @@ exports.createOfferCode = function(req, res) {
 				console.log("SNS Client creation successful") ;
 				
 				var topicArn = req.body.topicArn ;
+				console.log(topicArn);
 				
 				//var topicArn= 'arn:aws:sns:us-west-2:861942316283:LocalBuzz'+(req.body.city).toString() + (req.body.state).toString() ;
 				
