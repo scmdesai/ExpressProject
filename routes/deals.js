@@ -1056,7 +1056,7 @@ exports.createOfferCode = function(req, res) {
 			  
 			},
 			{
-		      Name: 'itemName',
+		      Name: 'dealItemName',
 			  Value: req.params.id,
 			  Replace: true
 			  
@@ -1064,7 +1064,7 @@ exports.createOfferCode = function(req, res) {
 			
 		],
 		  DomainName: 'CouponCodesForLocalBuzz', /* required */
-		  ItemName: req.params.id
+		  ItemName: code
 		  
 		};
 		
