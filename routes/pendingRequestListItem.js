@@ -10,7 +10,7 @@ function PendingRequestListItem(attributes) {
 		//console.log(attr) ;
 		var nameAttr = attr["Name"];
 		var valueAttr = attr["Value"];
-		console.log(nameAttr);
+		
 		switch (nameAttr) {
 		case "CustomerId":
 			this.customerId = valueAttr ;			
@@ -24,8 +24,8 @@ function PendingRequestListItem(attributes) {
 			this.timeStamp = valueAttr ;
 			break ;
 		
-		case "itemName":
-			this.itemName = valueAttr ;
+		case "dealItemName":
+			this.dealItemName = valueAttr ;
 			break ;
 		
 		
