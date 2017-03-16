@@ -1064,13 +1064,19 @@ exports.createOfferCode = function(req, res) {
 			{
 		      Name: 'deviceId',
 			  Value: req.body.deviceId,
-			  Replace: true
+			  Replace: false
 			  
 			}
 			
 		],
 		  DomainName: 'CouponCodesForLocalBuzz', /* required */
-		  ItemName: code
+		  ItemName: req.body.deviceId,
+		   Expected: {
+			Exists: false,
+			Name: 'deviceId'
+			
+			
+		  }
 		  
 		};
 		
@@ -1079,7 +1085,7 @@ exports.createOfferCode = function(req, res) {
 			if (err) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
-				res.send('{"msg": "Error! Please try again"}') ;
+				res.send('{"msg": "Error! Please try again","err":"'+err+'"}') ;
 			}
 			else  {
 				

@@ -27,6 +27,9 @@ function PendingRequestListItem(attributes) {
 		case "dealItemName":
 			this.dealItemName = valueAttr ;
 			break ;
+		case "deviceId":
+			this.deviceId = valueAttr ;
+			break ;
 		
 		
 		
