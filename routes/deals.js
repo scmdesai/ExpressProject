@@ -1063,7 +1063,7 @@ exports.createOfferCode = function(req, res) {
 			},
 			{
 		      Name: 'deviceId',
-			  Value: req.params.deviceId,
+			  Value: req.body.deviceId,
 			  Replace: true
 			  
 			}
