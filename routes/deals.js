@@ -1060,6 +1060,12 @@ exports.createOfferCode = function(req, res) {
 			  Value: req.params.id,
 			  Replace: true
 			  
+			},
+			{
+		      Name: 'deviceId',
+			  Value: req.params.deviceId,
+			  Replace: true
+			  
 			}
 			
 		],
