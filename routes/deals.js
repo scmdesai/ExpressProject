@@ -1136,7 +1136,7 @@ exports.createOfferCode = function(req, res) {
 				
 				
 				
-				res.status(200).send('{"success":true,"msg":'+code_test+'}') ;
+				res.status(200).send('{"success":true,"msg":"'+code_test+'"}') ;
 				}
 			});
 				
