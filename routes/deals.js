@@ -1086,7 +1086,7 @@ exports.createOfferCode = function(req, res) {
 				console.log("Error inserting record") ;
 				console.log(err, err.stack); // an error occurred
 				//res.send('{"msg": "Error! Please try again","err":"'+err+'"}') ;
-				res.send('{"success":false,"msg":"'+err+'"}');
+				res.send('{"success":false,"msg":"'+err.toString().split(" ").splice(0,1)+'"}');
 			}
 			else  {
 				
