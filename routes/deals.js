@@ -1137,7 +1137,7 @@ exports.createOfferCode = function(req, res) {
 				
 				
 				
-				res.status(200).send('{"success":true,"msg":"'+code_test+'","body":Show this code at the counter to redeem this offer"}') ;
+				res.status(200).send('{"success":true","msg":"'+code_test+'\nShow this code at the counter to redeem this offer"}') ;
 				}
 			});
 				
