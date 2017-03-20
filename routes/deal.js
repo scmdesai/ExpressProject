@@ -33,6 +33,9 @@ function Deal(itemName,attributes) {
 		case "DealStatus":
 			this.dealStatus = valueAttr ;
 			break ;
+		case "DealType":
+			this.dealType = valueAttr ;
+			break ;
 			
 		case "DealName":
 			this.dealName = valueAttr ;
