@@ -323,8 +323,12 @@ exports.createNewDeal = function(req, res) {
 	
 	var uuid1 = uuid.v1();
 	console.log("Generated uuid for itemName " + uuid1) ;
+	var dealType = "Announcement";
 	
 	//var dealURL = "http://appsonmobile.com/locallink/deals/" + req.file.path ;
+	if(req.body.DealType)
+	dealType = req.body.DealType;
+	
 	
 	//check for profanity to ensure that offensive content is rejected
 	if(swearjar.profane(req.body.DealName)==true || swearjar.profane(req.body.DealDescription)==true) {
@@ -338,6 +342,11 @@ exports.createNewDeal = function(req, res) {
 			{
 			  Name: 'DealStatus', /* required */
 			  Value: req.body.DealStatus, /* required */
+			  Replace: false
+			},
+			{
+			  Name: 'DealType', /* required */
+			  Value: dealType, /* required */
 			  Replace: false
 			},
 			{
@@ -390,6 +399,7 @@ exports.createNewDeal = function(req, res) {
 			  Value: req.body.state, /* required */
 			  Replace: false
 			}
+			
 		],
 		  DomainName: 'MyDeals', /* required */
 		  ItemName: uuid1, /* required */
