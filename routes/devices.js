@@ -402,7 +402,7 @@ exports.registerNewMerchantDevice = function(req, res) {
    /*  createPlatformEndpoint */
 	var platformAppARN = "" ;
 	if(json.deviceType=="iOS") {
-		//platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS/LocalBuzz-iOS-Prod' ;
+		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/APNS_SANDBOX/APNS_Merchant_iOS_Dev' ;
 	}
 	else if(json.deviceType=="Android") {
 		platformAppARN = 'arn:aws:sns:us-west-2:861942316283:app/GCM/LocalBuzzMerchant_GCM' ;
